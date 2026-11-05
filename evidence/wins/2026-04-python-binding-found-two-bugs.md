@@ -6,7 +6,7 @@ date: 2026-04-18
 artifact_type: github-repo
 channel: [local-test]
 numbers_provided: true
-ods_version: 1.0.0
+ods_version: 1.0.0        # historical: written against ODS 1.x, kept as-is rather than migrated
 tags: [protocol, cross-language, conformance]
 ---
 

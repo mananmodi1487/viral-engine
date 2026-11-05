@@ -45,6 +45,8 @@ pub enum ValidationError {
     EthicalViolationWithoutBlock,
     BlockWithoutReason,
     MissingAntiSpamRules,
+    /// The field is present but is not one of the three permitted postures.
+    UnknownConsentPosture(String),
     NoFailureConditions,
     WeightsDoNotSum { sum: u32, max: u32 },
     BandsNotContiguous { at: u32 },
@@ -85,6 +87,10 @@ impl fmt::Display for ValidationError {
             Self::MissingAntiSpamRules => {
                 write!(f, "broadcaster_analysis needs at least one anti_spam_rules entry")
             }
+            Self::UnknownConsentPosture(p) => write!(
+                f,
+                "consent_posture is {p:?}; it must be one of \"no-contact\", \"one-to-one-consent\" or \"public-invitation\""
+            ),
             Self::NoFailureConditions => {
                 write!(f, "at least one failure_condition is required at the top level")
             }
@@ -348,11 +354,14 @@ impl BroadcasterAnalysis {
         if self.anti_spam_rules.is_empty() {
             return Err(ValidationError::MissingAntiSpamRules);
         }
+        // An unrecognised consent posture is not a *missing* field — the field is
+        // present and wrong, which is a different problem and a different fix. This
+        // used to be a placeholder match arm that reported every unknown value as
+        // MissingField("broadcaster_analysis.consent_posture"), which sent the reader
+        // looking for a field that was already there.
         match self.consent_posture.as_str() {
             "no-contact" | "one-to-one-consent" | "public-invitation" => Ok(()),
-            other => Err(ValidationError::MissingField(match other {
-                _ => "broadcaster_analysis.consent_posture",
-            })),
+            other => Err(ValidationError::UnknownConsentPosture(other.to_string())),
         }
     }
 }
@@ -698,7 +707,7 @@ mod tests {
     #[test]
     fn weights_sum_to_max() {
         let w = weights();
-        assert_eq!(w.dimensions.len(), 20);
+        assert_eq!(w.dimensions.len(), 25);
         assert_eq!(w.dimensions.iter().map(|d| d.weight).sum::<u32>(), w.max);
     }
 

@@ -45,7 +45,7 @@ Subject: a tool that scores whether your launch copy is legible
 You wrote about why good tools fail to spread, which is the question I have been
 stuck on for a year.
 
-I built Viral Engine Commons: it scores an artifact on 20 dimensions out of 1000
+I built Viral Engine Commons: it scores an artifact on 25 dimensions out of 1000
 and names the three where a fix would return the most points. It runs offline and
 it will tell you not to launch. The protocol is public domain and there are four
 implementations.
@@ -61,7 +61,7 @@ Every one names its mechanism, because the mechanism is the reusable part.
 | Mechanism | Line | Why it works |
 |---|---|---|
 | Negative comparison | "It's not a growth tool. It's a diagnosis of why nobody passed your work on." | places it instantly, and the "not" is a real category people know |
-| Concrete number | "20 dimensions, 1000 points, and one of them is honesty — which is why it blocks its own README." | the number is checkable and the self-application is memorable |
+| Concrete number | "25 dimensions, 1000 points, and one of them is honesty — which is why it blocks its own README." | the number is checkable and the self-application is memorable |
 | Compressed loss | "You rewrote the hook three times. The problem was the category." | states the reader's wasted effort, which they recognise |
 
 **Banned from the launch:** any statistic about how many launches fail. We do not have one, nobody

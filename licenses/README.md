@@ -29,7 +29,7 @@ You may:
 - sell a service that validates ODS documents;
 - write a competing spec.
 
-You may not claim your implementation is "ODS 1.0.0 conformant" while disagreeing with the
+You may not claim your implementation is "ODS 2.0.0 conformant" while disagreeing with the
 conformance rules, because conformance is a factual claim about behaviour, not a licensed
 trademark. The tests are public; run them.
 

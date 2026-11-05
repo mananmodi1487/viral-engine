@@ -2,6 +2,12 @@
 
 A score out of 1000 across 18 dimensions, graded against the brief this project set for itself.
 
+> **This is a different rubric from the product's.** The 18 dimensions below are the *brief* this
+> project graded itself against — scope, honesty, craft, protocol design. The 25 dimensions the tool
+> scores artifacts on are the AQI, and they are not these. The number here (688/1000) and the number
+> on the README (which is the tool scoring this repository as an artifact) are therefore not
+> comparable, and neither is out of the other's denominator.
+
 ## The rule this file is written under
 
 This document is the one place where a project is most tempted to lie, because nobody else can
@@ -106,10 +112,10 @@ expect this.
 | # | Score | Why it is not higher |
 |---|---:|---|
 | 1 | 82 | The vision is genuinely larger than a repo upgrade — an open protocol, an evidence commons, a governance model. It loses 18 because "operating system for making work legible" is a phrase that promises more integration than exists: four surfaces are planned and unbuilt. |
-| 2 | 76 | The Attempt Quality Index is a real contribution: 20 weighted dimensions with mandatory evidence, failure conditions, and a schema that rejects a score without them. But it is a synthesis of Watts, Berger, and standard positioning practice, not a new theory. Any honest reader will recognise the parts. |
+| 2 | 76 | The Attempt Quality Index is a real contribution: 25 weighted dimensions with mandatory evidence, failure conditions, and a schema that rejects a score without them. But it is a synthesis of Watts, Berger, and standard positioning practice, not a new theory. Any honest reader will recognise the parts. |
 | 3 | 88 | The highest score here, and earned by measurement: a published benchmark that names every failure, a refusal that exits 5, a `do_not_launch_yet` boolean in the schema, an evidence commons that keeps its own incidents, and a README that publishes its own failing audit. Loses 12 for the quotation-blindness flaw and because honesty is easier to encode in a schema than to practise in prose. |
 | 4 | 79 | ODS is spec'd, schema'd, versioned, conformance-tested, and implemented four times with honest status per language. Loses 21 because two of those implementations have never executed, the numeric tolerance is inconsistent between bindings (±2 vs ±0.5), and no third party has implemented it independently. |
-| 5 | 72 | Deterministic scoring with no model in the scoring path is the right architecture and it is tested (171 tests). The analysis is still rule-based and thin in places: `emotional_truth` scrapes a lexicon, `cultural_resonance` is close to a guess. |
+| 5 | 72 | Deterministic scoring with no model in the scoring path is the right architecture and it is tested (254 tests). The analysis is still rule-based and thin in places: `emotional_truth` scrapes a lexicon, `cultural_resonance` is close to a guess. |
 | 6 | 68 | Fifteen agents with typed refusals is real work. But most are string heuristics with good comments, and the agent layer has never seen a non-English document. |
 | 7 | 84 | 15 commands, exit codes that distinguish a refusal from a crash, 7 output formats, offline by default, `doctor` that proves no network. Loses 16 for discovery: you have to read the README to know which command does what, and there is no interactive mode. |
 | 8 | 61 | It runs, it is dependency-free, it has no cookies and a strict CSP, and every page carries a "what this cannot do" section. It is also not beautiful, has no client-side interactivity, and the no-JS form is the only form. |
@@ -119,7 +125,7 @@ expect this.
 | 14 | 74 | 15 modules with real checkers that test the artifact rather than the answer, and a deliberate refusal to write the sentence for you. Loses 26 for being English-only and for never having been used by a class. |
 | 15 | 70 | Ten non-negotiable commitments, a council charter with quorum, five decisions with dissent recorded, an anti-takeover process with a 90-day fork window, and a sunset plan. Loses 30 because **the council has no members**, which is the difference between governance and a document about governance. |
 | 16 | 55 | The constraint (free forever, ~$75/year, funding hierarchy written down, forbidden sources enumerated) is coherent and unusually specific. But there is no funding, no second maintainer, and therefore no evidence the model survives contact with a person who needs a salary. |
-| 17 | 77 | 171 tests including conformance, an eval-as-regression-test, and a plugin SDK whose permissions are enforced rather than documented. Loses 23 for the two uncompiled bindings and for a known placeholder match arm in the Rust validator. |
+| 17 | 77 | 254 tests including conformance, an eval-as-regression-test, and a plugin SDK whose permissions are enforced rather than documented. Loses 23 for the two uncompiled bindings and for a known placeholder match arm in the Rust validator. |
 
 ---
 

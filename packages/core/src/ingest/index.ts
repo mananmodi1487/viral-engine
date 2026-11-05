@@ -30,6 +30,7 @@ export type InputKind =
   | 'tweet-thread'
   | 'app-store-listing'
   | 'email-draft'
+  | 'missing-path'
   | 'raw-text';
 
 export interface IngestOptions {
@@ -97,6 +98,24 @@ export function classifyInput(raw: string): ClassifiedInput {
       ? { kind: 'local-folder', ref: asPath, detail: 'local directory' }
       : { kind: 'local-file', ref: asPath, detail: 'local file' };
   }
+
+  /*
+   * A path that does not exist is not raw text.
+   *
+   * `viral-engine analyze ./REAADME.md` (typo) used to fall through to raw-text and
+   * score the literal string "./REAADME.md" — 492/1000, with a full report, exit 0.
+   * The user got a plausible number for a file that was never read, and nothing
+   * anywhere in the output said so. Of all the ways this tool can mislead someone,
+   * fabricating an analysis of a file that does not exist is the most direct.
+   *
+   * A single descriptive token — "viral-engine" with no slash — is still treated as
+   * text, because people paste sentences without punctuation. Something shaped like a
+   * path is not.
+   */
+  if (looksLikePath) {
+    return { kind: 'missing-path', ref: asPath, detail: 'path that does not exist' };
+  }
+
   if (/^(subject|to):/im.test(s) && /\n/.test(s)) return { kind: 'email-draft', ref: 'pasted email', detail: 'email draft' };
   return { kind: 'raw-text', ref: 'inline text', detail: 'raw text' };
 }
@@ -132,6 +151,11 @@ export async function ingest(raw: string, opts: IngestOptions = {}): Promise<Ing
 
   const cls = classifyInput(raw);
   switch (cls.kind) {
+    case 'missing-path':
+      throw new Error(
+        `no such file or directory: ${cls.ref}. Nothing was analysed. ` +
+          'Check the path, or pass --text "..." to analyse a sentence directly.',
+      );
     case 'local-folder':
       return ingestFolder(cls.ref, opts);
     case 'local-file':

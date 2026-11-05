@@ -3,7 +3,7 @@
 What it means to implement the Open Diffusion Spec, how to prove you have, and what
 happens when two implementations disagree.
 
-Version: **ODS 1.0.0** · Audited: 2026-04-18
+Version: **ODS 2.0.0** · Audited: 2026-11-05
 
 ---
 
@@ -110,7 +110,7 @@ Concretely:
 | Rust | `load_weights(None)` walks up from the current directory |
 
 The override exists so a downstream distribution can pin a rubric snapshot. It does
-not exist so anyone can quietly reweight the index and still call it ODS 1.0.0 — a
+not exist so anyone can quietly reweight the index and still call it ODS-conformant — a
 different rubric is a different `aqi_version`, and a document declaring 1.0.0 must
 sum to exactly 1000.
 
@@ -211,8 +211,8 @@ software lesson rhymes. **One implementation is a single data source.**
 | Go binding | Written without a compiler. In CI now. Until that job has run green, treat it as unverified. |
 | Rust binding | Same. `BroadcasterAnalysis::validate` contains a placeholder match arm that is very likely wrong. |
 | Multilingual input | No binding has been tested on non-English text. The field is a string; the analysis is English-tuned. |
-| Version negotiation | ODS 1.0.0 is the only released version. No migration path has been exercised beyond `x_` tolerance. |
-| Numeric tolerance | TS/Python compare totals within ±2, Go/Rust within ±0.5. This is a genuine inconsistency in the spec that should be resolved in 1.1.0. |
+| Version negotiation | ODS 2.0.0 is the current version and 1.x documents are readable. `viral-engine migrate` upgrades the envelope and refuses to re-score, and that path is tested against a real 1.x document — but no third party has exercised it. |
+| Numeric tolerance | TS and Python compare totals within ±2, Go and Rust within ±0.5, so a document that disagrees by 1.0 point passes two bindings and fails two. This is a genuine inconsistency and it is unresolved. A binding that is stricter than the spec's reference implementation is the more dangerous direction: it rejects documents the reference accepts, and the author of that document has no way to tell which implementation is wrong. |
 
 ---
 

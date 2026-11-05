@@ -29,6 +29,7 @@ import {
   AQI_DIMENSIONS,
   AQI_MAX,
   AQI_VERSION,
+  ODS_VERSION,
   SUPPORTED_INPUTS,
   analyze,
   loadSource,
@@ -82,7 +83,7 @@ COMMANDS
   local-mode [on|off]     write a config that forbids all network access
   providers               list providers, what they may produce, and their privacy posture
   protocol                print the ODS field reference and AQI weights
-  submit-outcome          record what happened, so the next person can learn
+  submit-outcome [file]   validate an Evidence Commons record, or print the template
   migrate <file>          migrate an older report to the current ODS version
   upgrade                 print how to upgrade (there is no paid tier)
 
@@ -254,6 +255,52 @@ function parseArgs(argv: string[]): Args {
   return a;
 }
 
+/**
+ * Would this one token plausibly be something we can read?
+ *
+ * Used only to decide whether an unrecognised first argument is a mistyped
+ * command or a target. Deliberately conservative: a path separator, a file
+ * extension, or a URL means "target"; a bare word with no extension means
+ * "probably a command", because a bare word is also what a typo looks like.
+ */
+function looksLikeAnalysableTarget(token: string): boolean {
+  if (/\s/.test(token)) return true;                        // a sentence pasted without --text
+  if (/^https?:\/\//i.test(token)) return true;             // a URL
+  if (/^(?:\.{1,2}\/|~\/|\/|[A-Za-z]:\\)/.test(token)) return true; // an explicit path
+  if (/\.[A-Za-z0-9]{1,8}$/.test(token)) return true;      // README.md, deck.pdf, owner/repo.git
+  if (/^[\w.-]+\/[\w.-]+$/.test(token)) return true;      // owner/repo
+  return false;
+}
+
+/** Closest known command, for a "did you mean" line. Cheap edit distance. */
+function nearestCommand(token: string): string | null {
+  const commands = ['analyze', 'score', 'category', 'broadcaster', 'friction', 'assets',
+    'experiment', 'simulate', 'honesty-audit', 'report', 'card', 'thread', 'roast',
+    'therapist', 'kill-my-darling', 'explain', 'types', 'stress-test', 'doctor',
+    'providers', 'protocol', 'upgrade', 'init', 'local-mode', 'migrate', 'submit-outcome'];
+  const distance = (a: string, b: string): number => {
+    const dp = Array.from({ length: a.length + 1 }, (_, i) => [i, ...new Array(b.length).fill(0)]);
+    for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+    for (let i = 1; i <= a.length; i++) {
+      for (let j = 1; j <= b.length; j++) {
+        dp[i][j] = Math.min(
+          dp[i - 1][j] + 1,
+          dp[i][j - 1] + 1,
+          dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1),
+        );
+      }
+    }
+    return dp[a.length][b.length];
+  };
+  let best: { command: string; d: number } | null = null;
+  for (const c of commands) {
+    const d = distance(token.toLowerCase(), c);
+    if (!best || d < best.d) best = { command: c, d };
+  }
+  // Only suggest when it is plausibly a typo rather than a different word.
+  return best && best.d <= Math.max(2, Math.floor(best.command.length / 3)) ? best.command : null;
+}
+
 async function main(): Promise<number> {
   let args: Args;
   try {
@@ -289,6 +336,16 @@ async function main(): Promise<number> {
   }
 
   if (args.command === 'submit-outcome') {
+    /*
+     * An argument that is given but does not exist is a mistake, not a request for
+     * the template. `submit-outcome /tmp/typo.json` used to print the template and
+     * exit 0, which reads as success and hides the typo.
+     */
+    if (args.target && !existsSync(resolve(args.target))) {
+      console.error(`error: no such file: ${args.target}`);
+      console.error('       omit the argument entirely to print the submission template');
+      return 2;
+    }
     return submitOutcome(args);
   }
 
@@ -296,12 +353,28 @@ async function main(): Promise<number> {
     'experiment', 'simulate', 'honesty-audit', 'report',
     'card', 'thread', 'roast', 'therapist', 'kill-my-darling', 'explain'];
   if (!known.includes(args.command)) {
-    // A bare path or URL is treated as `analyze`.
-    if (!args.command.startsWith('-') && (args.text === undefined)) {
+    /*
+     * A bare path or URL is treated as `analyze`. A bare *word* is not.
+     *
+     * `viral-engine nonsense-command` used to analyse the literal string
+     * "nonsense-command" and print a full, confident report at exit 0 — a typo'd
+     * subcommand silently turned into an analysis of the typo. The heuristic below
+     * checks the same things `classifyInput` checks: does this look like something
+     * we can read? If not, it is a mistyped command, and saying so is the only
+     * useful response.
+     */
+    const looksReadable =
+      !args.command.startsWith('-') &&
+      args.text === undefined &&
+      looksLikeAnalysableTarget(args.command);
+    if (looksReadable) {
       args.target = args.command;
       args.command = 'analyze';
     } else {
-      console.error(`error: unknown command "${args.command}". Try: viral-engine analyze <target>`);
+      console.error(`error: unknown command "${args.command}".`);
+      const near = nearestCommand(args.command);
+      if (near) console.error(`       did you mean "${near}"?`);
+      console.error('       try: viral-engine --help, or "viral-engine ./some-file.md" to analyse a file');
       return 2;
     }
   }
@@ -572,11 +645,16 @@ function writeSvg(args: Args, doc: OdsDocument): void {
     writeFileSync(join(dir, a.filename), a.svg, 'utf8');
     writeFileSync(join(dir, a.filename.replace(/\.svg$/, '.alt.txt')), a.alt + '\n', 'utf8');
   }
-  console.error(`wrote ${assets.length} SVG asset(s) and their alt text to ${dir}`);
-  for (const a of assets) console.error(`  ${a.filename}  — alt: ${a.alt.slice(0, 90)}…`);
+  /**
+   * The gallery is an output file, not a log line, so `--quiet` must not suppress
+   * it. It used to: `--quiet` wrapped this write, which meant a scripted run with
+   * `--quiet` silently produced no index.html while claiming success. `--quiet`
+   * controls what the command says, not what it delivers.
+   */
+  writeFileSync(join(dir, 'index.html'), svgGallery(assets), 'utf8');
   if (!args.quiet) {
-    // The last line of stdout is always the thing the user would have opened.
-    writeFileSync(join(dir, 'index.html'), svgGallery(assets), 'utf8');
+    console.error(`wrote ${assets.length} SVG asset(s), their alt text, and index.html to ${dir}`);
+    for (const a of assets) console.error(`  ${a.filename}  — alt: ${a.alt.slice(0, 90)}…`);
   }
 }
 
@@ -755,7 +833,7 @@ function listProviders(): number {
 
 function printProtocol(): number {
   const lines: string[] = [];
-  lines.push(`OPEN DIFFUSION SPEC 1.0 · ATTEMPT QUALITY INDEX ${AQI_VERSION}\n`);
+  lines.push(`OPEN DIFFUSION SPEC ${ODS_VERSION} · ATTEMPT QUALITY INDEX ${AQI_VERSION}\n`);
   lines.push(`Twenty dimensions, weights summing to ${AQI_MAX}. Reproduce any score yourself:\n`);
   lines.push('  attempt_quality = round( sum( sub_score_i * weight_i / 100 ) )\n');
   lines.push('  weight  dimension                      question');

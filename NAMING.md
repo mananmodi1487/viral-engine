@@ -75,7 +75,7 @@ opening that earns a fourth sentence.
 > about broadcast: one specific person deciding to post it. So the leverage is in whether a
 > stranger can tell what your thing is, who it is for, and why they would pass it on.
 >
-> This is a free tool that scores twenty dimensions of that attempt out of a thousand, names the
+> This is a free tool that scores 25 dimensions of that attempt out of a thousand, names the
 > three where you are losing the most points, and refuses to tell you it will go viral. It runs
 > offline. And it will tell you not to launch.
 >

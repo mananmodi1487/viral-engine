@@ -140,7 +140,72 @@ const NEGATION = /(?:\bno\b|\bnot\b|\bnever\b|\bcannot\b|\bcan't\b|\bnobody\b|\b
  * looks backwards turns honest disclaimers into violations, which is the
  * specific failure this project criticises other tools for.
  */
+/**
+ * Is the match inside quoted material?
+ *
+ * This is the quotation blindness fix. A document that *describes* a banned claim has
+ * to write one down: a table row `| guaranteed viral growth | \`[measured change]\` |`
+ * is doing the opposite of claiming it. The scanner could not tell the difference, so
+ * the documentation that explains the rule failed the rule — which made the check
+ * useless exactly where it mattered and taught everyone to skip it.
+ *
+ * Deliberately narrow. Only balanced quotes count, only when the quoted span is short
+ * enough to be a quotation rather than a document, and never across a newline. That
+ * keeps the escape hatch open for a genuine claim wrapped in scare quotes — which is
+ * itself a claim — while letting a reference table and a cited example through.
+ *
+ * The trade is stated plainly: a quoted claim is treated as a mention. If someone
+ * publishes `"guaranteed viral growth"` as their actual marketing line, this scanner
+ * will not flag it. That is a real gap, it is narrower than the gap it replaces, and
+ * it is recorded in limitations.md.
+ */
+const QUOTE_PAIRS: Array<[string, string]> = [
+  ['"', '"'],
+  ['\u201C', '\u201D'],
+  ['\u2018', '\u2019'],
+  ['`', '`'],
+];
+
+function isQuoted(text: string, index: number, matchedLength = 0): boolean {
+  const lineStart = text.lastIndexOf('\n', index) + 1;
+  const lineEndRaw = text.indexOf('\n', index);
+  const lineEnd = lineEndRaw === -1 ? text.length : lineEndRaw;
+  const line = text.slice(lineStart, lineEnd);
+  const offset = index - lineStart;
+
+  for (const [open, close] of QUOTE_PAIRS) {
+    /*
+     * Symmetric pairs ("…", "…", `…`) and asymmetric pairs (“…”, ‘…’) need different
+     * arithmetic. The first version treated them the same and looked for an opening
+     * quote with `indexOf(open, -1)` compared against `indexOf(close, -1)` — the same
+     * position for a symmetric pair, so the comparison was always false and straight
+     * quotes never registered. Counting parity is the correct test for a character
+     * that is its own terminator.
+     */
+    if (open === close) {
+      let before = 0;
+      for (let i = 0; i < offset; i++) if (line[i] === open) before++;
+      if (before % 2 === 0) continue;                       // not inside a span
+      const after = line.indexOf(open, offset + matchedLength);
+      if (after === -1) continue;                            // unclosed on this line
+      if (after - offset > 220) continue;                    // too long to be a quotation
+      return true;
+    }
+
+    const openedAt = line.lastIndexOf(open, offset - 1);
+    if (openedAt === -1) continue;
+    const closedBefore = line.lastIndexOf(close, offset - 1);
+    if (closedBefore > openedAt) continue;                   // already closed
+    const closingAt = line.indexOf(close, offset + matchedLength);
+    if (closingAt === -1) continue;
+    if (offset - openedAt > 200 || closingAt - openedAt > 240) continue;
+    return true;
+  }
+  return false;
+}
+
 function isNegated(text: string, index: number, matchedLength = 0): boolean {
+  if (isQuoted(text, index, matchedLength)) return true;
   const preceding = text.slice(Math.max(0, index - 70), index);
   if (NEGATION.test(preceding)) return true;
   if (matchedLength > 0) {

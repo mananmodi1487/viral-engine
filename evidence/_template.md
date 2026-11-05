@@ -6,7 +6,7 @@ date: 2026-04-01
 artifact_type: github-repo  # github-repo | landing-page | essay | deck | product | campaign | book | course | other
 channel: [github, x, hacker-news]
 numbers_provided: false
-ods_version: 1.0.0
+ods_version: 2.0.0       # the ODS version this record was written against
 tags: [developer-tools, cli]
 ---
 
