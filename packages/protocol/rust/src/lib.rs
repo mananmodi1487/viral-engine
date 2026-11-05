@@ -540,6 +540,13 @@ pub struct Dimension {
 
 impl Dimension {
     /// Build a dimension, or refuse with the reason.
+    ///
+    /// Eight parameters is the point: a dimension without evidence is a decoration,
+    // without an improvement it is a verdict, and without a failure condition it
+    // cannot be argued with. Folding them into a struct would move the requirement
+    // one level away from the call site, which is exactly where it needs to bite.
+    // The Go binding's NewDimension takes the same eight.
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         weights: &Weights,
         key: &str,
