@@ -473,3 +473,68 @@ describe('calibration', () => {
     expect(flat.rho).toBeNull();
   });
 });
+
+/* ---------- the fallback line must not become a claim ---------- */
+
+describe('the generated forwardable line', () => {
+  it('labels itself as a diagnosis rather than a description of the product', () => {
+    const p = buildSharePayloads(input({ forwardable: null }));
+    expect(p.forwardableWasGenerated).toBe(true);
+    expect(p.forwardableLine).toContain('description of the diagnosis');
+    expect(p.forwardableLine).toContain('not a sentence about the product');
+  });
+
+  it('advises the author instead of emitting a template', () => {
+    // The friction agent used to return "For [name the person who needs this most]".
+    // A template is not a deliverable: the reader still has to write it.
+    const p = buildSharePayloads(input({ forwardable: 'For [name the person who needs this most].' }));
+    expect(p.forwardableLine).not.toMatch(/\[[^\]]+\]/);
+    expect(p.forwardableWasGenerated).toBe(true);
+  });
+});
+
+/* ---------- one action invocation, simulated ---------- */
+
+describe('the GitHub Action script', () => {
+  it('is valid YAML with the inputs and outputs it documents', async () => {
+    const { readFileSync } = await import('node:fs');
+    const yaml = readFileSync('.github/actions/spread-check/action.yml', 'utf8');
+    // A YAML parser is not a dependency of this repo, so the structural checks are
+    // deliberately textual: the things that break an action are a missing
+    // `runs.using`, an input referenced but not declared, and an output printed to
+    // the log instead of $GITHUB_OUTPUT.
+    expect(yaml).toContain('using: \'composite\'');
+    for (const i of ['path', 'comment', 'fail-on', 'artifact-type', 'comment-strict']) {
+      expect(yaml).toContain(`\n  ${i}:`);
+    }
+    for (const o of ['aqi', 'band', 'do-not-launch-yet', 'forwardable-line', 'card-path', 'do-not-say']) {
+      expect(yaml).toContain(`\n  ${o}:`);
+    }
+    const declared = [...yaml.matchAll(/\$\{\{ inputs\.([a-z-]+) \}\}/g)].map((m) => m[1]);
+    for (const name of new Set(declared)) {
+      expect(yaml, `input "${name}" is used but not declared`).toContain(`\n  ${name}:`);
+    }
+  });
+
+  it('writes every declared output to $GITHUB_OUTPUT', async () => {
+    const { readFileSync } = await import('node:fs');
+    const yaml = readFileSync('.github/actions/spread-check/action.yml', 'utf8');
+    for (const o of ['forwardable-line', 'card-path', 'do-not-say', 'ods-path']) {
+      expect(yaml).toContain(`echo "${o}=`);
+    }
+  });
+
+  it('percent-encodes the forwardable line, because an output cannot hold a newline', async () => {
+    const { readFileSync } = await import('node:fs');
+    const yaml = readFileSync('.github/actions/spread-check/action.yml', 'utf8');
+    expect(yaml).toContain('encodeURIComponent');
+    expect(yaml).toContain('decodeURIComponent');
+  });
+
+  it('does not comment on a passing PR by default', async () => {
+    const { readFileSync } = await import('node:fs');
+    const yaml = readFileSync('.github/actions/spread-check/action.yml', 'utf8');
+    expect(yaml).toContain("inputs.comment-strict == 'true'");
+    expect(yaml).toContain("default: 'false'");
+  });
+});

@@ -42,6 +42,20 @@ inputs:
     description: 'Optional floor. Fail if the Attempt Quality Index total is below this. 0 disables it.'
     required: false
     default: '0'
+  artifact-type:
+    description: |-
+      What kind of document this is: readme | landing-page | changelog | grant-application |
+      job-post | cold-outreach | ... (run `viral-engine types` for all 33). Leave empty to infer
+      it structurally. A wrong type applies the wrong rubric, so declaring it is better than
+      guessing.
+    required: false
+    default: ''
+  comment-strict:
+    description: |-
+      Post a comment even when everything passes (true/false). Default false, because a bot
+      that comments on every PR is noise, and noise gets muted.
+    required: false
+    default: 'false'
 
 outputs:
   aqi:
@@ -58,6 +72,14 @@ outputs:
     description: 'Where the markdown report was written.'
   ods-path:
     description: 'Where the ODS JSON document was written.'
+  forwardable-line:
+    description: |-
+      The one sentence a reader could paste into a message to a specific person. Empty when the
+      document does not supply one; the generated fallback describes the diagnosis, not the product.
+  card-path:
+    description: 'Directory with card.svg, card.alt.txt, badge.json, and WHAT-THIS-DOES-NOT-PROVE.md.'
+  do-not-say:
+    description: 'Semicolon-separated phrases that would misrepresent this work, from the honesty audit.'
 
 runs:
   using: 'composite'
@@ -82,6 +104,7 @@ runs:
         INPUT_PATH: ${{ inputs.path }}
         INPUT_OFFLINE: ${{ inputs.offline }}
         INPUT_PROVIDER: ${{ inputs.provider }}
+        INPUT_TYPE: ${{ inputs.artifact-type }}
       run: |
         set -euo pipefail
         ROOT="${{ github.action_path }}/../.."
@@ -89,6 +112,7 @@ runs:
         ARGS=(analyze "$INPUT_PATH" --output json -o viral-engine-ods.json)
         if [ "$INPUT_OFFLINE" = "true" ]; then ARGS+=(--offline); fi
         if [ "$INPUT_PROVIDER" != "none" ]; then ARGS+=(--provider "$INPUT_PROVIDER"); fi
+        if [ -n "${INPUT_TYPE:-}" ]; then ARGS+=(--type "$INPUT_TYPE"); fi
 
         # A non-zero exit here is a finding, not a crash: the CLI uses exit 3 for
         # an honesty blocker and 4 for an ethics violation. We capture the code so
@@ -107,6 +131,12 @@ runs:
 
         npx tsx "$ROOT/apps/cli/src/index.ts" analyze "$INPUT_PATH" --output markdown \
           -o viral-engine-report.md >/dev/null 2>&1 || true
+
+        # The share card, the badge, and the caveat file. These are the artefacts
+        # a maintainer would otherwise spend an afternoon making by hand, and the
+        # one they would skip is the caveat file.
+        npx tsx "$ROOT/apps/cli/src/index.ts" card "$INPUT_PATH" ${INPUT_TYPE:+--type "$INPUT_TYPE"} \
+          -o viral-engine-card --offline --quiet >/dev/null 2>&1 || true
 
         # Read the ODS document. Every value below is read defensively: a missing
         # field becomes a blank output, never a crashed job.
@@ -130,8 +160,32 @@ runs:
         echo "do-not-launch-yet=${BLOCKED:-false}" >> "$GITHUB_OUTPUT"
         echo "blockers=${BLOCKERS:-0}" >> "$GITHUB_OUTPUT"
         echo "violations=${VIOLATIONS:-0}" >> "$GITHUB_OUTPUT"
+        FORWARD=$(node -e "
+          try {
+            const fs = require('fs');
+            const t = fs.readFileSync('viral-engine-card/forwardable.txt', 'utf8').trim();
+            process.stdout.write(t);
+          } catch { process.stdout.write(''); }
+        ")
+
+        # GitHub Actions output values cannot contain a raw newline. Percent-encoding
+        # by hand is the only way to keep a multi-line sentence intact without
+        # inventing a delimiter that the sentence might itself contain.
+        ENCODED=$(node -e "process.stdout.write(encodeURIComponent(process.argv[1] || ''))" "$FORWARD")
+
+        DONTSAY=$(node -e "
+          try {
+            const d = require('./viral-engine-ods.json');
+            const f = (d.honesty_audit && d.honesty_audit.findings) || [];
+            process.stdout.write(f.filter(x => x.severity === 'blocker').map(x => x.matched || x.rule).filter(Boolean).slice(0, 8).join('; '));
+          } catch { process.stdout.write(''); }
+        ")
+
         echo "report-path=viral-engine-report.md" >> "$GITHUB_OUTPUT"
         echo "ods-path=viral-engine-ods.json" >> "$GITHUB_OUTPUT"
+        echo "card-path=viral-engine-card" >> "$GITHUB_OUTPUT"
+        echo "forwardable-line=$ENCODED" >> "$GITHUB_OUTPUT"
+        echo "do-not-say=$DONTSAY" >> "$GITHUB_OUTPUT"
 
         {
           echo "### Viral Engine Commons: ${AQI:-0}/1000, ${BAND:-unknown}"
@@ -143,10 +197,25 @@ runs:
             echo "**Do not launch yet.** The document states a blocking condition."
           fi
         } >> "$GITHUB_STEP_SUMMARY"
+        {
+          echo ""
+          echo "The sentence the copy supplies for a reader to forward:"
+          echo ""
+          DECODED=$(node -e "process.stdout.write(decodeURIComponent(process.argv[1] || ''))" "$ENCODED")
+          if [ -n "$DECODED" ]; then
+            echo "> $DECODED"
+          else
+            echo "> _(none. The copy describes itself but never gives a reader a sentence they could pass on.
+            That is the single most common finding, and it is also the cheapest to fix.)_"
+          fi
+        } >> "$GITHUB_STEP_SUMMARY"
         [ -f viral-engine-report.md ] && head -80 viral-engine-report.md >> "$GITHUB_STEP_SUMMARY"
 
     - name: Comment on the pull request
-      if: inputs.comment == 'true' && github.event_name == 'pull_request'
+      if: |
+        inputs.comment == 'true' && github.event_name == 'pull_request' &&
+        (inputs.comment-strict == 'true' || steps.run.outputs.blockers != '0' ||
+         steps.run.outputs.violations != '0' || steps.run.outputs.do-not-launch-yet == 'true')
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
@@ -155,6 +224,8 @@ runs:
         BLOCKED: ${{ steps.run.outputs.do-not-launch-yet }}
         BLOCKERS: ${{ steps.run.outputs.blockers }}
         VIOLATIONS: ${{ steps.run.outputs.violations }}
+        FORWARD: ${{ steps.run.outputs.forwardable-line }}
+        DONTSAY: ${{ steps.run.outputs.do-not-say }}
       run: |
         set -euo pipefail
         MARKER='<!-- viral-engine-ods-report -->'
@@ -175,6 +246,17 @@ runs:
           echo ""
           echo "The index measures the quality of the attempt. It does not predict reach,"
           echo "and no implementation of it can."
+          echo ""
+          if [ -n "${FORWARD:-}" ]; then
+            echo "**The sentence a reader could paste:**"
+            echo ""
+            echo "> $(node -e "process.stdout.write(decodeURIComponent(process.argv[1]||''))" "$FORWARD")"
+            echo ""
+          fi
+          if [ -n "${DONTSAY:-}" ]; then
+            echo "**What not to say about this change:** ${DONTSAY}"
+            echo ""
+          fi
           echo ""
           if [ -f viral-engine-report.md ]; then
             echo "<details><summary>Full report</summary>"
@@ -252,5 +334,6 @@ runs:
         path: |
           viral-engine-report.md
           viral-engine-ods.json
+          viral-engine-card/
         if-no-files-found: warn
         retention-days: 30

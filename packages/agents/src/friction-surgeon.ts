@@ -161,9 +161,30 @@ export function buildOneLiner(ctx: AgentContext): string | null {
   const subject = title || desc.split(/[.,]/)[0];
   const job = desc && desc.length > 12 ? desc.replace(/\.$/, '') : null;
 
+  /*
+   * Returning a sentence with `[name the person who needs this most]` in it looked
+   * like helpfulness and was the opposite: it is a template, so the reader still has
+   * to write the thing they came for, and if they paste it unedited it publishes a
+   * placeholder. Where the template would be full of holes, the honest output is
+   * `null` plus the reason, and the caller renders that as an instruction to the
+   * author rather than as copy.
+   *
+   * A one-liner with a hole in it is not a one-liner.
+   */
   if (job && audience) return `${subject} — ${job}. For ${audience}.`;
-  if (job) return `${subject} — ${job}. For [name the person who needs this most].`;
-  return `${subject}. For [name the person who needs this most].`;
+  if (job) return null;
+  return null;
+}
+
+/** Why there is no one-liner, when there is none. Rendered next to the empty slot. */
+export function whyNoOneLiner(ctx: AgentContext): string | null {
+  const desc = (ctx.description ?? '').trim();
+  const title = (ctx.title ?? '').trim();
+  if (!desc && !title) return 'The artifact has no description and no title, so there is nothing to compress.';
+  if (!ctx.declared?.audience && !guessAudience(ctx)) {
+    return 'No audience is named anywhere in the artifact, so the sentence would end with a blank for the author to fill in — which is exactly the work the author came here to have done. Name one person in the artifact and this fills itself.';
+  }
+  return null;
 }
 
 function guessAudience(ctx: AgentContext): string | null {

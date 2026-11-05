@@ -145,9 +145,19 @@ export function buildSharePayloads(input: ShareInput): SharePayloads {
   const PLACEHOLDER = /\[[^\]\n]{2,80}\]|<[a-z][a-z /_-]{2,40}>/i;
   const declared = input.forwardable?.trim() ?? '';
   const usable = declared !== '' && !PLACEHOLDER.test(declared) ? declared : null;
-  const forwardableLine =
-    usable ??
-    `${input.artifactName} scores ${input.total}/${AQI_MAX} on the Attempt Quality Index. The biggest gap: ${weakness}.`;
+  /*
+   * When the artifact supplies no one-liner, the fallback is labelled as a
+   * description of the diagnosis. Shipping it unlabelled would have produced a
+   * card that reads
+   *
+   *   "README.md scores 606/1000 on the Attempt Quality Index."
+   *
+   * which breaks the project's own rule that no score may appear without the
+   * sentence saying what it does not prove — inside a file called
+   * forwardable.txt, which is the worst place in the repository to break it.
+   */
+  const generated = `${input.artifactName} scores ${input.total}/${AQI_MAX} on the Attempt Quality Index. The biggest gap: ${weakness}.`;
+  const forwardableLine = usable ?? `${generated} That is a description of the diagnosis, not a sentence about the product.`;
 
   const socialPost = trim(
     `${input.total}/${AQI_MAX} on the Attempt Quality Index — band: ${input.band}.\n\n` +
