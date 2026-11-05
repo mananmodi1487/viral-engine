@@ -1,0 +1,15 @@
+[package]
+name = "viral-engine-ods"
+version = "1.0.0"
+edition = "2021"
+description = "Rust types, validators and AQI scoring for the Open Diffusion Spec (ODS) 1.0"
+license = "Apache-2.0"
+repository = "https://github.com/mananmodi1487/viral-engine"
+keywords = ["diffusion", "positioning", "protocol", "ods", "rubric"]
+categories = ["parsing", "data-structures"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[dev-dependencies]

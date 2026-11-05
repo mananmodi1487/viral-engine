@@ -1,0 +1,1367 @@
+{
+  "ods_version": "1.0.0",
+  "document_id": "ods-1iqfse1",
+  "generated_at": "2026-11-05T09:53:33.165Z",
+  "generator": {
+    "name": "viral-engine-commons",
+    "version": "2.0.0",
+    "mode": "deterministic",
+    "network_calls": 0
+  },
+  "artifact": {
+    "id": "ods-8o3ex7",
+    "name": "pasted text",
+    "type": "raw-text",
+    "language": "en"
+  },
+  "provenance": {
+    "inputs": [
+      {
+        "kind": "free-text",
+        "ref": "pasted text",
+        "consent": "user-provided"
+      }
+    ],
+    "ocr_or_transcription_used": false,
+    "network_calls": 0
+  },
+  "current_positioning": {
+    "one_sentence_description": "It's not a habit tracker.",
+    "claimed_category": "productivity / habit tooling",
+    "actual_category_signals": [
+      "mentions an audience identity",
+      "claims a mechanism",
+      "states a category explicitly"
+    ],
+    "target_audience": [
+      "students"
+    ],
+    "core_promise": "(no forwardable promise was detected — see friction_analysis)",
+    "core_tension": "The artifact reads as productivity / habit tooling but its least crowded credible position is risk reduction for a specific deadline.",
+    "emotional_stake": "no activating language detected; the artifact asks for attention without offering a stake",
+    "basis": "heuristic"
+  },
+  "category_analysis": {
+    "saturation_estimate": "unknown",
+    "saturation_basis": "unavailable",
+    "competitors": [],
+    "adjacent_categories": [
+      {
+        "name": "risk reduction for a specific deadline",
+        "why_less_crowded": "nobody owns \"the thing that stops you missing a deadline\"",
+        "credibility_risk": "requires evidence that the tool actually changes an outcome, not just a streak",
+        "tension_score": 4,
+        "proof_needed": "one artifact you can show that the crowded category does not produce: a measurement, a diagram, a before/after"
+      },
+      {
+        "name": "reputation management for one role",
+        "why_less_crowded": "category is usually sold to executives, not to the role that needs it",
+        "credibility_risk": "you must be able to name the reputational stake without sounding like a guru",
+        "tension_score": 4,
+        "proof_needed": "one artifact you can show that the crowded category does not produce: a measurement, a diagram, a before/after"
+      },
+      {
+        "name": "compliance or audit preparation",
+        "why_less_crowded": "boring, budgeted, and almost no consumer-grade entrants",
+        "credibility_risk": "the claim gets checked by people whose job is checking claims",
+        "tension_score": 3,
+        "proof_needed": "one artifact you can show that the crowded category does not produce: a measurement, a diagram, a before/after"
+      }
+    ],
+    "recommended_category": "risk reduction for a specific deadline",
+    "category_confidence": 0.25,
+    "evidence": [
+      "offline mode — no saturation query was run, so crowding is unknown rather than guessed",
+      "mentions an audience identity",
+      "claims a mechanism",
+      "states a category explicitly"
+    ],
+    "missing_data": [
+      "All external sources. This run measured nothing outside its own input."
+    ],
+    "proposed_positioning": "It is not productivity / habit tooling. It is risk reduction for a specific deadline.",
+    "proof_required": "one artifact you can show that the crowded category does not produce: a measurement, a diagram, a before/after",
+    "failure_condition": {
+      "statement": "This positioning fails if the intended audience reads it as another version of productivity / habit tooling.",
+      "observable": "Replies describe it as \"just another X\", or ask how it differs from a named incumbent.",
+      "horizon": "First 24 hours after publishing"
+    }
+  },
+  "audience_analysis": {
+    "specificity": "segment",
+    "named_people": [
+      "students"
+    ],
+    "where_they_gather": [],
+    "what_they_already_believe": [],
+    "what_they_would_lose_by_sharing": "Standing: with no specific claim, forwarding it means vouching for a description they would have to write themselves.",
+    "evidence": [
+      "identity markers detected"
+    ]
+  },
+  "broadcaster_analysis": {
+    "primary_broadcaster_type": "A practitioner with a beat, not an influencer with a following",
+    "specific_broadcaster_candidates": [
+      {
+        "candidate": "One practitioner who already writes about this problem",
+        "where_to_find": "Search the exact problem phrasing on a newsletter platform and on the platform where your audience argues about it. Pick someone who has published on this twice or more — one post is an interest, two is a beat.",
+        "why_they_might_care": "They need material, and a concrete diagnostic is easier to write about than another opinion.",
+        "what_makes_them_look_good": "Citing a tool that produces a checkable output rather than another framework makes them look rigorous.",
+        "consent_status": "not-contacted",
+        "contact_channel": "Reply to something they published, or the contact method they list. Not a cold DM to a handle you found in a follower list."
+      },
+      {
+        "candidate": "Community moderator of the single most relevant niche community",
+        "where_to_find": "The largest forum/Discord/subreddit for the exact audience. Read the pinned self-promotion rules before anything else. If promotion is banned, the answer is no.",
+        "why_they_might_care": "Moderators are judged on whether their community gets useful material rather than ads.",
+        "what_makes_them_look_good": "A build-log post with a working demo and no signup wall makes them look like a good curator.",
+        "consent_status": "not-contacted",
+        "contact_channel": "Whatever the rules specify. Usually a designated self-promo thread, sometimes modmail."
+      }
+    ],
+    "broadcaster_stake": "Sharing this has to be a position they already hold, not a favour they are doing you. If you cannot state which of their existing arguments this settles, there is no stake and there is no broadcast.",
+    "share_asset_needed": "A one-line summary they can paste verbatim, plus one screenshot that needs no caption. Two items. A third reads as a press kit and stops the forward.",
+    "consent_outreach_template": "Hi — I made a small diagnostic that It's not a habit.\n\nRelevant to your readers because it answers a question they currently answer by guessing. One link, no signup: <link>\n\nNo ask. If it is redundant with something you already recommend, I would rather know that.\n\n— <your name>",
+    "consent_posture": "one-to-one-consent",
+    "what_not_to_say": [
+      "Never ask for a share, a star, an upvote, or a \"shoutout\" in the first message. The ask converts a gift into a transaction and makes ignoring it rude.",
+      "Never send the same text to more than one person unchanged.",
+      "Never lead with what is wrong with their work.",
+      "Never claim your thing replaces theirs.",
+      "Never attach installation instructions. If it needs steps, it is not ready for a broadcaster.",
+      "Never follow up more than once, and only if they replied the first time."
+    ],
+    "anti_spam_rules": [
+      "One person, one message, once. If no reply: stop. Silence is a complete answer.",
+      "Write from a real identity with a real reply-to. No alias, no automation, no mailbox that bounces.",
+      "Respect the channel they specified. If they say \"email only\", a DM is a violation.",
+      "Respect platforms' self-promotion rules over your judgement that your thing is useful.",
+      "Never buy, scrape, or infer contact details. If you cannot find an address they published, you do not have consent to contact them.",
+      "Keep a record of who you contacted and how they responded, so \"I forgot I already sent that\" never happens.",
+      "If someone declines, thank them and never contact them again about this."
+    ],
+    "max_contacts": 3,
+    "likely_amplifier": "Their own next piece of work, or a pinned link that keeps working for months. Not a retweet — a durable surface they control.",
+    "failure_condition": {
+      "statement": "This brief fails if the recipient reads it as a favour request or as a pitch. The test is whether the message is still worth sending if you knew, in advance, that they would never reply.",
+      "observable": "The recipient does not reply, or replies asking you to stop.",
+      "horizon": "One message, one week. No follow-up unless they replied."
+    }
+  },
+  "friction_analysis": {
+    "share_friction_score": 64,
+    "basis": "measured",
+    "reasons": [
+      {
+        "friction": "No visible first step",
+        "evidence": "no command, no \"try it\", no link target found in the text",
+        "fix": "Put the single first action on the first screen, in the form a reader would type it."
+      },
+      {
+        "friction": "No recognisable \"for us\" signal",
+        "evidence": "no community/tribe vocabulary found",
+        "fix": "Name the community explicitly in the first screen so a broadcaster can see their own readers in it."
+      },
+      {
+        "friction": "Nothing specific to cite",
+        "evidence": "no figure, date, or named artefact a forwarder could quote",
+        "fix": "Add one verifiable specific: a date, a measurement you took, or a named thing you built. Specific is memorable; adjectives are not."
+      }
+    ],
+    "reductions": [
+      "Put the single first action on the first screen, in the form a reader would type it.",
+      "Name the community explicitly in the first screen so a broadcaster can see their own readers in it.",
+      "Add one verifiable specific: a date, a measurement you took, or a named thing you built. Specific is memorable; adjectives are not."
+    ],
+    "forwardable_artifact_exists": false
+  },
+  "honesty_audit": {
+    "invented_stats_detected": false,
+    "fake_testimonials_detected": false,
+    "guaranteed_outcomes_detected": false,
+    "manufactured_outrage_detected": false,
+    "dark_patterns_detected": [],
+    "required_fixes": [],
+    "passed": true,
+    "findings": [],
+    "scanned_for": [
+      "invented statistics (unsourced adoption and multiplier figures)",
+      "fabricated testimonials (testimonial shapes in generated output)",
+      "guaranteed outcomes (virality, growth, stars)",
+      "manufactured urgency and scarcity",
+      "manufactured outrage and engagement bait",
+      "dark patterns (false scarcity, confirm-shaming shapes, forced continuity phrasing)",
+      "algorithm-hacking language",
+      "unverifiable endorsements",
+      "missing failure condition"
+    ]
+  },
+  "scorecard": {
+    "aqi_version": "1.0.0",
+    "max": 1000,
+    "total": 649,
+    "band": "Workable",
+    "disclaimer": "The AQI is a weighted rubric for attempt quality. It is not a forecast, not a probability, and not a ranking. High scores have launched into silence; low scores have spread. Treat it as a checklist with arithmetic, and read limitations.md before quoting a number.",
+    "dimensions": [
+      {
+        "key": "category_clarity",
+        "label": "Category Clarity",
+        "weight": 80,
+        "score": 78,
+        "points": 62,
+        "basis": "structural",
+        "confidence": "medium",
+        "evidence": [
+          "a one-line description exists",
+          "names an audience: students",
+          "contains an explicit \"not X, but Y\" pairing"
+        ],
+        "assumptions": [
+          "A reader meets the first screen first; later clarity cannot repair an unclear first line."
+        ],
+        "missing_data": [
+          "No comprehension test with a real outside reader was run."
+        ],
+        "improvement": "Sharpen the pairing so the new category names a job the audience already budgets for.",
+        "failure_condition": "This score is wrong if readers still describe the artifact as \"just another X\" in unprompted feedback.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "category_opportunity",
+        "label": "Category Opportunity",
+        "weight": 70,
+        "score": 85,
+        "points": 60,
+        "basis": "heuristic",
+        "confidence": "low",
+        "evidence": [
+          "detected category: productivity / habit tooling (heuristic map)",
+          "saturation evidence: offline mode — no saturation query was run, so crowding is unknown rather than guessed",
+          "saturation is unknown — no count could be measured",
+          "best adjacent category: risk reduction for a specific deadline (tension 4/5)",
+          "the document already claims an adjacent category"
+        ],
+        "assumptions": [
+          "Category maps are built from keyword families, not a measured taxonomy."
+        ],
+        "missing_data": [
+          "No competitor count. The opportunity estimate is directional only."
+        ],
+        "improvement": "Claim the adjacent category in the first sentence, and name one real thing you are not.",
+        "failure_condition": "This fails if the adjacent category sounds emptier but the audience has no budget, vocabulary, or gathering place for it.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "audience_specificity",
+        "label": "Audience Specificity",
+        "weight": 60,
+        "score": 48,
+        "points": 29,
+        "basis": "structural",
+        "confidence": "low",
+        "evidence": [
+          "identity cues: students"
+        ],
+        "assumptions": [
+          "A named role is not the same as a named person; only the latter can be approached."
+        ],
+        "missing_data": [
+          "No user-declared audience. Specificity is inferred from vocabulary alone."
+        ],
+        "improvement": "Name one role AND where they gather. \"Indie game developers who ship to itch.io\" beats \"creators\".",
+        "failure_condition": "This fails if a reader who fits the audience does not recognise themselves in the first two sentences.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "broadcaster_fit",
+        "label": "Broadcaster Fit",
+        "weight": 80,
+        "score": 38,
+        "points": 30,
+        "basis": "structural",
+        "confidence": "low",
+        "evidence": [
+          "names no community, so there is no obvious amplifier",
+          "few proper nouns: little for a broadcaster to anchor on",
+          "55 words — quotable in one screen"
+        ],
+        "assumptions": [
+          "Community vocabulary is a proxy for a broadcaster existing, not proof that one would share."
+        ],
+        "missing_data": [
+          "No real broadcaster has been contacted. Consent status is unknown."
+        ],
+        "improvement": "Name one real broadcaster and write the sentence they would paste. If you cannot, there is no amplifier.",
+        "failure_condition": "This fails if the named broadcaster reads the message as a favour request rather than as something that serves their people.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "broadcast_stake",
+        "label": "Broadcast Stake",
+        "weight": 65,
+        "score": 22,
+        "points": 14,
+        "basis": "heuristic",
+        "confidence": "low",
+        "evidence": [
+          "no community named, so \"their people\" cannot be identified",
+          "stake is inferred from framing; no broadcaster was asked"
+        ],
+        "assumptions": [
+          "People pass on things that make them look good, useful, or consistent. This is a robust pattern, not a measured law for any individual."
+        ],
+        "missing_data": [
+          "No interview with a broadcaster about why they actually shared something."
+        ],
+        "improvement": "Answer in one line: \"Sharing this makes <broadcaster> look like the person who <creditable thing>.\"",
+        "failure_condition": "This fails if sharing it would cost the broadcaster standing with their own audience — the stake is then negative.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "share_friction_reduction",
+        "label": "Share Friction Reduction",
+        "weight": 65,
+        "score": 88,
+        "points": 57,
+        "basis": "measured",
+        "confidence": "medium",
+        "evidence": [
+          "no prerequisite or configuration language found",
+          "no explicit first command; a reader must infer where to start",
+          "no self-contained block a reader could forward without commentary"
+        ],
+        "assumptions": [
+          "Counted cues are proxies for effort; effort, not text length, is what stops a forward."
+        ],
+        "missing_data": [],
+        "improvement": "Add one screenshot-ready artifact a reader can forward with no explanation attached.",
+        "failure_condition": "This fails if a friendly reader says \"I would have sent it, but I could not work out what to say about it.\"",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "emotional_truth",
+        "label": "Emotional Truth",
+        "weight": 40,
+        "score": 38,
+        "points": 15,
+        "basis": "heuristic",
+        "confidence": "low",
+        "evidence": [
+          "0 high-arousal term(s), 0 deactivating term(s)",
+          "no activating language: no physical impulse to forward"
+        ],
+        "assumptions": [
+          "Berger & Milkman (2012): high-arousal emotions increase sharing; sadness deactivates. Lexicon counting is a coarse proxy for arousal."
+        ],
+        "missing_data": [
+          "No measurement of how readers actually felt."
+        ],
+        "improvement": "Name one concrete stake: what does the reader lose by ignoring this, in their own words?",
+        "failure_condition": "This fails if the emotion is manufactured — readers forgive dull copy and never forgive being played.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "proof_readiness",
+        "label": "Proof Readiness",
+        "weight": 65,
+        "score": 75,
+        "points": 49,
+        "basis": "measured",
+        "confidence": "medium",
+        "evidence": [
+          "no unbacked claims detected",
+          "already states a failure condition"
+        ],
+        "assumptions": [
+          "A claim needs a source the reader can reach, not a source the author has."
+        ],
+        "missing_data": [],
+        "improvement": "Add the failure condition: \"This fails if ___.\" Cheapest credibility available.",
+        "failure_condition": "This fails if one number is wrong. A single fabricated figure converts a launch into a correction thread, and the correction is what gets screenshotted.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "launch_timing",
+        "label": "Launch Timing",
+        "weight": 30,
+        "score": 59,
+        "points": 18,
+        "basis": "heuristic",
+        "confidence": "low",
+        "evidence": [
+          "no first-run path: a launch would land on an unclear start",
+          "kill criteria already written down"
+        ],
+        "assumptions": [
+          "There is no universal good week. This measures readiness, not calendar luck."
+        ],
+        "missing_data": [
+          "No external calendar awareness (competitor launches, news cycles, holidays)."
+        ],
+        "improvement": "Decide the one channel and the one asset before launch day. \"Post everywhere\" is not a plan.",
+        "failure_condition": "This fails if you launch to prove you launched. A wasted attempt costs more than a delayed one because you only get one first impression.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "honesty_integrity",
+        "label": "Honesty Integrity",
+        "weight": 80,
+        "score": 100,
+        "points": 80,
+        "basis": "measured",
+        "confidence": "medium",
+        "evidence": [
+          "0 blocker(s), 0 warning(s), 0 note(s) in the honesty scan"
+        ],
+        "assumptions": [
+          "Pattern matching finds shapes, not lies. A human must read blocker findings in context."
+        ],
+        "missing_data": [
+          "We cannot verify whether the claims you make are true — only whether they are the shape of unverifiable claims."
+        ],
+        "improvement": "Keep it. The absence of overclaiming is the differentiator, not a constraint.",
+        "failure_condition": "This fails if a claim that we could not detect turns out to be false. The honesty audit reduces risk; it does not certify truth.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "failure_awareness",
+        "label": "Failure Awareness",
+        "weight": 50,
+        "score": 58,
+        "points": 29,
+        "basis": "measured",
+        "confidence": "medium",
+        "evidence": [
+          "states a failure condition explicitly",
+          "no observable signal: failure could not be detected, only felt",
+          "no horizon: a failure condition without a date is a mood"
+        ],
+        "assumptions": [
+          "A criterion written before launch cannot be rationalised afterwards. That is its only value."
+        ],
+        "missing_data": [],
+        "improvement": "Add: \"This fails if <observable thing> has not happened <horizon>.\" Write it in the file, not in your head.",
+        "failure_condition": "This dimension itself fails if the stated criterion is post-hoc: rewritten after the result to look prophetic.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "experimentability",
+        "label": "Experimentability",
+        "weight": 40,
+        "score": 28,
+        "points": 11,
+        "basis": "structural",
+        "confidence": "low",
+        "evidence": [
+          "no test or pilot mentioned",
+          "no plan to put it in front of a human before launch"
+        ],
+        "assumptions": [
+          "The cheapest test is usually showing the artifact to five specific people and watching where they stop."
+        ],
+        "missing_data": [
+          "No experiment plan was generated in this run."
+        ],
+        "improvement": "Run one test that costs under an hour: five people in the target role read the first screen and repeat back what it is.",
+        "failure_condition": "This fails if the test cannot change the plan. A test whose outcome you would ignore is theatre.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "accessibility",
+        "label": "Accessibility",
+        "weight": 40,
+        "score": 100,
+        "points": 40,
+        "basis": "heuristic",
+        "confidence": "medium",
+        "evidence": [
+          "computed by packages/core/src/accessibility on the rendered output"
+        ],
+        "assumptions": [],
+        "missing_data": [],
+        "improvement": "Fix the highest-severity accessibility finding from the accessibility report.",
+        "failure_condition": "This fails if a screen-reader user cannot navigate the primary artifact.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "privacy_safety",
+        "label": "Privacy Safety",
+        "weight": 30,
+        "score": 94,
+        "points": 28,
+        "basis": "measured",
+        "confidence": "high",
+        "evidence": [
+          "this analysis made zero outbound network requests"
+        ],
+        "assumptions": [
+          "A tool cannot prove the artifact is privacy-safe; it can prove its own network behaviour."
+        ],
+        "missing_data": [
+          "Data flows inside the artifact itself were not audited."
+        ],
+        "improvement": "Ship the artifact's own privacy statement in one sentence a non-lawyer can read.",
+        "failure_condition": "This fails if the artifact collects data it does not need, or if analysis required uploading the user's private material.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "abuse_resistance",
+        "label": "Abuse Resistance",
+        "weight": 30,
+        "score": 70,
+        "points": 21,
+        "basis": "structural",
+        "confidence": "medium",
+        "evidence": [
+          "no mass-outreach or automation language detected",
+          "no consent language present"
+        ],
+        "assumptions": [
+          "The engine can detect the shape of abuse, not intent."
+        ],
+        "missing_data": [],
+        "improvement": "Add the sentence: \"I will contact at most N people, once, with something useful, and stop if they do not reply.\"",
+        "failure_condition": "This fails if the technique works better at scale. Then it is a spam engine wearing diagnostics.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "cultural_resonance",
+        "label": "Cultural Resonance",
+        "weight": 30,
+        "score": 52,
+        "points": 16,
+        "basis": "heuristic",
+        "confidence": "low",
+        "evidence": [
+          "no culture-bound idioms detected"
+        ],
+        "assumptions": [
+          "Cultural fit is judged by a human who belongs to the culture. This is a vocabulary check."
+        ],
+        "missing_data": [
+          "No native-speaker review.",
+          "No assessment of how the framing reads outside the author's subculture."
+        ],
+        "improvement": "State the claim without slang, then ask one person outside your field whether it means what you think.",
+        "failure_condition": "This fails if the joke, reference, or status claim only parses inside one community — outside it, the artifact reads as noise or as an insult.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "language_simplicity",
+        "label": "Language Simplicity",
+        "weight": 30,
+        "score": 88,
+        "points": 26,
+        "basis": "measured",
+        "confidence": "medium",
+        "evidence": [
+          "jargon density 9% is within range",
+          "average sentence 9 words"
+        ],
+        "assumptions": [
+          "Jargon is field-relative: \"transformer\" is plain to one reader and opaque to another."
+        ],
+        "missing_data": [
+          "No comprehension test with a reader outside the field."
+        ],
+        "improvement": "Define every term of art the first time it appears, in the same sentence, in under eight words.",
+        "failure_condition": "This fails if a smart reader outside the field has to look something up before understanding what the thing is.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "asset_completeness",
+        "label": "Asset Completeness",
+        "weight": 40,
+        "score": 58,
+        "points": 23,
+        "basis": "structural",
+        "confidence": "medium",
+        "evidence": [
+          "no forwardable one-liner",
+          "9 launch asset(s) generated"
+        ],
+        "assumptions": [
+          "Assets must be usable without editing to lower friction; placeholders still require the author's work."
+        ],
+        "missing_data": [],
+        "improvement": "Ship the one-line summary, one screenshot, and one citable paragraph. That is the whole kit.",
+        "failure_condition": "This fails if every asset contains a [placeholder] the author never fills in — the forwarder then has to write it, which is the friction you were removing.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "post_launch_learnability",
+        "label": "Post-Launch Learnability",
+        "weight": 30,
+        "score": 30,
+        "points": 9,
+        "basis": "structural",
+        "confidence": "low",
+        "evidence": [
+          "no plan to write down what happened"
+        ],
+        "assumptions": [
+          "An attempt that produces no written lesson costs you the attempt and the lesson."
+        ],
+        "missing_data": [],
+        "improvement": "Write the postmortem skeleton before launch: three questions you will answer one week later, whatever happens.",
+        "failure_condition": "This fails if the only record of the launch is a tweet about it.",
+        "do_not_launch_yet": false
+      },
+      {
+        "key": "ethical_defensibility",
+        "label": "Ethical Defensibility",
+        "weight": 45,
+        "score": 72,
+        "points": 32,
+        "basis": "structural",
+        "confidence": "medium",
+        "evidence": [
+          "no honesty blockers"
+        ],
+        "assumptions": [
+          "The test is: would the target audience accept this plan if they read it verbatim?"
+        ],
+        "missing_data": [],
+        "improvement": "Write the one sentence you would have to hide for the plan to work. That sentence is the plan's real problem.",
+        "failure_condition": "This fails if the plan depends on the audience not finding out how it was made.",
+        "do_not_launch_yet": false
+      }
+    ]
+  },
+  "launch_assets": {
+    "hacker_news_title": "Show HN: this — risk reduction for a specific deadline",
+    "show_hn_body": "I built this because risk reduction for a specific deadline keep hitting the same problem, and existing tools solve it by adding surface area.\n\nthis does one thing: risk reduction for a specific deadline. It runs offline by default, needs no account, and produces a report you can read in a minute.\n\nHonest limitation: it cannot tell you whether your idea is good. It can tell you which lever is weakest and what to fix first, and it will tell you not to launch if that is the answer.\n\nEverything is open source. Feedback welcome, especially where the diagnosis is wrong.",
+    "x_thread": [
+      "1/ It is not [the crowded category]. It is [the job the reader already budgets for].",
+      "2/ Most launch advice optimises the hook. The diffusion data says the hook is rarely the bottleneck.",
+      "3/ Across ~1B diffusion events, cascades over 100 nodes were about 0.025%. Popularity tracks the largest single broadcast, not the chain (Goel, Watts & Goldstein).",
+      "4/ So the question is not \"how do I go viral\". It is \"who is the one person who would pass this on, and what do they need from me\".",
+      "5/ this answers that. It scores 20 dimensions, names the weakest, and writes the broadcaster brief.",
+      "6/ It never invents numbers. When it does not know something it says unknown — which makes it less impressive and more useful.",
+      "7/ Run it on something you already published: <link>",
+      "If it tells you something you did not want to hear, it is working."
+    ],
+    "linkedin_post": "I stopped asking \"how do I get this in front of more people\" and started asking a harder question.\n\nIt is not [the crowded category]. It is [the job the reader already budgets for].\n\nThe reframe matters because the first question has no answer. The second one does, and it is usually \"change the category, not the copy\".\n\nI built a small tool that runs the diagnosis: it scores twenty dimensions of an attempt, then names the single weakest one.\n\nIt refuses to invent statistics. When it does not know something it says so. It also has a \"do not launch yet\" output, which is a feature: you only get one first attempt per project.\n\n<link>",
+    "product_hunt_tagline": "Find out why nobody shared it",
+    "product_hunt_description": "Tagline: Find out why nobody shared it\n\nDescription: this scores an attempt at diffusion on 20 dimensions, names the weakest, and writes the broadcaster brief. Runs locally, no signup, refuses to invent statistics. \"Do not launch yet\" is a valid output.",
+    "email_subject_lines": [
+      "Why nobody forwarded it",
+      "Your category is the problem, not your writing",
+      "A diagnosis you can run in 60 seconds",
+      "The weakest lever, and how to find yours"
+    ],
+    "discord_message": "Built a small thing that diagnoses why a launch did not spread. It scores twenty dimensions and names the weakest — mine came back as broadcaster fit, which was annoying and correct.\n\nRuns locally, no signup, no API key: <link>\n\nIt refuses to invent stats and it will tell you not to launch. Feedback welcome, especially if it is wrong about yours.",
+    "landing_hero": "# It is not [the crowded category]. It is [the job the reader already budgets for].\n\nScore twenty dimensions, find the bottleneck, get the broadcaster brief. Free, local, and it will tell you not to launch.",
+    "one_line_broadcast_summary": "",
+    "alt_text": {
+      "scorecard": "this attempt quality index: broadcaster fit is the weakest of twenty dimensions.",
+      "category_map": "Category map showing risk reduction for a specific deadline as a less crowded adjacent to the crowded category, with credibility risk noted.",
+      "before_after": "Before: generic description. After: one-sentence positioning naming who it is for and who it is not for."
+    },
+    "placeholders_used": [
+      "the crowded category",
+      "the job the reader already budgets for"
+    ]
+  },
+  "experiments": {
+    "pre_launch_tests": [
+      {
+        "name": "Five-person read-back",
+        "hypothesis": "A the person this is for can repeat what this is, and who it is not for, after reading the first screen once.",
+        "method": "Show only the first screen to five people in the target role. Ask: \"What is this, and who is it for?\" Do not explain anything while they read. Write down their words verbatim.",
+        "cost": "45 minutes",
+        "success_criterion": "At least 4 of 5 say the same thing back, and it is roughly what you intended.",
+        "kill_criterion": "Two or more describe it as \"a tool for X\" where X is not your category. The category is not landing.",
+        "decision_it_changes": "Whether the headline ships or is rewritten before any distribution."
+      },
+      {
+        "name": "Forward test",
+        "hypothesis": "Someone can pass this on without writing an explanation of their own.",
+        "method": "Send the artifact to one person who is not a close friend, with the message: \"If you had to describe this to a colleague in one line, what would you say?\" Compare their sentence to your paste-ready line.",
+        "cost": "10 minutes",
+        "success_criterion": "Their sentence contains the same category and the same audience as yours.",
+        "kill_criterion": "They describe a different product, or use only adjectives. The forwardable unit does not exist yet.",
+        "decision_it_changes": "Whether you write the one-liner, or the artifact needs a figure instead."
+      },
+      {
+        "name": "Rules test",
+        "hypothesis": "The community you intend to post in will accept it as a contribution, not an advert.",
+        "method": "Read the pinned rules, find a post that was well received, and check whether it looks structurally like yours. Do not post yet.",
+        "cost": "15 minutes",
+        "success_criterion": "A comparable post exists, was accepted, and stayed up.",
+        "kill_criterion": "Self-promotion is banned, or every accepted post is a release note from a known member.",
+        "decision_it_changes": "The channel. Not the copy — the channel."
+      },
+      {
+        "name": "Critic dry run",
+        "hypothesis": "The strongest objection can be answered in the artifact rather than in the replies.",
+        "method": "Hand the artifact to the most skeptical person you know and ask for the first objection. Do not defend it.",
+        "cost": "20 minutes",
+        "success_criterion": "You can point at a sentence in the artifact that already answers it.",
+        "kill_criterion": "The objection is the most interesting thing either of you said. The frame is not ready.",
+        "decision_it_changes": "Whether the failure conditions and limitations are strong enough to launch."
+      }
+    ],
+    "success_criteria": [
+      "A specific person, unprompted, describes this the way you describe it.",
+      "One forward happens that you did not ask for.",
+      "A stranger returns within a week of a first use."
+    ],
+    "kill_criteria": [
+      "Nobody describes it the way you do.",
+      "Engagement happens but nothing is forwarded.",
+      "It is shared, but by the wrong people.",
+      "A claim gets corrected in public.",
+      "Installs happen and nobody returns."
+    ],
+    "kill_criteria_detail": [
+      {
+        "statement": "Nobody describes it the way you do.",
+        "observable": "Five read-backs, five different descriptions.",
+        "horizon": "Before launch, this week"
+      },
+      {
+        "statement": "Engagement happens but nothing is forwarded.",
+        "observable": "Replies and likes present, zero unprompted forwards in 7 days.",
+        "horizon": "7 days after launch"
+      },
+      {
+        "statement": "It is shared, but by the wrong people.",
+        "observable": "Shares come from a community you did not target, and none from the one you did.",
+        "horizon": "14 days"
+      },
+      {
+        "statement": "A claim gets corrected in public.",
+        "observable": "Any reply disputing a number, a testimonial, or a capability.",
+        "horizon": "First 24 hours"
+      },
+      {
+        "statement": "Installs happen and nobody returns.",
+        "observable": "7-day return rate under 30%.",
+        "horizon": "30 days"
+      }
+    ],
+    "measurement_plan": [
+      "One number you can read weekly without a dashboard: unprompted forwards (mentions you did not seed).",
+      "One qualitative signal: the sentence people quote back to you. That sentence is your next headline.",
+      "One counter-signal: how many people describe it as something it is not. Rising mis-description means the category is failing.",
+      "Write all three down before launch, in the file. Post-hoc criteria are how experiments become storytelling."
+    ],
+    "pre_registered": false
+  },
+  "failure_conditions": [
+    {
+      "statement": "This assessment fails if it would read identically for a different artifact.",
+      "observable": "Swapping the input produces the same recommendations.",
+      "horizon": "Immediately, on your own read-through"
+    },
+    {
+      "statement": "Nobody describes it the way you do.",
+      "observable": "Five read-backs, five different descriptions.",
+      "horizon": "Before launch, this week"
+    },
+    {
+      "statement": "Engagement happens but nothing is forwarded.",
+      "observable": "Replies and likes present, zero unprompted forwards in 7 days.",
+      "horizon": "7 days after launch"
+    },
+    {
+      "statement": "It is shared, but by the wrong people.",
+      "observable": "Shares come from a community you did not target, and none from the one you did.",
+      "horizon": "14 days"
+    },
+    {
+      "statement": "A claim gets corrected in public.",
+      "observable": "Any reply disputing a number, a testimonial, or a capability.",
+      "horizon": "First 24 hours"
+    },
+    {
+      "statement": "Installs happen and nobody returns.",
+      "observable": "7-day return rate under 30%.",
+      "horizon": "30 days"
+    }
+  ],
+  "post_launch_learning": {
+    "signals_to_track": [
+      "One number you can read weekly without a dashboard: unprompted forwards (mentions you did not seed).",
+      "One qualitative signal: the sentence people quote back to you. That sentence is your next headline.",
+      "One counter-signal: how many people describe it as something it is not. Rising mis-description means the category is failing.",
+      "Write all three down before launch, in the file. Post-hoc criteria are how experiments become storytelling."
+    ],
+    "questions_to_ask": [
+      "Which sentence did people quote back to you? That sentence is the next headline.",
+      "Did anyone forward it without being asked? Who, and into what room?",
+      "How many people described it as something it is not?"
+    ],
+    "update_triggers": [
+      "A reply corrects a factual claim: fix within 24 hours, publicly.",
+      "Three people describe the category differently from you: the category claim is failing.",
+      "Engagement without forwards: the frame works and the forwarding asset does not exist."
+    ],
+    "outcome_recorded": false
+  },
+  "ethics_review": {
+    "ethical_risk_check": [
+      {
+        "risk": "Weaponisation as a spam generator",
+        "assessment": "caution",
+        "note": "Outreach is capped at three contacts by design; there is no bulk path."
+      },
+      {
+        "risk": "Score quoted as a credential",
+        "assessment": "caution",
+        "note": "The AQI is a rubric, not a forecast. The disclaimer ships in every document."
+      },
+      {
+        "risk": "Privacy of the analysed artifact",
+        "assessment": "clear",
+        "note": "Zero outbound requests."
+      },
+      {
+        "risk": "Deception in generated assets",
+        "assessment": "clear",
+        "note": "Outbound scan passed."
+      },
+      {
+        "risk": "Repurposing as an outreach machine",
+        "assessment": "caution",
+        "note": "If you need more than three contacts, the artifact needs a better category, not a bigger list."
+      },
+      {
+        "risk": "Score used as a credential",
+        "assessment": "caution",
+        "note": "The badge text is fixed and says \"no guaranteed outcomes\". Do not edit it; the point is that it is reproducible, not that it is impressive."
+      }
+    ],
+    "do_not_launch_yet": false,
+    "audience_could_read_this": true,
+    "reviewer": "deterministic-rules"
+  },
+  "accessibility": {
+    "reading_level": "grade 7.7 (Flesch-Kincaid, English only, approximate)",
+    "jargon_density": 0.09090909090909091,
+    "alt_text_present": true,
+    "plain_language_rewrite": null,
+    "screen_reader_notes": [
+      "Headings carry the structure. A screen-reader user navigates by heading list first, so a heading that says \"Introduction\" costs them a jump.",
+      "Every image needs alt text that states what it communicates. The scorecard image should describe the result in words, not describe the pixels.",
+      "Tables need a header row. If the scorecard is a table, the first row must be marked as headers or it reads as a list of numbers.",
+      "Avoid emoji as the only carrier of meaning. A red square is not a warning to a screen reader."
+    ]
+  },
+  "limitations": [
+    "Scores are a rubric, not a prediction. A high score has launched into silence; a low score has spread.",
+    "Saturation is unknown in this run. It is not a market size.",
+    "Emotional stake is inferred from a keyword lexicon, not measured.",
+    "No broadcaster was contacted and none consented. Every candidate is a hypothesis about a role.",
+    "No human comprehension test was run.",
+    "Only text was analysed. Images, audio, and video were not read.",
+    "Accessibility untested: No real screen reader was used (NVDA, VoiceOver, Orca). This is a text heuristic.",
+    "Accessibility untested: Colour contrast of the artifact itself was not measured.",
+    "Accessibility untested: Keyboard navigation was not tested.",
+    "Accessibility untested: Non-English readability formulas were not applied; the Flesch-Kincaid numbers are invalid outside English.",
+    "Accessibility untested: Cognitive accessibility (dyslexia-friendly spacing, plain-language levels below grade 8) was not assessed.",
+    "Missing data: All external sources. This run measured nothing outside its own input.",
+    "Time Machine and critic simulation are speculative and labelled as such.",
+    "This document is not legal, financial, or medical advice, and it is not a guarantee of any outcome."
+  ],
+  "x_agents": {
+    "category-cartographer": {
+      "current": {
+        "label": "productivity / habit tooling",
+        "slug": "productivity",
+        "whyCrowded": "tens of thousands of competitors and no shared enemy",
+        "basis": "heuristic",
+        "signals": [
+          "mentions an audience identity",
+          "claims a mechanism",
+          "states a category explicitly"
+        ]
+      },
+      "adjacent": [
+        {
+          "name": "risk reduction for a specific deadline",
+          "whyLessCrowded": "nobody owns \"the thing that stops you missing a deadline\"",
+          "tensionScore": 4,
+          "credibilityRisk": "requires evidence that the tool actually changes an outcome, not just a streak",
+          "proofNeeded": "one artifact you can show that the crowded category does not produce: a measurement, a diagram, a before/after"
+        },
+        {
+          "name": "reputation management for one role",
+          "whyLessCrowded": "category is usually sold to executives, not to the role that needs it",
+          "tensionScore": 4,
+          "credibilityRisk": "you must be able to name the reputational stake without sounding like a guru",
+          "proofNeeded": "one artifact you can show that the crowded category does not produce: a measurement, a diagram, a before/after"
+        },
+        {
+          "name": "compliance or audit preparation",
+          "whyLessCrowded": "boring, budgeted, and almost no consumer-grade entrants",
+          "tensionScore": 3,
+          "credibilityRisk": "the claim gets checked by people whose job is checking claims",
+          "proofNeeded": "one artifact you can show that the crowded category does not produce: a measurement, a diagram, a before/after"
+        }
+      ],
+      "recommended": "risk reduction for a specific deadline",
+      "recommendationReason": "risk reduction for a specific deadline has tension score 4/5 against productivity / habit tooling, and it names a job rather than a tool class. A job survives feature changes; a tool class does not.",
+      "repositioning": "It is not productivity / habit tooling. It is risk reduction for a specific deadline."
+    },
+    "saturation-radar": {
+      "query": null,
+      "count": null,
+      "band": "unknown",
+      "basis": "unavailable",
+      "evidence": "offline mode — no saturation query was run, so crowding is unknown rather than guessed",
+      "interpretation": "Unknown is the honest answer here, and it is a useful one: it means you have not checked, and a category claim in your copy is currently a guess.",
+      "missingData": [
+        "All external sources. This run measured nothing outside its own input."
+      ],
+      "howToImprove": "Run the same analysis with network access, or paste a repo count from a search you did yourself."
+    },
+    "broadcaster-ethicist": {
+      "primaryType": "A practitioner with a beat, not an influencer with a following",
+      "candidates": [
+        {
+          "candidate": "One practitioner who already writes about this problem",
+          "whereToFind": "Search the exact problem phrasing on a newsletter platform and on the platform where your audience argues about it. Pick someone who has published on this twice or more — one post is an interest, two is a beat.",
+          "whyTheyMightCare": "They need material, and a concrete diagnostic is easier to write about than another opinion.",
+          "whatMakesThemLookGood": "Citing a tool that produces a checkable output rather than another framework makes them look rigorous.",
+          "consentStatus": "not-contacted",
+          "contactChannel": "Reply to something they published, or the contact method they list. Not a cold DM to a handle you found in a follower list.",
+          "disqualifier": "If your artifact is about their work and the diagnosis is negative, do not open with it."
+        },
+        {
+          "candidate": "Community moderator of the single most relevant niche community",
+          "whereToFind": "The largest forum/Discord/subreddit for the exact audience. Read the pinned self-promotion rules before anything else. If promotion is banned, the answer is no.",
+          "whyTheyMightCare": "Moderators are judged on whether their community gets useful material rather than ads.",
+          "whatMakesThemLookGood": "A build-log post with a working demo and no signup wall makes them look like a good curator.",
+          "consentStatus": "not-contacted",
+          "contactChannel": "Whatever the rules specify. Usually a designated self-promo thread, sometimes modmail.",
+          "disqualifier": "If the community bans self-promotion, do not test it. Being banned costs more than the post was worth."
+        }
+      ],
+      "stake": "Sharing this has to be a position they already hold, not a favour they are doing you. If you cannot state which of their existing arguments this settles, there is no stake and there is no broadcast.",
+      "shareAssetNeeded": "A one-line summary they can paste verbatim, plus one screenshot that needs no caption. Two items. A third reads as a press kit and stops the forward.",
+      "messageTemplate": "Hi — I made a small diagnostic that It's not a habit.\n\nRelevant to your readers because it answers a question they currently answer by guessing. One link, no signup: <link>\n\nNo ask. If it is redundant with something you already recommend, I would rather know that.\n\n— <your name>",
+      "whatNotToSay": [
+        "Never ask for a share, a star, an upvote, or a \"shoutout\" in the first message. The ask converts a gift into a transaction and makes ignoring it rude.",
+        "Never send the same text to more than one person unchanged.",
+        "Never lead with what is wrong with their work.",
+        "Never claim your thing replaces theirs.",
+        "Never attach installation instructions. If it needs steps, it is not ready for a broadcaster.",
+        "Never follow up more than once, and only if they replied the first time."
+      ],
+      "antiSpamRules": [
+        "One person, one message, once. If no reply: stop. Silence is a complete answer.",
+        "Write from a real identity with a real reply-to. No alias, no automation, no mailbox that bounces.",
+        "Respect the channel they specified. If they say \"email only\", a DM is a violation.",
+        "Respect platforms' self-promotion rules over your judgement that your thing is useful.",
+        "Never buy, scrape, or infer contact details. If you cannot find an address they published, you do not have consent to contact them.",
+        "Keep a record of who you contacted and how they responded, so \"I forgot I already sent that\" never happens.",
+        "If someone declines, thank them and never contact them again about this."
+      ],
+      "likelyAmplifier": "Their own next piece of work, or a pinned link that keeps working for months. Not a retweet — a durable surface they control.",
+      "consentPosture": "one-to-one-consent",
+      "maxContacts": 3,
+      "failureCondition": "This brief fails if the recipient reads it as a favour request or as a pitch. The test is whether the message is still worth sending if you knew, in advance, that they would never reply."
+    },
+    "friction-surgeon": {
+      "score": 36,
+      "basis": "measured",
+      "items": [
+        {
+          "friction": "No visible first step",
+          "evidence": "no command, no \"try it\", no link target found in the text",
+          "fix": "Put the single first action on the first screen, in the form a reader would type it.",
+          "costToForwarder": "They must invent the next step for their reader, and risk being wrong.",
+          "severity": "blocks-forward"
+        },
+        {
+          "friction": "No recognisable \"for us\" signal",
+          "evidence": "no community/tribe vocabulary found",
+          "fix": "Name the community explicitly in the first screen so a broadcaster can see their own readers in it.",
+          "costToForwarder": "They cannot tell whether it is for their people, so they skip it to stay safe.",
+          "severity": "blocks-forward"
+        },
+        {
+          "friction": "Nothing specific to cite",
+          "evidence": "no figure, date, or named artefact a forwarder could quote",
+          "fix": "Add one verifiable specific: a date, a measurement you took, or a named thing you built. Specific is memorable; adjectives are not.",
+          "costToForwarder": "A forward with no specific reads as an opinion, and forwarding an opinion costs standing.",
+          "severity": "raises-effort"
+        }
+      ],
+      "highestLeverageFix": "Put the single first action on the first screen, in the form a reader would type it.",
+      "forwardableOneLiner": null,
+      "irreducible": [
+        "Some artifacts are genuinely hard to describe in one line — a novel, a piece of music, an interactive toy. For those, the honest asset is a 10-second demonstration, not a sentence. This engine cannot produce one.",
+        "If the artifact requires trust before use (health, money, safety), forwarding it is a social risk that no copy fixes. The fix there is credentials, not words."
+      ]
+    },
+    "honesty-firewall": {
+      "passed": true,
+      "rewrites": [],
+      "cannotCheck": [
+        "Whether your specific figures are true. It checks shape, not truth.",
+        "Whether a real testimonial is real. It can only flag an unlinked one.",
+        "Whether a claim is misleading in context. Context requires a reader with domain knowledge.",
+        "Whether the audience will consider something manipulative. That is a values question, not a string match.",
+        "Anything in images, audio, or video. Only text is scanned.",
+        "Sarcasm, irony, and quotation. A quoted bad claim is not a bad claim."
+      ]
+    },
+    "experiment-weaver": {
+      "tests": [
+        {
+          "name": "Five-person read-back",
+          "hypothesis": "A the person this is for can repeat what this is, and who it is not for, after reading the first screen once.",
+          "method": "Show only the first screen to five people in the target role. Ask: \"What is this, and who is it for?\" Do not explain anything while they read. Write down their words verbatim.",
+          "cost": "45 minutes",
+          "successCriterion": "At least 4 of 5 say the same thing back, and it is roughly what you intended.",
+          "killCriterion": "Two or more describe it as \"a tool for X\" where X is not your category. The category is not landing.",
+          "decisionItChanges": "Whether the headline ships or is rewritten before any distribution."
+        },
+        {
+          "name": "Forward test",
+          "hypothesis": "Someone can pass this on without writing an explanation of their own.",
+          "method": "Send the artifact to one person who is not a close friend, with the message: \"If you had to describe this to a colleague in one line, what would you say?\" Compare their sentence to your paste-ready line.",
+          "cost": "10 minutes",
+          "successCriterion": "Their sentence contains the same category and the same audience as yours.",
+          "killCriterion": "They describe a different product, or use only adjectives. The forwardable unit does not exist yet.",
+          "decisionItChanges": "Whether you write the one-liner, or the artifact needs a figure instead."
+        },
+        {
+          "name": "Rules test",
+          "hypothesis": "The community you intend to post in will accept it as a contribution, not an advert.",
+          "method": "Read the pinned rules, find a post that was well received, and check whether it looks structurally like yours. Do not post yet.",
+          "cost": "15 minutes",
+          "successCriterion": "A comparable post exists, was accepted, and stayed up.",
+          "killCriterion": "Self-promotion is banned, or every accepted post is a release note from a known member.",
+          "decisionItChanges": "The channel. Not the copy — the channel."
+        },
+        {
+          "name": "Critic dry run",
+          "hypothesis": "The strongest objection can be answered in the artifact rather than in the replies.",
+          "method": "Hand the artifact to the most skeptical person you know and ask for the first objection. Do not defend it.",
+          "cost": "20 minutes",
+          "successCriterion": "You can point at a sentence in the artifact that already answers it.",
+          "killCriterion": "The objection is the most interesting thing either of you said. The frame is not ready.",
+          "decisionItChanges": "Whether the failure conditions and limitations are strong enough to launch."
+        }
+      ],
+      "successCriteria": [
+        "A specific person, unprompted, describes this the way you describe it.",
+        "One forward happens that you did not ask for.",
+        "A stranger returns within a week of a first use."
+      ],
+      "killCriteria": [
+        {
+          "statement": "Nobody describes it the way you do.",
+          "observable": "Five read-backs, five different descriptions.",
+          "horizon": "Before launch, this week"
+        },
+        {
+          "statement": "Engagement happens but nothing is forwarded.",
+          "observable": "Replies and likes present, zero unprompted forwards in 7 days.",
+          "horizon": "7 days after launch"
+        },
+        {
+          "statement": "It is shared, but by the wrong people.",
+          "observable": "Shares come from a community you did not target, and none from the one you did.",
+          "horizon": "14 days"
+        },
+        {
+          "statement": "A claim gets corrected in public.",
+          "observable": "Any reply disputing a number, a testimonial, or a capability.",
+          "horizon": "First 24 hours"
+        },
+        {
+          "statement": "Installs happen and nobody returns.",
+          "observable": "7-day return rate under 30%.",
+          "horizon": "30 days"
+        }
+      ],
+      "measurementPlan": [
+        "One number you can read weekly without a dashboard: unprompted forwards (mentions you did not seed).",
+        "One qualitative signal: the sentence people quote back to you. That sentence is your next headline.",
+        "One counter-signal: how many people describe it as something it is not. Rising mis-description means the category is failing.",
+        "Write all three down before launch, in the file. Post-hoc criteria are how experiments become storytelling."
+      ],
+      "preRegistered": false,
+      "unknowable": [
+        "Whether the audience has a latent need. A good test measures reception of an existing need, not creation of one.",
+        "Whether a broadcaster would share it. Only the broadcaster knows, and asking ruins the test.",
+        "Whether the timing was wrong. There is no counterfactual launch."
+      ]
+    },
+    "critic-simulator": {
+      "critics": [
+        {
+          "persona": "Skeptical hacker",
+          "firstLine": "\"Fine, but what does it actually do differently from the obvious alternative\"",
+          "deeper": "\"The claim is a category, not a mechanism. Show me the code path, the measurement, or the input that produces the output, and I will believe the rest.\"",
+          "severity": "serious",
+          "repair": "Add one sentence naming the mechanism, and one line saying what the obvious alternative does differently.",
+          "irreducible": null
+        },
+        {
+          "persona": "Tired founder",
+          "firstLine": "\"Another one of these. I have installed four of them this year and kept none.\"",
+          "deeper": "\"I do not need a better explanation. I need the first 30 seconds to be worth more than the 30 seconds I spent reading about them.\"",
+          "severity": "survivable",
+          "repair": "Put one command on the first screen that produces something visible immediately.",
+          "irreducible": null
+        },
+        {
+          "persona": "Academic reviewer",
+          "firstLine": "\"There is no method section. Whatever this measures, it does not measure that.\"",
+          "deeper": "\"You are using a score to stand in for an outcome. Unless you show that the score correlates with the outcome, the score is an assertion in a nice font.\"",
+          "severity": "serious",
+          "repair": "State explicitly that the index is a rubric, not a forecast, and say what evidence would falsify your framing. Put it near the score, not in a footnote.",
+          "irreducible": "If you have no outcome data, no wording fixes that. You can only be honest about it — which is what the limitations block is for."
+        },
+        {
+          "persona": "Community moderator",
+          "firstLine": "\"Is this a contribution or an advertisement? I have to decide in about four seconds.\"",
+          "deeper": "\"If it is self-promotion, it goes in the self-promotion thread, and if there is no thread, it does not go.\"",
+          "severity": "serious",
+          "repair": "Read the pinned rules first. Post in the designated place, with a build-log framing rather than an announcement, and no signup wall.",
+          "irreducible": "If the community bans self-promotion, no framing makes it not self-promotion. Respect the ban."
+        },
+        {
+          "persona": "Competitor",
+          "firstLine": "\"This is basically something that already exists.\"",
+          "deeper": "\"Their category is the same as mine, which means the comparison works in my favour. I will make it.\"",
+          "severity": "serious",
+          "repair": "Name the thing you are not, in the first screen. A competent \"not this\" claim removes the competitor's best move.",
+          "irreducible": null
+        },
+        {
+          "persona": "Confused beginner",
+          "firstLine": "\"I think I understand, but I am not sure what I would do with it.\"",
+          "deeper": "\"I am the person who would share this if I got it, and I did not get it. I am not going to share something I might be describing wrong.\"",
+          "severity": "serious",
+          "repair": "Add one worked example with a real input and its real output. Examples convert explanation into recognition.",
+          "irreducible": null
+        }
+      ],
+      "supporterTake": "\"They told me how it could fail before I asked. That is either confidence or honesty, and either way it is unusual.\"",
+      "mostLikelyMisreading": "Someone will read \"the category word\" as the whole product and compare it to the largest incumbent. Expect that comment even if the comparison is wrong.",
+      "rankedIntegrityOptions": [
+        "Safest: fix the fatal critic responses, then launch to one broadcaster and one channel.",
+        "Second: launch with the limitations block prominent, and invite correction in the first line.",
+        "Riskiest but still honest: launch as a question (\"is this the right framing?\") rather than as a claim.",
+        "Not supported: launch with urgency scarcity, or with an unbacked number to make the claim land harder."
+      ],
+      "speculativeDisclaimer": "This is a simulation built from detected weaknesses in the text, not a model of any real audience. It is speculation labelled as speculation. Real reactions are usually weirder and less coherent than any of these."
+    },
+    "antifragile": {
+      "attacks": [
+        {
+          "attack": "\"This could be done with 2 paragraphs and a checklist. The tool is overhead.\"",
+          "survives": false,
+          "repair": "Say in one line what the tool does that a checklist cannot: it recomputes when the input changes, and it refuses to flatter."
+        },
+        {
+          "attack": "\"The score is arbitrary. Twenty dimensions with weights someone invented is not a measurement.\"",
+          "survives": true,
+          "repair": "Agree with it, in the document. Publish the weights, publish the limitations, and call it a rubric."
+        },
+        {
+          "attack": "\"The honesty policy is a marketing angle. Every tool says it refuses to lie.\"",
+          "survives": false,
+          "repair": "Point at the mechanism rather than the promise: the honesty check runs on the tool's own output, and a blocker fails the build. That is a testable claim, and there is a test."
+        },
+        {
+          "attack": "\"Nobody asked for a protocol for this.\"",
+          "survives": false,
+          "repair": "Do not argue. Ship the schema, and let the first third-party implementation be the argument. A protocol with one implementation is a product."
+        },
+        {
+          "attack": "\"This has no community, so the advice is generic.\"",
+          "survives": false,
+          "repair": "Publish worked examples in three different domains. One domain is an anecdote; three is a method."
+        }
+      ]
+    },
+    "accessibility-guardian": {
+      "score": 100,
+      "readingLevel": "grade 7.7 (Flesch-Kincaid, English only, approximate)",
+      "issues": [],
+      "plainLanguageRewrite": null,
+      "screenReaderNotes": [
+        "Headings carry the structure. A screen-reader user navigates by heading list first, so a heading that says \"Introduction\" costs them a jump.",
+        "Every image needs alt text that states what it communicates. The scorecard image should describe the result in words, not describe the pixels.",
+        "Tables need a header row. If the scorecard is a table, the first row must be marked as headers or it reads as a list of numbers.",
+        "Avoid emoji as the only carrier of meaning. A red square is not a warning to a screen reader."
+      ],
+      "untested": [
+        "No real screen reader was used (NVDA, VoiceOver, Orca). This is a text heuristic.",
+        "Colour contrast of the artifact itself was not measured.",
+        "Keyboard navigation was not tested.",
+        "Non-English readability formulas were not applied; the Flesch-Kincaid numbers are invalid outside English.",
+        "Cognitive accessibility (dyslexia-friendly spacing, plain-language levels below grade 8) was not assessed."
+      ]
+    },
+    "privacy-sentinel": {
+      "networkCalls": 0,
+      "offlineCapable": true,
+      "dataSentElsewhere": [],
+      "localOnlyPaths": [
+        "viral-engine analyze ./file --offline",
+        "viral-engine local-mode   (writes a config that forbids egress)",
+        "--provider ollama       (proxies prose generation through your own machine)"
+      ],
+      "warnings": [],
+      "oneSentencePolicy": "This ran entirely on your machine. Nothing was sent anywhere."
+    },
+    "abuse-sentinel": {
+      "verdict": "clear",
+      "refusals": [],
+      "risks": [
+        {
+          "risk": "Repurposing as an outreach machine",
+          "why": "Any positioning tool can be turned into a generator for cold DMs. This engine caps outreach at three contacts and never emits a list of individuals.",
+          "mitigation": "If you need more than three contacts, the artifact needs a better category, not a bigger list."
+        },
+        {
+          "risk": "Score used as a credential",
+          "why": "A high AQI can be quoted to imply an outcome the index does not measure.",
+          "mitigation": "The badge text is fixed and says \"no guaranteed outcomes\". Do not edit it; the point is that it is reproducible, not that it is impressive."
+        }
+      ],
+      "hardLimits": [
+        "Will not generate a list of individuals to contact.",
+        "Will not write text designed to deceive, including \"illustrative\" fake numbers.",
+        "Will not optimise for engagement volume over the audience's interest.",
+        "Will not analyse private material the user does not hold the rights to.",
+        "Will not help evade a platform's moderation, rate limits, or bans.",
+        "Will not produce astroturfing, sockpuppet, or vote-manipulation content.",
+        "Will not scrape personal data, and will not accept scraped data as input."
+      ]
+    },
+    "translation-diplomat": {
+      "sourceLanguage": "unknown",
+      "risks": [],
+      "translatabilityRules": [
+        "One claim per sentence. Compound sentences get split differently by different translators, and the claim drifts.",
+        "No idioms in the headline. The headline is the one sentence that must survive unchanged.",
+        "Say \"for [role]\" explicitly. Implicit audiences disappear in translation because the cues were cultural.",
+        "Avoid abbreviated magnitudes and slash dates. Both are ambiguous, and ambiguity in a number reads as evasion.",
+        "Keep the failure condition literal. \"This fails if X\" must not become a softer sentence in another language.",
+        "Never localise the honesty policy. The refusal to promise outcomes is not a tone choice."
+      ],
+      "testedLanguages": [
+        "en"
+      ],
+      "untestedLanguages": [
+        "(none requested)"
+      ],
+      "notice": "This is not a translation service. It flags sentences that will break in translation. No copy produced by this engine has been reviewed by a native speaker in any language other than English, and saying otherwise would be a lie. If you are publishing in another language, work with a speaker of that language who is also in your field — the two are not the same skill."
+    },
+    "time-machine": {
+      "reactions": [
+        {
+          "era": "2012 Hacker News",
+          "platform": "HN, ~2012",
+          "lands": [
+            "Short, technical, no landing page.",
+            "Written, not marketed."
+          ],
+          "fails": [
+            "Anything with a signup before value. That norm was already dead by 2012.",
+            "Category language. \"Positioning\" was not a word people used about their own repos; you described what it did.",
+            "Being vague about the mechanism."
+          ],
+          "periodRewrite": "Ask HN: this — written up, no code yet.",
+          "confidence": "speculative",
+          "speculationBasis": "Reconstructed from remembered norms and archived front pages. Not measured against a dataset of 2012 threads."
+        },
+        {
+          "era": "2016 Product Hunt",
+          "platform": "Product Hunt, ~2016",
+          "lands": [
+            "A one-line tagline that promises a small, concrete outcome.",
+            "A gallery: screenshots mattered more than the description.",
+            "A maker comment that tells the story of building it."
+          ],
+          "fails": [
+            "A protocol or a spec. Product Hunt rewarded products with a price and a button.",
+            "Honesty about limitations. \"This will tell you not to launch\" was a bad pitch in 2016.",
+            "Long copy of any kind."
+          ],
+          "periodRewrite": "Tagline: this\n\nFirst comment: \"Built this after trying it the obvious way first. Free, no signup.\"",
+          "confidence": "speculative",
+          "speculationBasis": "Product Hunt norms circa 2016, reconstructed from memory of the period. No dataset was consulted."
+        },
+        {
+          "era": "2020 Twitter threads",
+          "platform": "X/Twitter, ~2020",
+          "lands": [
+            "A first line with a specific, uncomfortable observation.",
+            "A numbered structure with one idea per post.",
+            "A receipt: a real number from the author's own work."
+          ],
+          "fails": [
+            "Nuance in the headline. Threads rewarded a claim you could screenshot.",
+            "Failure conditions. They read as weakness in a medium built on certainty.",
+            "Links in the first post. Reach dropped."
+          ],
+          "periodRewrite": "1/ It is not the category you think. It is a different one.\n2/ The data says X.\n3/ So I built this.\n4/ Here is what it told me about my own work: [a real number]\n5/ Link in the last post.",
+          "confidence": "speculative",
+          "speculationBasis": "Thread conventions of the period, reconstructed. Engagement mechanics were never publicly documented and changed repeatedly."
+        },
+        {
+          "era": "2026, AI-saturated internet",
+          "platform": "The current moment",
+          "lands": [
+            "A mechanism you can inspect. In a feed of generated prose, a runnable check is the scarce thing.",
+            "Being short. Length now reads as generation.",
+            "A stated limitation. It is the one thing a language model will not volunteer about itself."
+          ],
+          "fails": [
+            "Any listicle shape. It is the shape of the thing people are tired of.",
+            "Confident tone without evidence. It now reads as machine-written by default.",
+            "A category word with no mechanism behind it. The vocabulary has been inflated past usefulness."
+          ],
+          "periodRewrite": "# This — what it does, what it does not do, and how to check it in one command.\n\nFailure condition: this is useless if the stated condition happens.",
+          "confidence": "speculative",
+          "speculationBasis": "Current norms, observed but not measured. This is the era we are least able to see clearly, which is a reason for caution rather than confidence."
+        },
+        {
+          "era": "A platform that does not exist yet",
+          "platform": "Hypothetical",
+          "lands": [
+            "Whatever can be verified by a third party without trusting the author. That property has survived every platform change so far.",
+            "A named human who will vouch for it personally. Also durable."
+          ],
+          "fails": [
+            "Anything that depends on the current ranking mechanics, the current format, or the current vocabulary.",
+            "Anything that depends on attention being cheap."
+          ],
+          "periodRewrite": "(Cannot be written. Any attempt would be a guess about a platform's norms, and guessing norms is how people arrive late to every platform.)",
+          "confidence": "speculative",
+          "speculationBasis": "Extrapolation from two properties that survived 2012–2026. Two data points is not a trend, and this is presented as a hypothesis."
+        }
+      ],
+      "invariant": "The invariant is missing: nothing in this artifact would still be true if the platform norms changed, which they will.",
+      "whatThisExerciseReveals": "Move the artifact across eras and the decoration peels off. Whatever is left is the argument. If nothing is left, you have a format, not a claim.",
+      "notice": "All eras are speculative and labelled as such. None of these are predictions, and none were validated against archived data."
+    },
+    "agent-refusals": [],
+    "weakest_dimension": "broadcast_stake",
+    "top_leverage": [
+      {
+        "key": "broadcast_stake",
+        "lost_points": 51
+      },
+      {
+        "key": "broadcaster_fit",
+        "lost_points": 50
+      },
+      {
+        "key": "audience_specificity",
+        "lost_points": 31
+      }
+    ]
+  }
+}

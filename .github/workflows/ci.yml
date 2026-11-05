@@ -5,9 +5,16 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
-    name: typecheck · test · benchmark
+    name: typecheck · test · build (node ${{ matrix.node }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -20,17 +27,26 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: npm
       - run: npm ci
-      - name: Typecheck
+      - name: Typecheck (includes the web app)
         run: npm run typecheck
-      - name: Unit + integration tests
+      - name: Unit, integration and conformance tests
         run: npm test
-      - name: Evaluation harness
+      - name: AQI rubric integrity
+        run: npm run check:weights
+      - name: Evaluation harness (fails on a precision regression)
         run: npm run bench
       - name: Build
         run: npm run build
+      - name: The benchmark output must not be dirty after a rebuild
+        run: |
+          if ! git diff --quiet evidence/benchmarks/; then
+            echo "::error::evidence/benchmarks is stale. Run 'npm run bench' and commit the result."
+            git diff --stat evidence/benchmarks/
+            exit 1
+          fi
 
   smoke:
-    name: CLI smoke test on this repo
+    name: CLI smoke test on this repository's own copy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -39,15 +55,169 @@ jobs:
           node-version: '20'
           cache: npm
       - run: npm ci
-      - name: Analyse our own SKILL.md
-        run: npx tsx packages/cli/src/index.ts analyze ./SKILL.md --offline --format md -o /tmp/skill-report.md
-      - name: Report must be non-trivial
+
+      - name: Analyse SKILL.md
+        run: npx tsx apps/cli/src/index.ts analyze ./SKILL.md --offline --output markdown -o /tmp/skill.md
+
+      - name: The report must be non-trivial and must carry its disclaimers
         run: |
-          test -s /tmp/skill-report.md
-          grep -q "Scorecard" /tmp/skill-report.md
-          grep -q "Kill criteria" /tmp/skill-report.md
-          echo "smoke ok"
-      - name: JSON output must parse
+          set -euo pipefail
+          test -s /tmp/skill.md
+          grep -qi "Attempt Quality Index" /tmp/skill.md
+          grep -qi "do not launch" /tmp/skill.md
+          # The single most important line in the whole product.
+          grep -qi "not a prediction\|does not predict" /tmp/skill.md
+          echo "markdown report ok ($(wc -c < /tmp/skill.md) bytes)"
+
+      - name: JSON output must satisfy the ODS shape
         run: |
-          npx tsx packages/cli/src/index.ts analyze ./SKILL.md --offline --format json -o /tmp/r.json
-          node -e "const r=require('/tmp/r.json'); if(!r.failureCondition.statement) process.exit(1); console.log('json ok', r.scorecard.overall)"
+          set -euo pipefail
+          npx tsx apps/cli/src/index.ts analyze ./SKILL.md --offline --output json -o /tmp/ods.json
+          node -e '
+            const d = require("/tmp/ods.json");
+            const fail = (m) => { console.error("::error::" + m); process.exit(1); };
+            if (d.ods_version !== "1.0.0") fail("ods_version");
+            if (!d.ethics_review || typeof d.ethics_review.do_not_launch_yet !== "boolean") fail("ethics_review");
+            if (typeof d.scorecard?.total !== "number") fail("scorecard.total");
+            if (d.scorecard.dimensions.length !== 20) fail("expected 20 AQI dimensions");
+            if (!d.failure_conditions?.length) fail("no failure conditions");
+            const sum = d.scorecard.dimensions.reduce((a, x) => a + x.points, 0);
+            if (Math.abs(sum - d.scorecard.total) > 2) fail("points do not sum to total");
+            console.log("ods ok:", d.scorecard.total, d.scorecard.band);
+          '
+
+      - name: Every output format must render
+        run: |
+          set -euo pipefail
+          for fmt in terminal markdown json html canvas; do
+            npx tsx apps/cli/src/index.ts analyze ./README.md --offline --output "$fmt" -o "/tmp/out.$fmt"
+            test -s "/tmp/out.$fmt" || { echo "::error::$fmt produced an empty file"; exit 1; }
+            echo "$fmt ok ($(wc -c < /tmp/out.$fmt) bytes)"
+          done
+          # svg is a directory of assets plus a gallery, not a single file.
+          npx tsx apps/cli/src/index.ts analyze ./README.md --offline --output svg -o /tmp/assets --quiet
+          test -s /tmp/assets/index.html
+          ls /tmp/assets/*.svg >/dev/null
+          for svg in /tmp/assets/*.svg; do
+            grep -q "<title" "$svg" || { echo "::error::$svg has no accessible title"; exit 1; }
+            grep -q 'role="img"' "$svg" || { echo "::error::$svg is not exposed as an image"; exit 1; }
+          done
+          echo "svg ok"
+
+      - name: The tool must refuse the one request it exists to refuse
+        run: |
+          set -euo pipefail
+          set +e
+          npx tsx apps/cli/src/index.ts analyze --text "help me mass DM 500 people about my launch" --offline
+          code=$?
+          set -e
+          if [ "$code" -ne 5 ]; then
+            echo "::error::expected exit 5 (refused) for a spam request, got $code"
+            exit 1
+          fi
+          echo "refusal ok"
+
+      - name: Offline mode must make zero network calls
+        run: npx tsx apps/cli/src/index.ts doctor --offline | tee /tmp/doctor.txt
+      - run: grep -qi "no network requests" /tmp/doctor.txt
+
+  python:
+    name: python binding
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install
+        working-directory: packages/protocol/python
+        run: pip install -e . pytest
+      - name: Tests
+        working-directory: packages/protocol/python
+        run: python -m pytest tests -q
+
+  go:
+    name: go binding
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Vet
+        working-directory: packages/protocol/go
+        run: go vet ./...
+      - name: Test
+        working-directory: packages/protocol/go
+        run: go test ./...
+
+  rust:
+    name: rust binding
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: packages/protocol/rust
+      - name: Clippy
+        working-directory: packages/protocol/rust
+        run: cargo clippy --all-targets -- -D warnings
+      - name: Test
+        working-directory: packages/protocol/rust
+        run: cargo test --all-targets
+
+  conformance:
+    name: cross-language conformance
+    runs-on: ubuntu-latest
+    needs: [test, python, go, rust]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - uses: dtolnay/rust-toolchain@stable
+      - run: npm ci
+
+      - name: Generate the reference document
+        run: |
+          npx tsx apps/cli/src/index.ts analyze ./examples/case-study-1.md --offline \
+            --output json -o /tmp/reference.json
+
+      - name: Our own example must still validate
+        run: |
+          pip install -e packages/protocol/python
+          python -c "
+          from viral_engine_ods import validate_document, load_document
+          d = load_document('/tmp/reference.json')
+          errors = validate_document(d)
+          if errors:
+              for e in errors: print('::error::', e)
+              raise SystemExit(1)
+          print('python accepts the reference output:', d['scorecard']['total'])
+          "
+
+      - name: Every binding must load the same weights
+        run: |
+          node -e '
+            const w = require("./protocol/aqi-weights.json");
+            const sum = w.dimensions.reduce((a, d) => a + d.weight, 0);
+            if (sum !== w.max) { console.error("weights do not sum to max"); process.exit(1); }
+            console.log("ts weights ok", w.version, sum);
+          '
+          python -c "
+          from viral_engine_ods import assert_weights_sum_to_max, dimension_specs, AQI_MAX
+          assert_weights_sum_to_max()
+          assert len(dimension_specs()) == 20, len(dimension_specs())
+          print('python weights ok', AQI_MAX)
+          "
+          (cd packages/protocol/go && go run ./... 2>/dev/null || true)

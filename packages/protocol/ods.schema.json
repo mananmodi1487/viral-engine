@@ -1,0 +1,439 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://viralenginecommons.org/protocol/ods-1.0.0.schema.json",
+  "title": "Open Diffusion Spec (ODS) 1.0.0",
+  "description": "A machine-readable description of an artifact and its diffusion state. ODS is a public protocol: it is owned by nobody, implementable by anybody, and every field that carries a judgement must carry its evidence basis. Fields are additive across minor versions; see schema-versioning.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ods_version", "artifact", "current_positioning", "honesty_audit", "scorecard", "failure_conditions", "ethics_review"],
+  "properties": {
+    "ods_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version of the ODS schema this document conforms to."
+    },
+    "document_id": {
+      "type": "string",
+      "description": "Stable identifier for this assessment. Suggested: uuidv7 or content hash.",
+      "pattern": "^[A-Za-z0-9_:-]{6,128}$"
+    },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "mode": { "enum": ["deterministic", "llm-assisted", "local-model", "hybrid"] },
+        "provider": { "type": "string" },
+        "model": { "type": "string" },
+        "network_calls": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "How many outbound network requests the run made. 0 is a promise the user can audit."
+        }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "type"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "type": {
+          "type": "string",
+          "description": "Artifact class. Open vocabulary; these are the values the reference implementation emits.",
+          "examples": [
+            "github-repo", "landing-page", "essay", "blog-post", "newsletter", "tweet",
+            "x-thread", "linkedin-post", "product-hunt-launch", "hacker-news-post",
+            "youtube-video", "short-form-script", "podcast", "whitepaper", "pdf",
+            "notion-doc", "google-doc", "figma-prototype", "mobile-app", "desktop-app",
+            "api", "open-source-library", "course", "book", "research-paper", "art-project",
+            "nonprofit-campaign", "community-movement", "personal-brand", "conference-talk",
+            "cold-email", "changelog", "release-notes", "app-store-listing", "raw-text"
+          ]
+        },
+        "url": { "type": "string", "format": "uri" },
+        "language": { "type": "string", "description": "BCP-47 tag." },
+        "license": { "type": "string" },
+        "created_by": { "type": "string", "description": "Optional. Omit in anonymised case studies." },
+        "summary": { "type": "string", "maxLength": 2000 }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Where the analysed text came from, so a reader can judge staleness and trust without trusting us.",
+      "properties": {
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "ref"],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "github-repo", "local-folder", "readme", "package-json", "docs-folder",
+                  "website", "landing-page", "pdf", "docx", "txt", "markdown", "html",
+                  "screenshot-ocr", "audio-transcript", "video-transcript", "tweet-thread",
+                  "product-hunt", "hacker-news", "youtube", "notion-public", "google-docs",
+                  "figma-public", "app-store-listing", "email-draft", "raw-text"
+                ]
+              },
+              "ref": { "type": "string" },
+              "fetched_at": { "type": "string", "format": "date-time" },
+              "degraded_reason": {
+                "type": "string",
+                "description": "Set when the input could not be read in full. Never silently omit."
+              },
+              "consent": {
+                "enum": ["public-artifact", "user-provided", "user-is-author", "unknown"],
+                "description": "Public artifacts may be analysed; private material requires the user to hold it."
+              }
+            }
+          }
+        },
+        "ocr_or_transcription_used": { "type": "boolean" },
+        "network_calls": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "current_positioning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["one_sentence_description", "claimed_category"],
+      "properties": {
+        "one_sentence_description": { "type": "string", "minLength": 1 },
+        "claimed_category": { "type": "string", "minLength": 1 },
+        "actual_category_signals": { "type": "array", "items": { "type": "string" } },
+        "target_audience": { "type": "array", "items": { "type": "string" } },
+        "core_promise": { "type": "string" },
+        "core_tension": { "type": "string" },
+        "emotional_stake": { "type": "string" },
+        "basis": { "$ref": "#/$defs/basis" }
+      }
+    },
+    "category_analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["saturation_estimate", "recommended_category", "category_confidence"],
+      "properties": {
+        "saturation_estimate": { "enum": ["low", "medium", "high", "unknown"] },
+        "saturation_basis": { "$ref": "#/$defs/basis" },
+        "competitors": { "type": "array", "items": { "type": "string" } },
+        "adjacent_categories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "why_less_crowded"],
+            "properties": {
+              "name": { "type": "string" },
+              "why_less_crowded": { "type": "string" },
+              "credibility_risk": { "type": "string" },
+              "tension_score": { "type": "number", "minimum": 0, "maximum": 5 },
+              "proof_needed": { "type": "string", "description": "What would have to be true for this claim to survive a critic." }
+            }
+          }
+        },
+        "recommended_category": { "type": "string", "minLength": 1 },
+        "category_confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "evidence": { "type": "array", "items": { "type": "string" } },
+        "missing_data": { "type": "array", "items": { "type": "string" } },
+        "proposed_positioning": { "type": "string" },
+        "proof_required": { "type": "string" },
+        "failure_condition": { "$ref": "#/$defs/failureCondition" }
+      }
+    },
+    "audience_analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["specificity", "named_people"],
+      "properties": {
+        "specificity": { "enum": ["named-individual", "named-role", "segment", "demographic", "everyone"] },
+        "named_people": { "type": "array", "items": { "type": "string" }, "description": "Roles or communities, never invented individuals." },
+        "where_they_gather": { "type": "array", "items": { "type": "string" } },
+        "what_they_already_believe": { "type": "array", "items": { "type": "string" } },
+        "what_they_would_lose_by_sharing": { "type": "string" },
+        "evidence": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "broadcaster_analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary_broadcaster_type", "consent_posture", "anti_spam_rules"],
+      "properties": {
+        "primary_broadcaster_type": { "type": "string" },
+        "specific_broadcaster_candidates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["candidate", "where_to_find", "consent_status"],
+            "properties": {
+              "candidate": { "type": "string", "description": "A role plus a discovery method. Never a scraped personal profile." },
+              "where_to_find": { "type": "string" },
+              "why_they_might_care": { "type": "string" },
+              "what_makes_them_look_good": { "type": "string" },
+              "consent_status": { "enum": ["not-contacted", "opted-in", "declined", "unknown"] },
+              "contact_channel": { "type": "string" }
+            }
+          }
+        },
+        "broadcaster_stake": { "type": "string" },
+        "share_asset_needed": { "type": "string" },
+        "consent_outreach_template": { "type": "string" },
+        "consent_posture": { "enum": ["no-contact", "one-to-one-consent", "public-invitation"] },
+        "anti_spam_rules": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "what_not_to_say": { "type": "array", "items": { "type": "string" } },
+        "max_contacts": { "type": "integer", "minimum": 0, "description": "Hard cap on outreach for this artifact. A policy constant, not a user setting." },
+        "likely_amplifier": { "type": "string" },
+        "failure_condition": { "$ref": "#/$defs/failureCondition" }
+      }
+    },
+    "friction_analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["share_friction_score", "reasons"],
+      "properties": {
+        "share_friction_score": { "type": "number", "minimum": 0, "maximum": 100, "description": "Higher means more friction." },
+        "basis": { "$ref": "#/$defs/basis" },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["friction", "evidence", "fix"],
+            "properties": {
+              "friction": { "type": "string" },
+              "evidence": { "type": "string" },
+              "fix": { "type": "string" }
+            }
+          }
+        },
+        "reductions": { "type": "array", "items": { "type": "string" } },
+        "forwardable_artifact_exists": { "type": "boolean" }
+      }
+    },
+    "honesty_audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "invented_stats_detected", "fake_testimonials_detected", "guaranteed_outcomes_detected",
+        "manufactured_outrage_detected", "dark_patterns_detected", "required_fixes", "passed"
+      ],
+      "properties": {
+        "invented_stats_detected": { "type": "boolean" },
+        "fake_testimonials_detected": { "type": "boolean" },
+        "guaranteed_outcomes_detected": { "type": "boolean" },
+        "manufactured_outrage_detected": { "type": "boolean" },
+        "dark_patterns_detected": { "type": "array", "items": { "type": "string" } },
+        "required_fixes": { "type": "array", "items": { "type": "string" } },
+        "passed": { "type": "boolean" },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["severity", "matched", "rule", "suggestion"],
+            "properties": {
+              "severity": { "enum": ["blocker", "warning", "note"] },
+              "matched": { "type": "string" },
+              "where": { "type": "string" },
+              "rule": { "type": "string" },
+              "suggestion": { "type": "string" }
+            }
+          }
+        },
+        "scanned_for": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "scorecard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["aqi_version", "max", "total", "dimensions"],
+      "properties": {
+        "aqi_version": { "type": "string" },
+        "max": { "type": "number" },
+        "total": { "type": "number", "minimum": 0, "maximum": 1000 },
+        "band": { "type": "string" },
+        "disclaimer": { "type": "string" },
+        "dimensions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["key", "label", "weight", "score", "basis", "confidence", "evidence", "improvement", "failure_condition"],
+            "properties": {
+              "key": {
+                "enum": [
+                  "category_clarity", "category_opportunity", "audience_specificity",
+                  "broadcaster_fit", "broadcast_stake", "share_friction_reduction",
+                  "emotional_truth", "proof_readiness", "launch_timing", "honesty_integrity",
+                  "failure_awareness", "experimentability", "accessibility", "privacy_safety",
+                  "abuse_resistance", "cultural_resonance", "language_simplicity",
+                  "asset_completeness", "post_launch_learnability", "ethical_defensibility"
+                ]
+              },
+              "label": { "type": "string" },
+              "weight": { "type": "number", "minimum": 0, "maximum": 100 },
+              "score": { "type": "number", "minimum": 0, "maximum": 100 },
+              "points": { "type": "number", "minimum": 0, "maximum": 100 },
+              "basis": { "$ref": "#/$defs/basis" },
+              "confidence": { "enum": ["low", "medium", "high"] },
+              "evidence": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+              "assumptions": { "type": "array", "items": { "type": "string" } },
+              "missing_data": { "type": "array", "items": { "type": "string" } },
+              "improvement": { "type": "string", "minLength": 1 },
+              "failure_condition": { "type": "string", "minLength": 1 },
+              "do_not_launch_yet": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "launch_assets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hacker_news_title": { "type": "string", "maxLength": 80 },
+        "show_hn_body": { "type": "string" },
+        "x_thread": { "type": "array", "items": { "type": "string", "maxLength": 280 } },
+        "linkedin_post": { "type": "string", "maxLength": 3000 },
+        "product_hunt_tagline": { "type": "string", "maxLength": 60 },
+        "product_hunt_description": { "type": "string", "maxLength": 260 },
+        "email_announcement": { "type": "string" },
+        "email_subject_lines": { "type": "array", "items": { "type": "string" } },
+        "discord_message": { "type": "string" },
+        "landing_hero": { "type": "string" },
+        "one_line_broadcast_summary": { "type": "string" },
+        "alt_text": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Every image asset must ship with alt text. Not optional in the reference implementation.",
+          "properties": {
+            "scorecard": { "type": "string" },
+            "category_map": { "type": "string" },
+            "before_after": { "type": "string" }
+          }
+        },
+        "placeholders_used": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Every [bracketed placeholder] the generator emitted, so a user knows exactly what is not yet true."
+        }
+      }
+    },
+    "experiments": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pre_launch_tests": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "hypothesis", "cost", "success_criterion", "kill_criterion"],
+            "properties": {
+              "name": { "type": "string" },
+              "hypothesis": { "type": "string" },
+              "method": { "type": "string" },
+              "cost": { "type": "string", "description": "Time and money. A test that costs a week is not a pre-launch test." },
+              "success_criterion": { "type": "string" },
+              "kill_criterion": { "type": "string" },
+              "decision_it_changes": { "type": "string", "description": "The decision this test exists to change. A test that changes no decision is a ritual." }
+            }
+          }
+        },
+        "success_criteria": { "type": "array", "items": { "type": "string" } },
+        "kill_criteria": { "type": "array", "items": { "type": "string" } },
+        "measurement_plan": { "type": "array", "items": { "type": "string" } },
+        "pre_registered": {
+          "type": "boolean",
+          "description": "Criteria written before the test ran. Post-hoc criteria are how experiments become storytelling."
+        }
+      }
+    },
+    "failure_conditions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/failureCondition" }
+    },
+    "post_launch_learning": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "signals_to_track": { "type": "array", "items": { "type": "string" } },
+        "questions_to_ask": { "type": "array", "items": { "type": "string" } },
+        "update_triggers": { "type": "array", "items": { "type": "string" } },
+        "outcome_recorded": { "type": "boolean" },
+        "outcome_evidence_label": { "$ref": "#/$defs/evidenceLabel" }
+      }
+    },
+    "ethics_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ethical_risk_check", "do_not_launch_yet", "reviewer"],
+      "properties": {
+        "ethical_risk_check": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["risk", "assessment"],
+            "properties": {
+              "risk": { "type": "string" },
+              "assessment": { "enum": ["clear", "caution", "violation"] },
+              "note": { "type": "string" }
+            }
+          }
+        },
+        "do_not_launch_yet": { "type": "boolean" },
+        "do_not_launch_reason": { "type": "string" },
+        "audience_could_read_this": { "type": "boolean", "description": "Would the plan survive the target audience reading this document verbatim?" },
+        "reviewer": { "enum": ["deterministic-rules", "human", "deterministic-rules+human"] }
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reading_level": { "type": "string" },
+        "jargon_density": { "type": "number", "minimum": 0, "maximum": 1 },
+        "alt_text_present": { "type": "boolean" },
+        "plain_language_rewrite": { "type": "string" },
+        "screen_reader_notes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "What this document cannot tell you. Required by convention in the reference implementation."
+    }
+  },
+  "$defs": {
+    "basis": {
+      "enum": ["measured", "structural", "heuristic", "user-supplied", "unavailable"],
+      "description": "How a value was produced. `unavailable` must be used instead of guessing."
+    },
+    "evidenceLabel": {
+      "enum": ["self-reported", "verified", "reproducible", "anecdotal", "unclear", "contested", "private-redacted"],
+      "description": "Evidence Commons label. Every claim in a public case study carries one."
+    },
+    "failureCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["statement", "observable", "horizon"],
+      "properties": {
+        "statement": { "type": "string", "minLength": 1, "description": "\"This fails if ...\"" },
+        "observable": { "type": "string", "minLength": 1, "description": "What you would actually see." },
+        "horizon": { "type": "string", "minLength": 1, "description": "When you would know." }
+      }
+    }
+  }
+}

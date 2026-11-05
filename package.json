@@ -1,23 +1,40 @@
 {
-  "name": "viral-engine",
-  "version": "1.0.0",
-  "description": "Diagnose why your work did not spread — category, broadcaster, share friction, honesty. Deterministic by default, local-first, no invented statistics.",
+  "name": "viral-engine-commons",
+  "version": "2.0.0",
+  "description": "Viral Engine Commons: a free, open, offline-first protocol for diagnosing why work does not spread and fixing the one thing that would change it. No account, no telemetry, no paywall.",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "viral-engine": "./packages/cli/dist/index.js"
+    "viral-engine": "./apps/cli/dist/index.js"
   },
-  "workspaces": ["packages/*"],
-  "files": ["packages/core/dist", "packages/cli/dist", "README.md", "LICENSE"],
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "files": [
+    "packages/core/dist",
+    "packages/protocol/dist",
+    "packages/agents/dist",
+    "packages/providers/dist",
+    "apps/cli/dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "build": "npm run build -w @viral-engine/core && npm run build -w viral-engine",
-    "dev": "tsx packages/cli/src/index.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsx apps/cli/src/index.ts",
+    "serve": "tsx apps/web/src/server.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "example": "tsx packages/cli/src/index.ts analyze ./README.md --offline",
-    "web": "tsx packages/web/server.ts",
-    "bench": "tsx tests/benchmark.ts"
+    "example": "tsx apps/cli/src/index.ts analyze ./README.md --offline",
+    "bench": "tsx tests/benchmark.ts",
+    "conformance": "vitest run tests/conformance.test.ts",
+    "check:weights": "node scripts/check-aqi-weights.mjs",
+    "check:honesty": "tsx scripts/self-honesty-check.ts",
+    "check": "npm run check:weights && npm run typecheck && npm run test",
+    "python:test": "python3 -m pytest packages/protocol/python -q || python3 -m unittest discover -s packages/protocol/python -t .",
+    "academy": "tsx academy/exercises/check.ts"
   },
   "dependencies": {
     "zod": "^3.23.8"
@@ -30,5 +47,21 @@
   },
   "engines": {
     "node": ">=20"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mananmodi1487/viral-engine"
+  },
+  "homepage": "https://github.com/mananmodi1487/viral-engine",
+  "keywords": [
+    "diffusion",
+    "positioning",
+    "open-source",
+    "protocol",
+    "accessibility",
+    "privacy",
+    "ethics",
+    "launch",
+    "ods"
+  ]
 }

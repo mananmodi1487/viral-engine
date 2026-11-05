@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "viral-engine-ods"
+version = "1.0.0"
+description = "Python models and validators for the Open Diffusion Spec (ODS) 1.0 — a rubric protocol for describing an artifact and its diffusion state, not a forecast."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "Apache-2.0" }
+keywords = ["diffusion", "positioning", "protocol", "ods", "rubric"]
+dependencies = ["pydantic>=2.5"]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[project.urls]
+Homepage = "https://github.com/mananmodi1487/viral-engine"
+Protocol = "https://github.com/mananmodi1487/viral-engine/blob/main/protocol/open-diffusion-spec.md"
+
+[tool.setuptools.packages.find]
+include = ["viral_engine_ods*"]
