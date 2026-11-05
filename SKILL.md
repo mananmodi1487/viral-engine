@@ -88,7 +88,7 @@ Hooks that seem too bold to work, dissected. **The rule: these are structural re
 **"Your habit tracker is designed to make you quit."**
 → *Enemy.* Names a thing people privately resent but never say. **Requires:** a defensible claim. Pick a strawman and the replies will take the tool apart.
 
-**"0 → 12,000 users in 21 days. Zero ad spend. Here's the exact loop."**
+**"0 → [your number] users in [n] days. [spend]. Here's the exact loop."**
 → *Receipt.* The highest-ceiling pattern and the most dangerous. **Requires:** those numbers to be real, or the word "illustrative" attached. This is the hook that ends careers when fabricated — it's also the one people fabricate most.
 
 **"I cut my workweek to 20 hours and shipped twice as much."**
@@ -161,11 +161,11 @@ Generate **12, keep 3.** Never present one hook.
 
 ### The 7 patterns
 
-1. **Curiosity gap** — withhold the mechanism, not the payoff. *"The 3-minute habit 10,000 professionals use to beat burnout."*
+1. **Curiosity gap** — withhold the mechanism, not the payoff. *"The 3-minute habit [your real number] professionals use to beat burnout." — fill the bracket with a figure you can source. Never ship someone else's.*
 2. **Forbidden insider** — violated gatekeeping. *"The app my professor doesn't want you to use."*
 3. **Paradox** — two things that shouldn't coexist. *"I cut my week to 20 hours and shipped twice as much."*
 4. **Enemy** — name the privately resented thing. *"Your habit tracker is designed to make you quit."*
-5. **Receipt** — a number someone can verify or envy. *"0 → 12,000 users in 21 days, zero ad spend."*
+5. **Receipt** — a number someone can verify or envy. *"0 → [your real number] users in [n] days, [ad spend]."*
 6. **Reframe** — same fact, new category. *"It's not a meditation app. It's reputation management."*
 7. **Direct address** — call out one person so precisely it feels invasive. *"47 tabs, 3 deadlines, 0 systems. This is for you."*
 

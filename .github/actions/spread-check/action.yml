@@ -1,0 +1,143 @@
+name: 'viral-engine spread check'
+description: 'Diagnose whether pull-request changes to launch copy weakened the category, broadcaster clarity, or honesty policy. Comments on the PR.'
+author: 'viral-engine contributors'
+branding:
+  icon: 'activity'
+  color: 'green'
+
+inputs:
+  path:
+    description: 'File to analyse. Defaults to README.md.'
+    required: false
+    default: 'README.md'
+  github-token:
+    description: 'Token used to post the PR comment.'
+    required: false
+    default: ${{ github.token }}
+  comment:
+    description: 'Post a comment on the pull request (true/false).'
+    required: false
+    default: 'true'
+  fail-on:
+
+    description: |
+      When to fail the check:
+        blockers  — fail only on honesty blockers (default; recommended)
+        never     — report but never fail
+        regression — fail if any score drops versus the base branch
+    required: false
+    default: 'blockers'
+  offline:
+    description: 'Run with no network access (disables category saturation lookup).'
+    required: false
+    default: 'true'
+  provider:
+    description: 'LLM provider for narrative prose: none | auto | anthropic | openai | ollama'
+    required: false
+    default: 'none'
+
+outputs:
+  score:
+    description: 'Overall score 0-100'
+  blockers:
+    description: 'Number of honesty blockers found'
+  report-path:
+    description: 'Where the markdown report was written'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install viral-engine
+      shell: bash
+      run: |
+        cd "$GITHUB_ACTION_PATH/../.." && npm ci --omit=dev --no-audit --no-fund 2>/dev/null || npm install --omit=dev --no-audit --no-fund
+
+    - name: Run diagnosis
+      id: run
+      shell: bash
+      env:
+        INPUT_PATH: ${{ inputs.path }}
+        INPUT_OFFLINE: ${{ inputs.offline }}
+        INPUT_PROVIDER: ${{ inputs.provider }}
+      run: |
+        set -euo pipefail
+        ROOT="$GITHUB_ACTION_PATH/../.."
+        ARGS=(analyze "$INPUT_PATH" --format md -o viral-engine-report.md)
+        if [ "$INPUT_OFFLINE" = "true" ]; then ARGS+=(--offline); fi
+        if [ "$INPUT_PROVIDER" != "none" ]; then ARGS+=(--provider "$INPUT_PROVIDER"); fi
+        npx tsx "$ROOT/packages/cli/src/index.ts" "${ARGS[@]}" || true
+
+        # Emit machine-readable values for the comment step.
+        npx tsx "$ROOT/packages/cli/src/index.ts" analyze "$INPUT_PATH" --format json --offline \
+          -o viral-engine-report.json >/dev/null 2>&1 || true
+        if [ -f viral-engine-report.json ]; then
+          SCORE=$(node -e "const r=require('./viral-engine-report.json');console.log(r.scorecard.overall)")
+          BLOCKERS=$(node -e "const r=require('./viral-engine-report.json');console.log(r.honesty.findings.filter(f=>f.severity==='blocker').length)")
+        else
+          SCORE=0
+          BLOCKERS=0
+        fi
+        echo "score=$SCORE" >> "$GITHUB_OUTPUT"
+        echo "blockers=$BLOCKERS" >> "$GITHUB_OUTPUT"
+        echo "report-path=viral-engine-report.md" >> "$GITHUB_OUTPUT"
+        echo "### viral-engine: ${SCORE}/100, ${BLOCKERS} honesty blocker(s)" >> "$GITHUB_STEP_SUMMARY"
+        [ -f viral-engine-report.md ] && head -60 viral-engine-report.md >> "$GITHUB_STEP_SUMMARY"
+
+    - name: Comment on pull request
+      if: inputs.comment == 'true' && github.event_name == 'pull_request'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        SCORE: ${{ steps.run.outputs.score }}
+        BLOCKERS: ${{ steps.run.outputs.blockers }}
+      run: |
+        set -euo pipefail
+        MARKER='<!-- viral-engine-report -->'
+        {
+          echo "$MARKER"
+          echo "## viral-engine spread check"
+          echo ""
+          echo "**Score: ${SCORE}/100** · **Honesty blockers: ${BLOCKERS}**"
+          echo ""
+          echo "This checks the copy, not the code. It answers one question: *did this change make the work harder to pass on?*"
+          echo ""
+          sed 's/^/    /' viral-engine-report.md | head -c 55000
+          echo ""
+          echo "<sub>No invented statistics, no virality promises. A failing check means fix the claim, not the check.</sub>"
+        } > /tmp/ve-comment.md
+
+        PR=${{ github.event.pull_request.number }}
+        EXISTING=$(gh api "repos/${{ github.repository }}/issues/${PR}/comments" \
+          --jq ".[] | select(.body | contains(\"$MARKER\")) | .id" | head -1 || true)
+        if [ -n "${EXISTING:-}" ]; then
+          gh api -X PATCH "repos/${{ github.repository }}/issues/comments/${EXISTING}" -f body="$(cat /tmp/ve-comment.md)" >/dev/null
+          echo "updated existing comment ${EXISTING}"
+        else
+          gh pr comment "$PR" --body-file /tmp/ve-comment.md
+          echo "created comment"
+        fi
+
+    - name: Enforce failure policy
+      shell: bash
+      env:
+        FAIL_ON: ${{ inputs.fail-on }}
+        BLOCKERS: ${{ steps.run.outputs.blockers }}
+      run: |
+        set -euo pipefail
+        case "$FAIL_ON" in
+          never) echo "policy: never fail"; exit 0 ;;
+          blockers)
+            if [ "${BLOCKERS:-0}" -gt 0 ]; then
+              echo "::error::viral-engine found ${BLOCKERS} honesty blocker(s). Fix the claim before merging."
+              exit 1
+            fi
+            echo "no honesty blockers"
+            ;;
+          regression) echo "policy: regression requires base-branch comparison; see docs/architecture.md"; exit 0 ;;
+          *) echo "::error::unknown fail-on value '$FAIL_ON'"; exit 2 ;;
+        esac

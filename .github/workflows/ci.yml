@@ -1,0 +1,53 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: typecheck · test · benchmark
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20', '22']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Unit + integration tests
+        run: npm test
+      - name: Evaluation harness
+        run: npm run bench
+      - name: Build
+        run: npm run build
+
+  smoke:
+    name: CLI smoke test on this repo
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - name: Analyse our own SKILL.md
+        run: npx tsx packages/cli/src/index.ts analyze ./SKILL.md --offline --format md -o /tmp/skill-report.md
+      - name: Report must be non-trivial
+        run: |
+          test -s /tmp/skill-report.md
+          grep -q "Scorecard" /tmp/skill-report.md
+          grep -q "Kill criteria" /tmp/skill-report.md
+          echo "smoke ok"
+      - name: JSON output must parse
+        run: |
+          npx tsx packages/cli/src/index.ts analyze ./SKILL.md --offline --format json -o /tmp/r.json
+          node -e "const r=require('/tmp/r.json'); if(!r.failureCondition.statement) process.exit(1); console.log('json ok', r.scorecard.overall)"

@@ -1,0 +1,28 @@
+name: spread check
+
+on:
+  pull_request:
+    paths:
+      - 'README.md'
+      - 'docs/**'
+      - 'SKILL.md'
+      - 'prompts/**'
+      - 'examples/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  spread-check:
+    name: Diagnose launch copy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/spread-check
+        with:
+          path: README.md
+          fail-on: blockers
+          offline: 'true'
+          comment: 'true'
