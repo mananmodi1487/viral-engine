@@ -192,15 +192,10 @@ jobs:
             tail -120 /tmp/clippy.log
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
-          # Also publish each diagnostic as a check annotation. An annotation is
+          # Publish each diagnostic as a check annotation too. An annotation is
           # visible from the pull request and from the API without downloading the
           # job log, which is the difference between a fixable failure and a red X.
-          set -f
-          grep -E '^(error|warning)(\[[A-Za-z0-9]+\])?: ' /tmp/clippy.log \
-            | grep -v '^error: could not compile' \
-            | head -15 \
-            | sed 's/^/::error title=clippy::/' || true
-          set +f
+          node scripts/ci-annotate.mjs --title clippy --file /tmp/clippy.log
           exit 1
       - name: Test
         working-directory: packages/protocol/rust
@@ -218,12 +213,7 @@ jobs:
             tail -120 /tmp/cargo-test.log
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
-          set -f
-          grep -E '^(error|warning)(\[[A-Za-z0-9]+\])?: |^test .* FAILED$|^---- .* stdout ----' /tmp/cargo-test.log \
-            | grep -v '^error: could not compile' \
-            | head -15 \
-            | sed 's/^/::error title=cargo test::/' || true
-          set +f
+          node scripts/ci-annotate.mjs --title "cargo test" --file /tmp/cargo-test.log
           exit 1
 
   conformance:

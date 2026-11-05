@@ -27,7 +27,9 @@ import { describe, it, expect } from 'vitest';
 import { classifyInput, ingest } from '../packages/core/src/ingest/index.js';
 import { checkInbound } from '../packages/core/src/honesty.js';
 import { execFileSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 const run = (args: string[]): { code: number; out: string } => {
   try {
@@ -198,5 +200,61 @@ describe('the tool does not ship stale version numbers in its own output', () =>
   it('the markdown report footer names the current spec version', () => {
     const src = readFileSync('packages/core/src/report/ods-markdown.ts', 'utf8');
     expect(src).not.toContain('ODS 1.0 ·');
+  });
+});
+
+describe('a failed build must be diagnosable from outside the run', () => {
+  /**
+   * The annotation helper earned its own test because the first version silently
+   * matched nothing: it grepped for `^error: ` against a cargo log whose diagnostic
+   * lines do not necessarily start at column zero, produced zero annotations, and
+   * exited 0. A filter that finds nothing and a build that failed quietly look
+   * identical from the pull request, which is exactly the bug this is meant to fix.
+   */
+  const annotate = (log: string, args: string[] = []) => {
+    const dir = mkdtempSync(join(tmpdir(), 've-annotate-'));
+    const file = join(dir, 'build.log');
+    writeFileSync(file, log, 'utf8');
+    return execFileSync('node', ['scripts/ci-annotate.mjs', '--title', 'clippy', '--file', file, ...args], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+  };
+
+  it('turns compiler errors into annotations', () => {
+    const out = annotate('error[E0308]: mismatched types\n  --> src/lib.rs:47:9\n');
+    expect(out).toContain('::error title=clippy::');
+    expect(out).toContain('mismatched types');
+  });
+
+  it('sees through ANSI colour codes', () => {
+    const out = annotate('\u001b[1m\u001b[31merror[E0308]\u001b[0m\u001b[1m: mismatched types\u001b[0m\n');
+    expect(out).toContain('mismatched types');
+    expect(out).not.toContain('\u001b[');
+  });
+
+  it('reports the tail rather than nothing when no diagnostic is recognised', () => {
+    const out = annotate('something odd happened\nand then it stopped\n');
+    expect(out).toContain('no recognised diagnostic line');
+    expect(out).toContain('and then it stopped');
+  });
+
+  it('never silently succeeds on an empty log', () => {
+    const out = annotate('');
+    expect(out).toContain('::error');
+  });
+
+  it('survives a log with no file at all', () => {
+    const out = execFileSync(
+      'node',
+      ['scripts/ci-annotate.mjs', '--title', 'clippy', '--file', '/tmp/ve-definitely-not-here.log'],
+      { encoding: 'utf8' },
+    );
+    expect(out).toContain('produced no log file');
+  });
+
+  it('drops the redundant "could not compile" summary line', () => {
+    const out = annotate('error: could not compile `x` (lib) due to 1 previous error\n');
+    expect(out).not.toContain('::error title=clippy::error: could not compile');
   });
 });
