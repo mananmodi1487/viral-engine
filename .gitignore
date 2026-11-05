@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+vendor/
+.pnp.*
+.pnp.js
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.python-version
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# IDE / editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*.code-workspace
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+desktop.ini
+
+# Logs & temp
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tmp
+*.temp
+.cache/
+coverage/
+
+# Claude / agent scratch
+.claude/settings.local.json
+.local/
