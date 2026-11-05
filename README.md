@@ -4,323 +4,249 @@
 
 # 🚀 Viral Engine
 
-### The reason your work didn't spread isn't the writing. It's the category.
+### Your work didn't spread because of the category, not the writing.
 
-**A Claude Skill that diagnoses why something isn't spreading — then rebuilds it.**
+**A CLI and Claude Skill that diagnoses why something didn't spread — then rebuilds it.**
 
+[![npm](https://img.shields.io/npm/v/viral-engine?label=npx&color=green)](https://www.npmjs.com/package/viral-engine)
+[![CI](https://github.com/mananmodi1487/viral-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/mananmodi1487/viral-engine/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Claude Skill](https://img.shields.io/badge/Claude-Skill-blueviolet)](https://claude.ai)
-[![No dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)](#-try-it-now)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/mananmodi1487/viral-engine/pulls)
-[![Stars](https://img.shields.io/github/stars/mananmodi1487/viral-engine?style=social)](https://github.com/mananmodi1487/viral-engine/stargazers)
+[![Tests](https://img.shields.io/badge/tests-49%20passing-brightgreen)](tests/)
+[![Dependencies](https://img.shields.io/badge/runtime%20deps-1%20(zod)-blue)](package.json)
+[![Local first](https://img.shields.io/badge/local--first-no%20telemetry-blueviolet)](#-privacy)
 
-[**▶ Try it now (one click)**](#-try-it-now) · [Proof it works](#-proof-it-works) · [The shocking part](#-the-part-that-should-shock-you) · [Templates](templates/) · [Case study](CASE_STUDY.md)
+[**60-second start**](#-try-it-in-60-seconds) · [See real output](#-what-you-actually-get) · [How it works](docs/architecture.md) · [Scoring](docs/scoring.md) · [Honesty policy](docs/honesty-policy.md)
 
 </div>
 
-<!-- This repo will hit 100K+ stars -->
+---
 
-<details>
-<summary><b>📈 NEXT LEVEL: the growth projection chart</b> — click to expand</summary>
+## The 30-second version
 
-```ascii
-📈 ASPIRATIONAL GROWTH PROJECTION (honest forecast)
+You published something. Nobody shared it. You rewrote the hook, improved the copy, posted at a better time. Still nothing.
 
-    Stars
-  100K |                                                      ┆
-   10K |                                                      ┆
-    3K |                               ····o········o         ┆
-    1K |             ····o········o····
-   100 |o·······o····
-     0 |
-       +__________________________________________________________
-        now     30d      90d      6mo      9mo      12mo
+**Viral Engine scores seven levers, names the single weakest one, and tells you what to fix first** — not with adjectives, but with a scorecard you can diff, a broadcaster brief you can send, and a failure condition you can check.
 
-  o  = the realistic path from this repo's own table in SUMMARY.md
-       (40 wk 1 -> 300 mo 1 -> 1,000 mo 3 -> 3,000 mo 12)
-  ┆  = 10K-100K requires a genuine outlier. Not on this plan.
+```
+$ npx viral-engine analyze ./README.md --offline
 
-  A projection, not a history. Nothing here has happened yet, so the
-  timeline runs forward from launch instead of showing past quarters.
-  Backward-dated axes would read as a track record, and there isn't one.
+  viral-engine v1.0.0  ./README.md
+  ──────────────────────────────────────────────────────────
+    52/100  overall
+    weakest lever: Proof Readiness (51/100)
+
+    Category Clarity                      █████████████████░░░  87 structural
+    Broadcaster Fit                       ███████████████░░░░░  75 structural
+    Share Friction                        ███████████░░░░░░░░░  56 measured
+    Emotional Stake                       ██████████████░░░░░░  70 heuristic
+    Proof Readiness                       ██████████░░░░░░░░░░  51 measured
+    Launch Timing                         ████████████░░░░░░░░  60 heuristic
+    Honesty Risk (lower is better)        █████████░░░░░░░░░░░  43 measured
+
+    category     growth / marketing tooling (low)
+    proposed     It's not growth / marketing tooling. It's spread
+                 diagnostics for people who already published.
+    broadcaster  One practitioner who already writes about this problem
+    fix first    Add one screenshot-ready artifact a reader can forward
+                 without explanation.
 ```
 
-</details>
+That's real output, generated from this repo's own `SKILL.md`. Every number carries a **basis** — `measured`, `structural`, or `heuristic` — because pretending all seven are equally rigorous is how scorecards start lying.
 
 ---
 
-## 📈 The curve, labelled honestly
+## ⚡ Try it in 60 seconds
 
-**The chart above is a projection, not a record.** Why show one instead of results? Because the results don't exist yet — the repo is days old. Drawing an invented history would be the exact thing this repo tells you not to do ([honesty policy](#-the-honesty-policy)). A projection is checkable: come back in a month and see which point we're actually on.
-
-**The dashed reality from the research:** ~0.025% of a billion diffusion events ever exceeded 100 nodes ([Goel et al.](research/virality-patterns.md)). Most curves don't bend. The plan in [`SUMMARY.md`](SUMMARY.md) targets **1,000 in 90 days**, not 100K — because 1,000 is the threshold where GitHub's own recommendation surfaces start sending you traffic for free, and 100K is not plannable at all.
-
----
-
-## 51.7% of newly published articles on the web are AI-generated.
-
-That's the share Graphite measured in May 2025, up from 2.2% in January 2020, across a sample of 65,000 English-language articles pulled from Common Crawl. Their detector is not gospel — AI-detection accuracy is contested, and their own testing mislabeled 4.2% of human articles. Treat it as directional.
-
-Here's the direction: **the internet just got flooded with competent, forgettable writing.**
-
-Which means the scarce thing is no longer *good* content. Good content is free and infinite now.
-
-The scarce thing is content that a specific person feels compelled to send to another specific person.
-
-**Nobody is solving that. That's the gap this repo lives in.**
-
----
-
-### The part nobody tells you
-
-You can have excellent writing and still get nothing. Not because the hook was weak — because you were competing in a category where nobody was looking for you.
-
-Watch what happens to the same product:
-
-<img src="assets/before-after.svg" alt="Before: a generic habit tracker scoring 1 out of 5 on surprise, identity and tribal fit. After: repositioned as placement-risk management, scoring 4 out of 5 — with the product unchanged." width="880">
-
-Same app. Same features. Same code.
-
-**Different game.** One of them is competing with 40,000 habit trackers. The other is competing with nobody, because nobody had named it yet.
-
-> *"It's not a habit tracker. It's placement-risk management — for students who are one missed deadline away from a bad semester."*
-
-That's not a better sentence. That's a different category — with a different audience, a different emotion, and a different reason to share it.
-
-**Positioning beats polish. Almost every time.** And almost nobody does it, because it's harder than writing a better hook.
-
----
-
-## ▶ Try it now
-
-No install. No API key. No clone.
-
-**Option 1 — one click, in Claude:**
-
-&nbsp;&nbsp;&nbsp;&nbsp;[**→ Open the skill in Claude**](https://claude.ai/new?q=%2Fviral-engine%20I%20built%20a%20daily%20habit%20tracker%20app%20for%20busy%20professionals)
-
-**Option 2 — paste this anywhere:**
+**Option A — no install, in Claude:**
 
 ```
 Read https://raw.githubusercontent.com/mananmodi1487/viral-engine/main/SKILL.md
 and then run it on: [your thing here]
 ```
 
-**Option 3 — install it properly:**
+**Option B — the CLI:**
 
 ```bash
-mkdir -p ~/.claude/skills/viral-engine
-curl -fsSL https://raw.githubusercontent.com/mananmodi1487/viral-engine/main/SKILL.md \
-  -o ~/.claude/skills/viral-engine/SKILL.md
-
-# then just type:
-/viral-engine a daily habit tracker app for busy professionals
+git clone https://github.com/mananmodi1487/viral-engine && cd viral-engine
+npm ci
+npx tsx packages/cli/src/index.ts analyze ./README.md --offline
 ```
 
-**What you get back:** eight sections, in order, every time.
+**Option C — one command, no clone:**
 
-<img src="assets/output-sections.svg" alt="The eight sections returned by one run: the bet, diagnosis, hooks, positioning, structure, distribution, first 48 hours, scorecard" width="880">
-
-Not inspiration. A decision you can act on before lunch.
-
-### 🏆 The #ViralEngineChallenge
-
-Run it on something of yours. Post the before/after. Tag it **`#ViralEngineChallenge`**.
-
-The format looks like this — *illustrative, not a real run. Yours has to be.*
-
-```diff
-- BEFORE:  "A note-taking app for students"
-+ AFTER:   "It's exam triage — for students who don't need better notes,
-           they need to know what to skip before Thursday."
+```bash
+npx viral-engine analyze owner/repo          # a GitHub repo
+npx viral-engine analyze ./README.md         # a local file
+npx viral-engine analyze https://yours.com   # a landing page
+npx viral-engine analyze --text "your copy"  # pasted text
 ```
 
-Two rules: **the input has to be real**, and **the output has to be what the skill actually said** — including the parts you didn't like. The uncomfortable ones are the interesting ones.
-
-→ Post it anywhere with the tag, or [open an issue](https://github.com/mananmodi1487/viral-engine/issues/new?template=share-your-run.yml) with your output. The best get added to [`examples/`](examples/), with credit.
-
-**If you learned something here, share it with the one person whose launch is coming up.** That's the whole ask — not a star, not a follow. One forward, to one specific person, with one sentence about why.
-
-> *"This is the thing that tells you why nobody shared your launch — before you launch."*
+No API key needed. No telemetry. `--offline` makes zero network calls.
 
 ---
 
-## ⏳ Why now, honestly
+## 📊 What you actually get
 
-No countdown timer. Three real reasons the timing matters, each from the research in [`research/`](research/virality-patterns.md).
+Eight sections, in this order, every time:
 
-**The flood is compounding.** 51.7% of newly published articles are AI-generated, up from 2.2% in 2020 ([Graphite, May 2025](https://graphite.io)). Competent writing is now the baseline, not the advantage. Every month you compete on *quality* instead of *category*, the bar you're trying to clear moves further away — because it's being cleared automatically, for free, by everyone.
+| # | Section | What it answers |
+|---|---|---|
+| 1 | **Scorecard** | Which of seven levers is weakest, and what to do about it |
+| 2 | **Category** | What you're really competing with, plus 3 less-crowded adjacent categories |
+| 3 | **The broadcaster** | One named kind of person, where to find them, a paste-ready message, and what not to say |
+| 4 | **Share friction** | Why forwarding is expensive, with a fix per friction |
+| 5 | **Honesty check** | Anything that would get you publicly corrected |
+| 6 | **Launch assets** | Show HN, X thread, LinkedIn, Product Hunt, hero copy, email subjects, chat announcement |
+| 7 | **Pre-launch checklist** | Blockers first, reasoning attached to each |
+| 8 | **Kill criteria** | Written *before* launch so they can't be rationalised after |
 
-**The window on GitHub attention is real and early.** A repo with a few hundred stars is invisible inside GitHub's recommendation surfaces. Around 1,000, it starts appearing in "related repos," topic pages, and Trending-adjacent surfaces — which is free distribution you cannot buy or fake. Repos either reach that threshold early, when a handful of shares can move it, or they spend years grinding search traffic. The mechanics aren't a secret; the timing advantage is.
-
-**A launch is a one-shot test.** The 48-hour plan in [`templates/launch-checklist.md`](templates/launch-checklist.md) is designed for the week *before* you publish. Run it after, and the most you can do is rewrite copy on something the audience has already decided about. One unpolished launch attempt per project is the real constraint — not stars, not budget.
-
-**What this is not:** there is no closing window on the repo, no limited seats, no price going up. If urgency is the only reason you'd star it, don't — the repo will still be here, and a star you regret is worth less than one you meant.
-
----
-
-## 🧪 Proof it works
-
-*(Honest header: these are **worked examples of the reasoning**, not case studies with verified outcomes. The numbers in them are placeholders on purpose — see [the honesty policy](#-the-honesty-policy). Anyone showing you a growth tool with eight triumphant case studies on day one is showing you fiction.)*
-
-### Before → after, three real inputs
-
-| Input | What it did | What the diagnosis found | What came back |
-|---|---|---|---|
-| *"A daily habit tracker app for busy professionals"* | Nothing. Category with 40k competitors. | surprise 1/5, identity 1/5, tribal fit 1/5 → **bottleneck: no tension, no tribe** | Placed as **placement-risk management**. Hook: *"47 browser tabs, 3 deadlines, 0 systems. This is for you."* |
-| *"Blog post about AI anxiety"* | A saturated topic. Scrolled past at 200 words. | surprise 2/5, remixability 1/5 → **bottleneck: nothing unexpected, nothing to do afterward** | Placed as **workplace change literacy**. Hook: *"You're not afraid of AI taking your job. You're afraid of being the last person to notice."* |
-| *This repository* | "Another AI growth tool." Distrusted category. | emotion 2/5 → **bottleneck: clever, not activating** | Placed as a **spread diagnostic**. Led to the before/after asset you just scrolled past. |
-
-**The full reasoning — including the frames that were rejected and why:**
-
-→ [Case study 1](examples/case-study-1.md) — the habit tracker · [Case study 2](examples/case-study-2.md) — the AI-anxiety essay · [Repo self-diagnosis](CASE_STUDY.md) — this page, graded
-
-### And here's what three hooks look like when they ship with their failure modes
-
-<img src="assets/hooks.svg" alt="Three hooks, each labeled with its pattern, its target audience, and the way it fails" width="880">
-
-Every hook comes with the way it breaks. That's the difference between a hook generator and a diagnostic: **one gives you lines, the other tells you which line will get you dunked on.**
+Full example: [`examples/reports/example-report.md`](examples/reports/example-report.md) · [JSON](examples/reports/example-report.json) · HTML via `--format html`
 
 ---
 
-## ⚡ The part that should shock you
+## 🎯 Use cases
 
-Four findings that contradict what most growth marketing says out loud. All cited, all in [`research/virality-patterns.md`](research/virality-patterns.md).
+**Launching an open-source repo** — find out whether your README names a category or just describes features.
 
-**1. "Going viral" barely exists.** Across ~1 billion diffusion events on Twitter, cascades larger than 100 nodes were about **0.025%** of all events. The average cascade: 1.3 nodes.
+```bash
+npx viral-engine analyze yourname/yourrepo
+```
 
-**2. Popularity is a broadcast, not a chain.** Structural virality is typically *low* and stays low regardless of size. What predicts a big event is the size of the **single largest broadcast** — not thousands of people passing it along.
+**Rewriting a landing page** — the page that converts is usually in a different category than the one you wrote.
 
-> Everyone optimizes for the chain. The data points at the megaphone.
+```bash
+npx viral-engine analyze https://yoursite.com
+```
 
-**3. Sadness makes people stop.** Awe, anger, anxiety and amusement increase sharing. Sadness — equally powerful, subjectively — *decreases* it, because it deactivates. The variable isn't "emotional." It's **activation**.
+**Diagnosing a newsletter or essay** — before you spend a week on the next one.
 
-**4. Half of YouTube videos have under 500 views.** Facebook and Twitter are technologies, not strategies. Only ~7% of word of mouth happens online — we overestimate it because the online part leaves traces.
+```bash
+npx viral-engine analyze ./draft.md --offline
+```
 
-### 🔑 And the pattern almost nobody names
+**Preparing a Product Hunt launch** — get the tagline, the description, and the one broadcaster to approach.
 
-From #2 above comes the thing this whole repo is built around:
-
-> ### The Broadcaster Rule
-> **Don't optimize for the average share rate. Optimize for the ease of one specific broadcast.**
-
-Standard advice treats sharing as a per-person probability to nudge upward. The diffusion data treats popularity as a function of the largest single broadcast. Optimizing a mean when the outcome is driven by a maximum is how people burn six months on the wrong metric.
-
-So the skill forces you to answer three questions, in order:
-
-1. **Who is the broadcaster?** A real handle. Not a persona.
-2. **What do they need?** A clean screenshot, a paste-able one-liner, and a reason it makes *them* look good.
-3. **What's their stake?** Nobody amplifies for you. They amplify for a position.
-
-That's not a growth hack. It's a much more boring and much more workable plan than "go viral," which is exactly why it might work.
+**Finding the right broadcaster** — the section most launch checklists skip entirely.
 
 ---
 
-## 🛡️ The honesty policy
+## ⚡ Four findings that contradict common advice
 
-This is the part most growth tooling gets wrong, so it's enforced in the skill file rather than promised in a manifesto:
+All cited in [`research/virality-patterns.md`](research/virality-patterns.md).
 
-| | |
+**1. "Going viral" barely exists.** Across ~1 billion diffusion events, cascades larger than 100 nodes were about **0.025%** of all events. The average cascade: 1.3 nodes. *(Goel, Watts & Goldstein, 2012/2016)*
+
+**2. Popularity is a broadcast, not a chain.** Structural virality is typically low and stays low regardless of size. What predicts a big event is the size of the **single largest broadcast**.
+
+**3. Sadness makes people stop.** Awe, anger, anxiety and amusement increase sharing. Sadness — equally intense — *decreases* it, because it deactivates. The variable isn't "emotional", it's **activation**. *(Berger & Milkman, 2012)*
+
+**4. Half of YouTube videos have under 500 views.** Only ~7% of word of mouth happens online. *(Berger, 2013)*
+
+### 🔑 The Broadcaster Rule
+
+From #2:
+
+> **Don't optimise the average share rate. Optimise the ease of one specific broadcast.**
+
+So the tool refuses to emit advice without naming *a kind of person*, where to find them, and why they'd bother. "Post on social media" is rejected by the type system — `BroadcasterBrief` requires `whereToFind`, `messageTemplate`, `whatNotToSay`, and `likelyAmplifier`.
+
+---
+
+## 🛡️ Honesty is enforced in code, not promised in a README
+
+| Rule | Enforcement |
 |---|---|
-| ❌ **No invented statistics** | Missing number → `[your real number]` + what to measure |
-| ❌ **No fabricated testimonials** | The examples carry a `guardrail_check` block you can audit |
-| ❌ **No guaranteed outcomes** | Nobody can promise 100K stars. This promises a better-designed attempt. |
-| ❌ **No manufactured outrage** | Excluded from the skill, not merely discouraged. Short-term reach, long-term reputation. |
-| ✅ **Every plan ships with a failure condition** | *"This fails if ___"* — because a plan without one isn't a plan |
-| ✅ **"Don't launch yet" is a valid answer** | A tool that always says yes is a slot machine |
+| No invented statistics | `honesty.ts` blocks unsourced figures; generated assets emit `[your real number]` |
+| No fabricated testimonials | An **outbound** scan of our own output blocks testimonial shapes |
+| No guaranteed outcomes | Guarantee phrasing is a `blocker` |
+| Every plan states a failure condition | `assertFailureConditions()` **throws** if any is missing |
+| "Do not launch yet" is valid | First-class output, banner in every renderer, exits 3 in CI |
+| Unknown is stated, not guessed | Saturation returns `unknown`, never a default number |
 
-You'll notice the examples contain `[bracketed]` placeholders instead of impressive numbers.
-
-That's not a gap in the docs. **That's the product.**
-
----
-
-## 🪞 The suspicious part
-
-> ### This README was built with Viral Engine.
-
-Which means you can grade it.
-
-The diagnosis said **emotion 2/5** — clever, not activating. That's why there's a before/after card instead of a feature list, and why this document has a villain (forgettable content) instead of a feature section.
-
-The positioning chose **diagnostic** over "AI growth tool" — which cost excitement and bought the license to say *"your idea isn't ready."*
-
-The case study is in [`CASE_STUDY.md`](CASE_STUDY.md), and **the results section is empty**, because the repo is days old.
-
-Yes, the tool is self-aware. No, it isn't magic — it's a checklist that refuses to flatter you. Judge it by whether *this page* made you want to run it on your own thing. If it did, the mechanism works. If it didn't, it doesn't — and you just saved yourself a launch.
+**The outbound pass is the unusual one.** Before any report reaches you, the generator scans *its own text* with stricter rules than it applies to yours. It caught two real bugs during development — including the tool flagging its own honest disclaimer — both now regression-tested. Details: [`docs/honesty-policy.md`](docs/honesty-policy.md).
 
 ---
 
 ## 🔬 What's different from every other growth tool
 
-Full comparison, including where the alternatives are better: **[`IMPROVEMENTS.md`](IMPROVEMENTS.md)**
+Full comparison, including where alternatives are better: [`IMPROVEMENTS.md`](IMPROVEMENTS.md)
 
-**The one-sentence version:** other tools help you write something that *sounds* viral. This one names **why the thing didn't spread**, and won't let you skip it.
-
-- **A bottleneck, not a checklist** — 7 levers scored, the weakest named, fix only that
+- **A bottleneck, not a checklist** — seven levers scored, the weakest named, fix only that
+- **Deterministic scores** — an LLM can only *explain*; it can never set a score or invent a broadcaster
 - **Two share mechanisms, never three** — three reads as desperate
-- **Position before you write** — a new category generates hooks; a new hook can't rescue a dead category
-- **Honesty as a hard constraint** — enforced in the output format, not in the marketing copy
-- **A scorecard with the number that means "stop"** — including *"fix honesty before reach"*
+- **A scorecard that says "stop"** — including *"fix honesty before reach"*
+- **Runs with no model at all** — local-first, no vendor lock-in
 
 ---
 
-## 📂 What's in the repo
+## 🏗️ Architecture
 
 ```
-viral-engine/
-├── SKILL.md                      ← the whole product. one file. no deps.
-├── README.md                     ← you're here (built by the thing above ☝️)
-├── IMPROVEMENTS.md               ← the honest diff vs. other tools
-├── CASE_STUDY.md                 ← this repo diagnosed by itself
-├── SUMMARY.md                    ← launch playbook + why 100K isn't plannable
-├── CREDITS.md                    ← Berger · Goel/Watts · Lowenstein · NYT · Claude
-├── assets/                       ← diagrams — SVG, animated, editable
-├── templates/                    ← 4 copy-paste frameworks
-│   ├── hooks-framework.md
-│   ├── positioning-template.md
-│   ├── share-structure-canvas.md
-│   └── launch-checklist.md
-├── research/
-│   ├── virality-patterns.md      ← the cheat sheet, with citations + caveats
-│   └── README.md                 ← established vs. inferred
-└── examples/
-    ├── case-study-1.md           ← habit tracker → placement-risk management
-    └── case-study-2.md           ← AI anxiety essay → workplace change literacy
+packages/
+  core/          signals → score → categories → broadcasters → assets → validate
+    providers/   anthropic · openai · ollama · groq · mistral · together
+  cli/           analyze <target> --format terminal|md|json|html
+  web/           dependency-free UI, no telemetry
+.github/
+  actions/spread-check/   PR comment + honesty gate
+docs/            architecture · quickstart · scoring · honesty-policy · migration
+prompts/         versioned prompt set (diagnose, positioning, broadcaster, assets)
+fixtures/        labelled evaluation cases
+tests/           49 tests + evaluation harness
 ```
 
-**Every template is a blank to fill in, not a thing to read.** That's deliberate — filling blanks produces better answers than reading advice, and it's slower, which is the point.
+**One design decision drives everything:** scoring is a pure function of extracted signals. The only non-deterministic stage is optional prose, and it cannot write to any scored field. That is why the same input produces byte-identical JSON — there's a test for it.
+
+Read more: [`docs/architecture.md`](docs/architecture.md)
 
 ---
 
-## 🎯 When to use it
+## 🔒 Privacy
 
-- Something you published got nothing and you don't know why
-- You're launching and the description sounds like everyone else's
-- You have hooks that aren't landing
-- You want to know *why* something spread, not just that it did
-- You're about to spend money on ads you haven't earned the right to buy
+- **No telemetry.** Not a line of analytics code in this repo.
+- **`--offline`** makes zero network calls; the entire diagnosis still works.
+- **API keys** are read from the environment only. They are never logged, never written to the report, never included in error messages.
+- **Local models first.** Ollama is checked before any hosted provider.
+- **HTML reports are self-contained** — no external assets, no scripts, safe to email.
 
-**Not for:** buying engagement, manufacturing controversy, or dressing up a weak product. The skill will tell you when the honest answer is *don't launch yet*.
+---
+
+## ❓ FAQ
+
+**Does this guarantee virality?** No. Nothing can. Roughly 150–200 repos have ever passed 100K stars and nearly all did so through one uncontrollable distribution event. This improves the quality of the attempt.
+
+**Does it fabricate statistics?** No — it's structurally prevented. Generated copy uses placeholders; blockers fail the build.
+
+**Can I use it locally?** Yes, fully. `--offline --provider none` is the default path, not a degraded one.
+
+**Is it only for GitHub repos?** No — repos, URLs, files, or pasted text.
+
+**Why does it sometimes say "do not launch yet"?** Because that's a valid result. One unpolished launch attempt per project is the real constraint; a launch that can't produce signal is worse than a delay.
+
+**Do I need an API key?** No. The deterministic engine is the product; a provider only adds narrative prose.
+
+**How accurate is it?** See [`docs/scoring.md`](docs/scoring.md). The benchmark is 7 fixtures at 100% — a smoke test, not evidence of generalization, and the docs say so.
 
 ---
 
 ## 🤝 Contributing
 
-The most valuable PRs, in order:
+Most valuable, in order: **counter-examples** (things that looked viral-ready and flopped), new honesty rules with fixtures, new providers, non-tech case studies.
 
-1. **Counter-examples** — things that looked viral-ready and flopped, and why. Worth more than ten more success stories.
-2. **New hook patterns** with a real example and the audience they target
-3. **New share mechanisms** — especially ones that don't need a network effect
-4. **Domain examples** — local businesses, B2B, education, non-profits, dev tools
+Setup, rules, and what gets closed: [`docs/contributing.md`](docs/contributing.md)
 
-**Please keep the honesty guardrails intact.** A PR that adds fabricated social proof will be closed, and the reason will be quoted in the thread.
+```bash
+npm test        # 49 tests
+npm run bench   # precision/recall gate on labelled fixtures
+```
+
+**Please keep the honesty guardrails intact.** A PR adding fabricated social proof will be closed and the reason quoted.
 
 ---
 
 ## 📜 License
 
-MIT — see [LICENSE](LICENSE). Build what spreads.
+MIT — see [LICENSE](LICENSE).
 
 <div align="center">
 
@@ -328,10 +254,12 @@ MIT — see [LICENSE](LICENSE). Build what spreads.
 
 Then tell us what it said — especially if it said something you didn't want to hear.
 
-**If you learned something, share it with one person who's about to launch.**
-
-[**▶ Try it in Claude**](https://claude.ai/new?q=%2Fviral-engine%20I%20built%20a%20daily%20habit%20tracker%20app%20for%20busy%20professionals) · [⭐ Star](https://github.com/mananmodi1487/viral-engine) · [Read the skill](SKILL.md) · [Launch playbook](SUMMARY.md) · [Case studies](examples/) · [Repo self-diagnosis](CASE_STUDY.md)
+[**⚡ Try it**](#-try-it-in-60-seconds) · [⭐ Star](https://github.com/mananmodi1487/viral-engine) · [Read the skill](SKILL.md) · [Architecture](docs/architecture.md) · [Case studies](examples/)
 
 <sub>Built with [Claude](https://claude.ai). Research credited in [CREDITS.md](CREDITS.md). Not affiliated with Anthropic.</sub>
 
 </div>
+
+<!-- Easter egg: the engine flags a star promise as an honesty blocker, so this line is
+     deliberately phrased as a wish rather than a forecast. Run the tool on this file
+     and see for yourself — that is the whole pitch in one command. -->

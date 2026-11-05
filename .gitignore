@@ -53,3 +53,17 @@ coverage/
 # Claude / agent scratch
 .claude/settings.local.json
 .local/
+
+# Build output
+dist/
+*.tsbuildinfo
+packages/*/dist/
+
+# Local reports (the examples/reports/ ones are intentionally committed)
+viral-engine-report.md
+viral-engine-report.json
+/tmp-*
+
+# Test / tool output
+.vitest/
+playwright-report/

@@ -1,0 +1,34 @@
+{
+  "name": "viral-engine",
+  "version": "1.0.0",
+  "description": "Diagnose why your work did not spread — category, broadcaster, share friction, honesty. Deterministic by default, local-first, no invented statistics.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "viral-engine": "./packages/cli/dist/index.js"
+  },
+  "workspaces": ["packages/*"],
+  "files": ["packages/core/dist", "packages/cli/dist", "README.md", "LICENSE"],
+  "scripts": {
+    "build": "npm run build -w @viral-engine/core && npm run build -w viral-engine",
+    "dev": "tsx packages/cli/src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "example": "tsx packages/cli/src/index.ts analyze ./README.md --offline",
+    "web": "tsx packages/web/server.ts",
+    "bench": "tsx tests/benchmark.ts"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

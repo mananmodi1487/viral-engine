@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spread diagnosis — README.md</title>
+<style>
+:root{--bg:#0d1117;--card:#161b22;--line:#30363d;--fg:#e6edf3;--muted:#8b949e;--green:#3fb950;--red:#f85149;--amber:#d29922}
+*{box-sizing:border-box}
+body{margin:0;padding:40px 20px;background:var(--bg);color:var(--fg);font:15px/1.6 ui-sans-serif,system-ui,-apple-system,sans-serif}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:26px;margin:0 0 6px}
+h2{font-size:17px;margin:44px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+h3{font-size:16px;margin:0 0 12px}
+h4{font-size:13px;margin:0 0 8px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.muted{color:var(--muted);font-weight:400}
+.banner{background:#1c1400;border:1px solid var(--amber);color:#e3b341;padding:14px 18px;border-radius:8px;margin:20px 0}
+.summary{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:22px;margin:22px 0}
+.big{font-size:40px;font-weight:800;line-height:1}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:13px}
+th,td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#1c2128;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+tr:last-child td{border-bottom:none}
+.num{white-space:nowrap;font-variant-numeric:tabular-nums;font-size:15px}
+.track{width:100px;height:6px;background:#21262d;border-radius:3px;min-width:100px}
+.fill{height:6px;border-radius:3px}
+.basis code{font-size:11px;background:#21262d;padding:2px 6px;border-radius:4px;color:var(--muted)}
+.why{font-size:12.5px}
+.fix{margin-top:6px;color:var(--muted);font-size:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin:14px 0}
+dl{margin:0;display:grid;grid-template-columns:170px 1fr;gap:6px 14px;font-size:13px}
+dt{color:var(--muted)}
+dd{margin:0}
+pre{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:14px;overflow:auto;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.fail{color:#e3b341;font-size:12.5px}
+.sev{font-size:10px;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:20px;font-weight:700}
+.sev-blocker{background:#3d1418;color:#ff7b72}
+.sev-warning{background:#341a00;color:#e3b341}
+.sev-note{background:#1c2128;color:var(--muted)}
+ul{padding-left:18px}
+li{margin:9px 0}
+.gate{font-size:10px;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:20px;background:#21262d;color:var(--muted);margin-right:6px}
+.gate-blocker .gate{background:#3d1418;color:#ff7b72}
+.gate-warning .gate{background:#341a00;color:#e3b341}
+footer{margin-top:50px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+@media(max-width:720px){dl{grid-template-columns:1fr}.track{display:none}}
+</style></head><body><div class="wrap">
+<h1>Spread diagnosis — README.md</h1>
+<p class="muted">readme-text · local-file</p>
+
+
+
+<div class="summary">
+  <div class="big">58<span class="muted" style="font-size:16px">/100</span></div>
+  <p style="margin:10px 0 0">Weakest lever: <strong>Emotional Stake</strong> at 40/100</p>
+  <p style="margin:10px 0 0;color:var(--muted);font-style:italic">Most growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.</p>
+</div>
+
+<h2>1. Scorecard</h2>
+<table><thead><tr><th>Lever</th><th>Score</th><th></th><th>Basis</th><th>Why this score</th></tr></thead><tbody><tr>
+        <td class="lever">Category Clarity</td>
+        <td class="num"><span style="color:#3fb950;font-weight:700">87</span><span class="muted">/100</span></td>
+        <td><div class="track"><div class="fill" style="width:87%;background:#3fb950"></div></div></td>
+        <td class="basis"><code>structural</code></td>
+        <td class="why">contains an explicit &quot;it's not X, it's Y&quot; category pairing; a one-line description exists; names an audience (people who)<div class="fix"><strong>Fix:</strong> Sharpen the pairing so the new category is a job the audience already budgets for.</div></td>
+      </tr><tr>
+        <td class="lever">Broadcaster Fit</td>
+        <td class="num"><span style="color:#d29922;font-weight:700">59</span><span class="muted">/100</span></td>
+        <td><div class="track"><div class="fill" style="width:59%;background:#d29922"></div></div></td>
+        <td class="basis"><code>structural</code></td>
+        <td class="why">names no community, so there is no obvious amplifier; references 12 recurring proper nouns (citable, recognisable); at 1621 words a broadcaster must read it to describe it<div class="fix"><strong>Fix:</strong> Name one real broadcaster and write the sentence they would paste. If you cannot, there is no amplifier.</div></td>
+      </tr><tr>
+        <td class="lever">Share Friction</td>
+        <td class="num"><span style="color:#d29922;font-weight:700">41</span><span class="muted">/100</span></td>
+        <td><div class="track"><div class="fill" style="width:41%;background:#d29922"></div></div></td>
+        <td class="basis"><code>measured</code></td>
+        <td class="why">5 prerequisite/configuration cue(s) raise the cost of a first try; 13 setup steps before first value; 9 code blocks: hard to screenshot, hard to quote<div class="fix"><strong>Fix:</strong> Cut the path to first value to one command, and move everything else into a &quot;details&quot; block.</div></td>
+      </tr><tr>
+        <td class="lever">Emotional Stake</td>
+        <td class="num"><span style="color:#d29922;font-weight:700">40</span><span class="muted">/100</span></td>
+        <td><div class="track"><div class="fill" style="width:40%;background:#d29922"></div></div></td>
+        <td class="basis"><code>heuristic</code></td>
+        <td class="why">0 high-arousal term(s), 0 deactivating term(s); no activating language: readers have no physical impulse to forward it<div class="fix"><strong>Fix:</strong> Add one concrete stake: what does the reader lose by ignoring this, in their own words?</div></td>
+      </tr><tr>
+        <td class="lever">Proof Readiness</td>
+        <td class="num"><span style="color:#3fb950;font-weight:700">77</span><span class="muted">/100</span></td>
+        <td><div class="track"><div class="fill" style="width:77%;background:#3fb950"></div></div></td>
+        <td class="basis"><code>measured</code></td>
+        <td class="why">no unbacked claims detected; 5 specific figure(s) present — verifiable if sourced<div class="fix"><strong>Fix:</strong> Add the failure condition: &quot;This fails if ___.&quot; It is the cheapest credibility you can buy.</div></td>
+      </tr><tr>
+        <td class="lever">Launch Timing</td>
+        <td class="num"><span style="color:#d29922;font-weight:700">50</span><span class="muted">/100</span></td>
+        <td><div class="track"><div class="fill" style="width:50%;background:#d29922"></div></div></td>
+        <td class="basis"><code>heuristic</code></td>
+        <td class="why">a first-run path exists but is long<div class="fix"><strong>Fix:</strong> Decide the one channel and the one asset before launch day. &quot;Post everywhere&quot; is not a plan.</div></td>
+      </tr><tr>
+        <td class="lever">Honesty Risk (lower is better)</td>
+        <td class="num"><span style="color:#3fb950;font-weight:700">4</span><span class="muted">/100</span></td>
+        <td><div class="track"><div class="fill" style="width:4%;background:#3fb950"></div></div></td>
+        <td class="basis"><code>measured</code></td>
+        <td class="why">0 blocker(s), 0 warning(s), 1 note(s) in the honesty scan<div class="fix"><strong>Fix:</strong> Keep it. The absence of overclaiming is the differentiator, not a constraint.</div></td>
+      </tr></tbody></table>
+<p class="muted"><code>measured</code> counted from your document · <code>structural</code> deterministic rule · <code>heuristic</code> judgement call · <code>unavailable</code> could not determine</p>
+
+<h2>2. Category</h2>
+<div class="card">
+  <p><strong>Currently competing in:</strong> growth / marketing tooling <span class="muted">(heuristic)</span></p>
+  <p><strong>Saturation:</strong> low <span class="muted">(measured)</span> — GitHub search returned 0 repositories for the topic query</p>
+  <p><strong>Proposed positioning:</strong> It's not growth / marketing tooling. It's spread diagnostics for people who already published — for people who are already looking for something like this.</p>
+  <p><strong>Proof required:</strong> The frame &quot;spread diagnostics for people who already published&quot; only survives if you can show diagnostics cannot promise outcomes, which is unfamiliar to this audience. If you cannot, the frame is a costume and the first critical reply will say so.</p>
+  <p class="fail"><strong>Fails if:</strong> This positioning fails if people who are already looking for something like this reads it as another version of growth / marketing tooling.</p>
+</div>
+<table><thead><tr><th>Adjacent category</th><th>Why less crowded</th><th>Tension</th><th>What could break it</th></tr></thead><tbody>
+<tr><td>spread diagnostics for people who already published</td><td>the category sells creation; almost nobody sells post-mortem</td><td class="num">4/5</td><td>diagnostics cannot promise outcomes, which is unfamiliar to this audience</td></tr><tr><td>category-selection advice</td><td>positions above the tooling layer, where trust is higher</td><td class="num">3/5</td><td>sounds like consulting, so it must ship an artifact, not just advice</td></tr>
+</tbody></table>
+
+<h2>3. The broadcaster</h2>
+<p class="muted">Popularity tracks the largest single broadcast more than it tracks chains (Goel, Watts &amp; Goldstein 2012/2016). This section names one.</p>
+<div class="card">
+      <h3>Primary — One practitioner who already writes about this problem for a living</h3>
+      <dl>
+        <dt>Where to find them</dt><dd>Search the exact problem phrasing on a newsletter platform and on the platform where your audience already argues about it; pick someone who has published on this twice or more</dd>
+        <dt>Why they care</dt><dd>They need material, and a concrete growth / marketing tooling diagnostic is easier to write about than another opinion piece.</dd>
+        <dt>Why it makes them look good</dt><dd>They cite a tool that produces a specific, checkable output rather than another framework.</dd>
+        <dt>What to send</dt><dd>The one-page diagnosis for their own project, run through the tool unasked. Showing beats telling.</dd>
+        <dt>Likely amplifier</dt><dd>Their next post, where one line about your tool reaches more of your audience than a month of posting does.</dd>
+      </dl>
+      <pre>Hi — I ran your &lt;project/post&gt; through a spread diagnostic I built. It came back with:
+
+Most growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.
+
+Useful or noise? No ask either way — happy to delete this if it is the latter.</pre>
+      <p class="muted"><strong>Do not say:</strong> Do not lead with what is wrong with their work. · Do not attach a press release or a media kit. · Do not ask them to share before they have replied once.</p>
+      <p class="fail"><strong>Fails if:</strong> This fails if the diagnosis is generic. A practitioner will spot boilerplate in one sentence; only send it if the output names something specific to their project.</p>
+    </div><div class="card">
+      <h3>Alternate 1 — A community moderator in the single most relevant niche community</h3>
+      <dl>
+        <dt>Where to find them</dt><dd>The largest Discord/forum/subreddit for the exact audience. Read the pinned self-promotion rules before anything else.</dd>
+        <dt>Why they care</dt><dd>Moderators are judged on whether their community gets useful material rather than ads.</dd>
+        <dt>Why it makes them look good</dt><dd>Posting a tool with a working demo and no signup wall makes them look like they curate well.</dd>
+        <dt>What to send</dt><dd>A build-log style post (what you made, what it told you, what it got wrong) — not an announcement.</dd>
+        <dt>Likely amplifier</dt><dd>A pinned message or a wiki link, which keeps working for months.</dd>
+      </dl>
+      <pre>Built a growth / marketing tooling diagnostic over the weekend. It told me something I did not want to hear about my own project: Most growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.
+
+Sharing in case it is useful to others here. Rules-permitting, of course — happy to delete if it is off-topic.</pre>
+      <p class="muted"><strong>Do not say:</strong> Do not post the same text to several communities on the same day. · Do not DM members to promote the post. · Do not ignore a self-promo ban because &quot;it is genuinely useful&quot;.</p>
+      <p class="fail"><strong>Fails if:</strong> This fails if the community bans self-promotion. Check the rules first; being banned costs more than the post was worth.</p>
+    </div><div class="card">
+      <h3>Alternate 2 — An aggregator that indexes tools in this space</h3>
+      <dl>
+        <dt>Where to find them</dt><dd>Awesome-lists, topic indexes and tool directories that accept pull requests or submissions.</dd>
+        <dt>Why they care</dt><dd>Their value is coverage; a missing useful tool is a gap in their index.</dd>
+        <dt>Why it makes them look good</dt><dd>A clean entry with a correct one-line description.</dd>
+        <dt>What to send</dt><dd>One line: &quot;Most growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.&quot; plus a link and the license.</dd>
+        <dt>Likely amplifier</dt><dd>Search traffic to the list, which compounds without you.</dd>
+      </dl>
+      <pre>Submitting for the list: &lt;name&gt; — Most growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.
+
+MIT licensed, no signup, works offline. Happy to adjust the description to your format.</pre>
+      <p class="muted"><strong>Do not say:</strong> Do not submit before the tool actually works end to end. · Do not submit to ten lists in an hour; it reads as spam.</p>
+      <p class="fail"><strong>Fails if:</strong> This fails if the tool needs an API key to do anything. Indexes prefer zero-friction entries.</p>
+    </div>
+
+<h2>4. Share friction</h2>
+<table><thead><tr><th>Friction</th><th>Evidence</th><th>Fix</th></tr></thead><tbody>
+<tr><td>Setup cost before first value</td><td>13 explicit setup step(s); 5 prerequisite cue(s) detected</td><td>Collapse to a single command and move prerequisites into a collapsible section.</td></tr><tr><td>Quotability</td><td>1621 words, 16 headings, 9 code blocks</td><td>Add a 40-word summary at the top that can be screenshotted on its own.</td></tr><tr><td>Broadcaster clarity</td><td>no community or tribe cue found in the document</td><td>Name the community explicitly in the first screen. A broadcaster needs to recognise their own readers.</td></tr>
+</tbody></table>
+
+<h2>5. Honesty check</h2>
+<p><span style="color:var(--green);font-weight:700">Passed</span> — no blocker-level claims found.</p>
+<table><thead><tr><th>Severity</th><th>Found</th><th>Rule</th><th>Suggestion</th></tr></thead><tbody><tr><td><span class="sev sev-note">note</span></td>
+        <td><code>100k stars</code></td><td>hype lexicon</td><td>&quot;100k stars&quot; is a claim, not evidence. Replace with the specific mechanism or delete it.</td></tr></tbody></table>
+
+<h2>6. Launch assets</h2>
+<div class="asset"><h4>show-hn <span class="muted">(one paragraph under 200 words; plain title)</span></h4>
+      <pre>Show HN: README.md — spread diagnostics for people who already published
+
+I built this because people who are already looking for something like this keep hitting the same problem, and the existing tools all solve it by adding more surface area.
+
+README.md does one thing: spread diagnostics for people who already published. It runs offline by default, has no signup, and produces a report you can read in a minute.
+
+The honest limitation: it cannot tell you whether your idea is good. It can tell you which lever is weakest and what to fix first — and it will say &quot;do not launch yet&quot; if that is the answer.
+
+Everything is MIT licensed. Feedback welcome, especially where the diagnosis is wrong.</pre><p class="muted">Title must be plain and non-promotional. Do not put &quot;viral&quot; in the title — it triggers the category distrust you are trying to escape.</p></div><div class="asset"><h4>x-thread <span class="muted">(first post under 240 characters)</span></h4>
+      <pre>1/ Most growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.
+
+2/ Most launch advice optimises the hook. The diffusion data says the hook is rarely the bottleneck.
+
+3/ Across ~1B diffusion events, cascades over 100 nodes were about 0.025%. Popularity tracks the largest single broadcast, not the chain (Goel, Watts &amp; Goldstein).
+
+4/ So the question is not &quot;how do I go viral&quot;. It is &quot;who is the one person who would pass this on, and what do they need from me&quot;.
+
+5/ I built README.md to answer that: it scores seven levers, names the weakest, and writes the broadcaster brief.
+
+6/ It never invents numbers. If it does not know something it says so, which makes it less impressive and more useful.
+
+7/ Run it on something you already published: &lt;link&gt;
+
+If it tells you something you did not want to hear, that is the tool working.</pre><p class="muted">Post 3 carries the credibility. If you drop the citation, the thread becomes opinion.</p></div><div class="asset"><h4>linkedin <span class="muted">(1200-1800 characters performs best)</span></h4>
+      <pre>I stopped asking &quot;how do I get this in front of more people&quot; and started asking a harder question.
+
+Most growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.
+
+The reframe matters because the first question has no answer. The second one has a specific answer, and it is usually &quot;change the category, not the copy&quot;.
+
+I built a small tool that runs the diagnosis: it scores category clarity, broadcaster fit, share friction, and proof readiness, then names the single weakest lever.
+
+It refuses to invent statistics. When it does not know something it says &quot;unavailable&quot; rather than guessing, which is why the numbers are less satisfying and more trustworthy.
+
+It also has a &quot;do not launch yet&quot; output. That is a feature, not a bug: one unpolished launch attempt per project is the real constraint.
+
+&lt;link&gt;</pre><p class="muted">Lead with the reframe. LinkedIn rewards first-person, so do not make this read like a launch announcement.</p></div><div class="asset"><h4>product-hunt <span class="muted">(tagline under 60 characters)</span></h4>
+      <pre>Tagline: Find out why nobody shared it
+
+Description: README.md scores your launch on seven levers, names the weakest one, and writes the broadcaster brief. Runs locally, no signup, refuses to invent statistics. Valid output includes &quot;do not launch yet&quot;.</pre><p class="muted">The tagline is a question, not a claim. Claims invite comparison; questions invite a click.</p></div><div class="asset"><h4>landing-hero <span class="muted">(headline under 10 words, subhead under 25)</span></h4>
+      <pre># Most growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.
+
+Score seven levers, find the bottleneck, and get the broadcaster brief. Free, local, and it will tell you not to launch.</pre><p class="muted">The paste-ready line is the headline because it is the most compressed true thing you have.</p></div><div class="asset"><h4>email-subject <span class="muted">(under 50 characters, no false urgency)</span></h4>
+      <pre>Why nobody forwarded it
+Your category is the problem, not your writing
+A diagnosis you can run in 60 seconds
+The weakest lever (and how to find yours)</pre><p class="muted">No countdown language. Subject lines that promise urgency get opened once and trusted never.</p></div><div class="asset"><h4>chat-announcement <span class="muted">(under 120 words for Discord/Slack)</span></h4>
+      <pre>Built a small thing that diagnoses why a launch did not spread. It scores seven levers and names the weakest one — mine came back as &quot;broadcaster fit&quot;, which was annoying and correct.
+
+Runs locally, no signup, no API key needed: &lt;link&gt;
+
+It refuses to invent stats, and it will tell you not to launch. Feedback welcome, especially if it is wrong about yours.</pre><p class="muted">Share the result about yourself first. It gives others permission to share theirs.</p></div><div class="asset"><h4>broadcaster-paste <span class="muted">(one sentence, no link required)</span></h4>
+      <pre>Most growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.</pre><p class="muted">This is the single most important asset. If a broadcaster cannot repeat this sentence from memory, nothing else here matters.</p></div>
+
+<h2>7. Pre-launch checklist</h2>
+<ul><li class="gate-blocker"><span class="gate">blocker</span> Replace the one-line description with the proposed positioning sentence.
+      <div class="muted">The description is the only text most people will ever read; if it names the wrong category, nothing downstream recovers.</div></li><li class="gate-blocker"><span class="gate">blocker</span> Produce one screenshot-ready artifact from real data (no personal information).
+      <div class="muted">A share with no artifact requires the sharer to write an explanation. That is the friction that kills most sharing.</div></li><li class="gate-blocker"><span class="gate">blocker</span> Write down the failure condition before launch, not after.
+      <div class="muted">A plan without a kill criterion cannot be evaluated; it can only be rationalised.</div></li><li class="gate-warning"><span class="gate">warning</span> Send the asset to one named broadcaster and ask for nothing.
+      <div class="muted">Broadcast drives popularity more than chains do (Goel et al.), but the first message must not ask for a favour.</div></li><li class="gate-blocker"><span class="gate">blocker</span> Re-run the honesty scan on the final copy before publishing.
+      <div class="muted">Copy drifts during editing; a late &quot;10x&quot; is how a clean draft becomes a liability.</div></li><li class="gate-warning"><span class="gate">warning</span> Pick one channel and one asset. Write the other channels into SUMMARY.md as &quot;later&quot;.
+      <div class="muted">Simultaneous multi-channel launches split attention and make every channel look like a failure.</div></li><li class="gate-info"><span class="gate">info</span> Read the first 20 replies manually and note which sentence gets quoted back.
+      <div class="muted">The quoted sentence is the next post; the reply sentiment tells you whether the frame landed or backfired.</div></li></ul>
+
+<h2>8. Kill criteria</h2>
+<p class="muted">Written down before launch, so they cannot be rationalised afterwards.</p>
+<ul><li><strong>The output reads as generic advice rather than a diagnosis of this specific document.</strong><div class="muted">Observable: A reader cannot tell which project the report was about without being told. · Horizon: Immediately, on your own read-through</div></li><li><strong>A reply corrects a factual claim in the launch copy.</strong><div class="muted">Observable: Any comment disputing a number, a testimonial, or a capability. · Horizon: First 24 hours</div></li><li><strong>People engage with the frame but nobody forwards it.</strong><div class="muted">Observable: Replies and likes present, shares and DMs absent after 7 days. · Horizon: 7 days</div></li><li><strong>Installs happen but nobody returns.</strong><div class="muted">Observable: 7-day return rate below 30%. · Horizon: 30 days</div></li></ul>
+
+<h2>9. Limitations of this report</h2>
+<ul><li>Category saturation is a keyword heuristic; only the numeric band comes from a measurement.</li><li>Emotional stake is estimated from a keyword lexicon, not measured arousal (Berger &amp; Milkman 2012 is the basis, the lexicon is a proxy).</li><li>No claim is made about whether the underlying product is good, useful, or wanted.</li><li>Saturation: GitHub search returned 0 repositories for the topic query</li></ul>
+
+<footer>
+Generated by viral-engine 1.0.0 (deterministic) at 2026-11-05T08:47:29.846Z.<br>
+This report contains no invented statistics and makes no promise of virality. It is a diagnosis of the attempt, not a forecast.
+</footer>
+</div></body></html>

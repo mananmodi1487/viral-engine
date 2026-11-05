@@ -1,0 +1,55 @@
+{
+  "version": "1.0.0",
+  "note": "Evaluation fixtures. Each case states what a correct diagnosis must detect. Expectations are written by hand and deliberately include easy negatives, because a detector that flags everything has perfect recall and no value.",
+  "cases": [
+    {
+      "id": "weak-category",
+      "description": "Generic productivity tooling with no category pairing",
+      "expect": ["weakCategory"],
+      "mustNotFlag": [],
+      "document": "# Taskly\n\nA productivity app for busy people. Track your habits, manage tasks, and stay focused. Beautiful design, cross-platform sync, dark mode included."
+    },
+    {
+      "id": "clear-category",
+      "description": "Explicit repositioning; must NOT be flagged as weak category",
+      "expect": [],
+      "mustNotFlag": ["weakCategory", "missingAudience"],
+      "document": "# Ledgerline\n\nIt's not an invoicing tool. It's late-payment recovery for freelance contractors who cannot afford to chase clients.\n\nIf a client is 14 days late, Ledgerline drafts the escalation email you are avoiding.\n\n## Install\n\nnpm install -g ledgerline\n\nThis fails if contractors read it as a collections agency."
+    },
+    {
+      "id": "missing-broadcaster",
+      "description": "Useful tool with no community or tribe cue at all",
+      "expect": ["missingBroadcaster"],
+      "mustNotFlag": [],
+      "document": "# PixelDiff\n\nA command line tool that compares two PNG files and prints the percentage of changed pixels. Supports alpha channel and anti-aliasing tolerance. Written in Rust. 42 unit tests."
+    },
+    {
+      "id": "inflated-claims",
+      "description": "Multiple fabrication risk signals",
+      "expect": ["inflatedClaims"],
+      "mustNotFlag": [],
+      "document": "# GrowthGenius\n\nThe guaranteed viral growth engine trusted by 10,000 professionals. Revolutionary game-changing AI that will 10x your audience. This repo will reach 100K stars."
+    },
+    {
+      "id": "missing-failure-condition",
+      "description": "Confident launch copy with no stated failure mode",
+      "expect": [],
+      "mustNotFlag": ["inflatedClaims"],
+      "document": "# ShipLog\n\nIt's not a changelog. It's a release narrative for developer-facing products.\n\nWrite a changelog entry once and ShipLog renders it for your docs, your blog and your release notes.\n\nnpm install shiplog"
+    },
+    {
+      "id": "honest-disclaimers",
+      "description": "Negative case: honest warnings must never be flagged as inflation",
+      "expect": [],
+      "mustNotFlag": ["inflatedClaims"],
+      "document": "# Honest tool\n\nThis cannot guarantee viral growth. Nobody can promise 100K stars. It does not invent statistics and it will tell you not to launch.\n\nWhat it does: names the weakest lever in your launch."
+    },
+    {
+      "id": "unclear-audience",
+      "description": "No named audience anywhere",
+      "expect": ["missingAudience"],
+      "mustNotFlag": [],
+      "document": "# Orbital\n\nA framework for building things. Fast. Flexible. Modern. Everyone can use it. Works with anything."
+    }
+  ]
+}

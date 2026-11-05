@@ -1,0 +1,323 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-11-05T08:47:29.766Z",
+  "generator": {
+    "name": "viral-engine",
+    "version": "1.0.0",
+    "mode": "deterministic"
+  },
+  "source": {
+    "kind": "readme-text",
+    "ref": "/home/user/viral-engine/README.md",
+    "title": "README.md",
+    "body": "<div align=\"center\">\n\n<img src=\"assets/hero.svg\" alt=\"Viral Engine turning a generic app description into a positioning statement and three hooks\" width=\"880\">\n\n# 🚀 Viral Engine\n\n### Your work didn't spread because of the category, not the writing.\n\n**A CLI and Claude Skill that diagnoses why something didn't spread — then rebuilds it.**\n\n[![npm](https://img.shields.io/npm/v/viral-engine?label=npx&color=green)](https://www.npmjs.com/package/viral-engine)\n[![CI](https://github.com/mananmodi1487/viral-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/mananmodi1487/viral-engine/actions/workflows/ci.yml)\n[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)\n[![Tests](https://img.shields.io/badge/tests-49%20passing-brightgreen)](tests/)\n[![Dependencies](https://img.shields.io/badge/runtime%20deps-1%20(zod)-blue)](package.json)\n[![Local first](https://img.shields.io/badge/local--first-no%20telemetry-blueviolet)](#-privacy)\n\n[**60-second start**](#-try-it-in-60-seconds) · [See real output](#-what-you-actually-get) · [How it works](docs/architecture.md) · [Scoring](docs/scoring.md) · [Honesty policy](docs/honesty-policy.md)\n\n</div>\n\n---\n\n## The 30-second version\n\nYou published something. Nobody shared it. You rewrote the hook, improved the copy, posted at a better time. Still nothing.\n\n**Viral Engine scores seven levers, names the single weakest one, and tells you what to fix first** — not with adjectives, but with a scorecard you can diff, a broadcaster brief you can send, and a failure condition you can check.\n\n```\n$ npx viral-engine analyze ./README.md --offline\n\n  viral-engine v1.0.0  ./README.md\n  ──────────────────────────────────────────────────────────\n    52/100  overall\n    weakest lever: Proof Readiness (51/100)\n\n    Category Clarity                      █████████████████░░░  87 structural\n    Broadcaster Fit                       ███████████████░░░░░  75 structural\n    Share Friction                        ███████████░░░░░░░░░  56 measured\n    Emotional Stake                       ██████████████░░░░░░  70 heuristic\n    Proof Readiness                       ██████████░░░░░░░░░░  51 measured\n    Launch Timing                         ████████████░░░░░░░░  60 heuristic\n    Honesty Risk (lower is better)        █████████░░░░░░░░░░░  43 measured\n\n    category     growth / marketing tooling (low)\n    proposed     It's not growth / marketing tooling. It's spread\n                 diagnostics for people who already published.\n    broadcaster  One practitioner who already writes about this problem\n    fix first    Add one screenshot-ready artifact a reader can forward\n                 without explanation.\n```\n\nThat's real output, generated from this repo's own `SKILL.md`. Every number carries a **basis** — `measured`, `structural`, or `heuristic` — because pretending all seven are equally rigorous is how scorecards start lying.\n\n---\n\n## ⚡ Try it in 60 seconds\n\n**Option A — no install, in Claude:**\n\n```\nRead https://raw.githubusercontent.com/mananmodi1487/viral-engine/main/SKILL.md\nand then run it on: [your thing here]\n```\n\n**Option B — the CLI:**\n\n```bash\ngit clone https://github.com/mananmodi1487/viral-engine && cd viral-engine\nnpm ci\nnpx tsx packages/cli/src/index.ts analyze ./README.md --offline\n```\n\n**Option C — one command, no clone:**\n\n```bash\nnpx viral-engine analyze owner/repo          # a GitHub repo\nnpx viral-engine analyze ./README.md         # a local file\nnpx viral-engine analyze https://yours.com   # a landing page\nnpx viral-engine analyze --text \"your copy\"  # pasted text\n```\n\nNo API key needed. No telemetry. `--offline` makes zero network calls.\n\n---\n\n## 📊 What you actually get\n\nEight sections, in this order, every time:\n\n| # | Section | What it answers |\n|---|---|---|\n| 1 | **Scorecard** | Which of seven levers is weakest, and what to do about it |\n| 2 | **Category** | What you're really competing with, plus 3 less-crowded adjacent categories |\n| 3 | **The broadcaster** | One named kind of person, where to find them, a paste-ready message, and what not to say |\n| 4 | **Share friction** | Why forwarding is expensive, with a fix per friction |\n| 5 | **Honesty check** | Anything that would get you publicly corrected |\n| 6 | **Launch assets** | Show HN, X thread, LinkedIn, Product Hunt, hero copy, email subjects, chat announcement |\n| 7 | **Pre-launch checklist** | Blockers first, reasoning attached to each |\n| 8 | **Kill criteria** | Written *before* launch so they can't be rationalised after |\n\nFull example: [`examples/reports/example-report.md`](examples/reports/example-report.md) · [JSON](examples/reports/example-report.json) · HTML via `--format html`\n\n---\n\n## 🎯 Use cases\n\n**Launching an open-source repo** — find out whether your README names a category or just describes features.\n\n```bash\nnpx viral-engine analyze yourname/yourrepo\n```\n\n**Rewriting a landing page** — the page that converts is usually in a different category than the one you wrote.\n\n```bash\nnpx viral-engine analyze https://yoursite.com\n```\n\n**Diagnosing a newsletter or essay** — before you spend a week on the next one.\n\n```bash\nnpx viral-engine analyze ./draft.md --offline\n```\n\n**Preparing a Product Hunt launch** — get the tagline, the description, and the one broadcaster to approach.\n\n**Finding the right broadcaster** — the section most launch checklists skip entirely.\n\n---\n\n## ⚡ Four findings that contradict common advice\n\nAll cited in [`research/virality-patterns.md`](research/virality-patterns.md).\n\n**1. \"Going viral\" barely exists.** Across ~1 billion diffusion events, cascades larger than 100 nodes were about **0.025%** of all events. The average cascade: 1.3 nodes. *(Goel, Watts & Goldstein, 2012/2016)*\n\n**2. Popularity is a broadcast, not a chain.** Structural virality is typically low and stays low regardless of size. What predicts a big event is the size of the **single largest broadcast**.\n\n**3. Sadness makes people stop.** Awe, anger, anxiety and amusement increase sharing. Sadness — equally intense — *decreases* it, because it deactivates. The variable isn't \"emotional\", it's **activation**. *(Berger & Milkman, 2012)*\n\n**4. Half of YouTube videos have under 500 views.** Only ~7% of word of mouth happens online. *(Berger, 2013)*\n\n### 🔑 The Broadcaster Rule\n\nFrom #2:\n\n> **Don't optimise the average share rate. Optimise the ease of one specific broadcast.**\n\nSo the tool refuses to emit advice without naming *a kind of person*, where to find them, and why they'd bother. \"Post on social media\" is rejected by the type system — `BroadcasterBrief` requires `whereToFind`, `messageTemplate`, `whatNotToSay`, and `likelyAmplifier`.\n\n---\n\n## 🛡️ Honesty is enforced in code, not promised in a README\n\n| Rule | Enforcement |\n|---|---|\n| No invented statistics | `honesty.ts` blocks unsourced figures; generated assets emit `[your real number]` |\n| No fabricated testimonials | An **outbound** scan of our own output blocks testimonial shapes |\n| No guaranteed outcomes | Guarantee phrasing is a `blocker` |\n| Every plan states a failure condition | `assertFailureConditions()` **throws** if any is missing |\n| \"Do not launch yet\" is valid | First-class output, banner in every renderer, exits 3 in CI |\n| Unknown is stated, not guessed | Saturation returns `unknown`, never a default number |\n\n**The outbound pass is the unusual one.** Before any report reaches you, the generator scans *its own text* with stricter rules than it applies to yours. It caught two real bugs during development — including the tool flagging its own honest disclaimer — both now regression-tested. Details: [`docs/honesty-policy.md`](docs/honesty-policy.md).\n\n---\n\n## 🔬 What's different from every other growth tool\n\nFull comparison, including where alternatives are better: [`IMPROVEMENTS.md`](IMPROVEMENTS.md)\n\n- **A bottleneck, not a checklist** — seven levers scored, the weakest named, fix only that\n- **Deterministic scores** — an LLM can only *explain*; it can never set a score or invent a broadcaster\n- **Two share mechanisms, never three** — three reads as desperate\n- **A scorecard that says \"stop\"** — including *\"fix honesty before reach\"*\n- **Runs with no model at all** — local-first, no vendor lock-in\n\n---\n\n## 🏗️ Architecture\n\n```\npackages/\n  core/          signals → score → categories → broadcasters → assets → validate\n    providers/   anthropic · openai · ollama · groq · mistral · together\n  cli/           analyze <target> --format terminal|md|json|html\n  web/           dependency-free UI, no telemetry\n.github/\n  actions/spread-check/   PR comment + honesty gate\ndocs/            architecture · quickstart · scoring · honesty-policy · migration\nprompts/         versioned prompt set (diagnose, positioning, broadcaster, assets)\nfixtures/        labelled evaluation cases\ntests/           49 tests + evaluation harness\n```\n\n**One design decision drives everything:** scoring is a pure function of extracted signals. The only non-deterministic stage is optional prose, and it cannot write to any scored field. That is why the same input produces byte-identical JSON — there's a test for it.\n\nRead more: [`docs/architecture.md`](docs/architecture.md)\n\n---\n\n## 🔒 Privacy\n\n- **No telemetry.** Not a line of analytics code in this repo.\n- **`--offline`** makes zero network calls; the entire diagnosis still works.\n- **API keys** are read from the environment only. They are never logged, never written to the report, never included in error messages.\n- **Local models first.** Ollama is checked before any hosted provider.\n- **HTML reports are self-contained** — no external assets, no scripts, safe to email.\n\n---\n\n## ❓ FAQ\n\n**Does this guarantee virality?** No. Nothing can. Roughly 150–200 repos have ever passed 100K stars and nearly all did so through one uncontrollable distribution event. This improves the quality of the attempt.\n\n**Does it fabricate statistics?** No — it's structurally prevented. Generated copy uses placeholders; blockers fail the build.\n\n**Can I use it locally?** Yes, fully. `--offline --provider none` is the default path, not a degraded one.\n\n**Is it only for GitHub repos?** No — repos, URLs, files, or pasted text.\n\n**Why does it sometimes say \"do not launch yet\"?** Because that's a valid result. One unpolished launch attempt per project is the real constraint; a launch that can't produce signal is worse than a delay.\n\n**Do I need an API key?** No. The deterministic engine is the product; a provider only adds narrative prose.\n\n**How accurate is it?** See [`docs/scoring.md`](docs/scoring.md). The benchmark is 7 fixtures at 100% — a smoke test, not evidence of generalization, and the docs say so.\n\n---\n\n## 🤝 Contributing\n\nMost valuable, in order: **counter-examples** (things that looked viral-ready and flopped), new honesty rules with fixtures, new providers, non-tech case studies.\n\nSetup, rules, and what gets closed: [`docs/contributing.md`](docs/contributing.md)\n\n```bash\nnpm test        # 49 tests\nnpm run bench   # precision/recall gate on labelled fixtures\n```\n\n**Please keep the honesty guardrails intact.** A PR adding fabricated social proof will be closed and the reason quoted.\n\n---\n\n## 📜 License\n\nMIT — see [LICENSE](LICENSE).\n\n<div align=\"center\">\n\n### Run it on the thing that didn't work.\n\nThen tell us what it said — especially if it said something you didn't want to hear.\n\n[**⚡ Try it**](#-try-it-in-60-seconds) · [⭐ Star](https://github.com/mananmodi1487/viral-engine) · [Read the skill](SKILL.md) · [Architecture](docs/architecture.md) · [Case studies](examples/)\n\n<sub>Built with [Claude](https://claude.ai). Research credited in [CREDITS.md](CREDITS.md). Not affiliated with Anthropic.</sub>\n\n</div>\n\n<!-- Easter egg: the engine flags a star promise as an honesty blocker, so this line is\n     deliberately phrased as a wish rather than a forecast. Run the tool on this file\n     and see for yourself — that is the whole pitch in one command. -->\n",
+    "topics": [],
+    "fetchedFrom": "local-file"
+  },
+  "scorecard": {
+    "overall": 58,
+    "dimensions": [
+      {
+        "key": "categoryClarity",
+        "label": "Category Clarity",
+        "score": 87,
+        "basis": "structural",
+        "rationale": "contains an explicit \"it's not X, it's Y\" category pairing; a one-line description exists; names an audience (people who)",
+        "fix": "Sharpen the pairing so the new category is a job the audience already budgets for."
+      },
+      {
+        "key": "broadcasterFit",
+        "label": "Broadcaster Fit",
+        "score": 59,
+        "basis": "structural",
+        "rationale": "names no community, so there is no obvious amplifier; references 12 recurring proper nouns (citable, recognisable); at 1621 words a broadcaster must read it to describe it",
+        "fix": "Name one real broadcaster and write the sentence they would paste. If you cannot, there is no amplifier."
+      },
+      {
+        "key": "shareFriction",
+        "label": "Share Friction",
+        "score": 41,
+        "basis": "measured",
+        "rationale": "5 prerequisite/configuration cue(s) raise the cost of a first try; 13 setup steps before first value; 9 code blocks: hard to screenshot, hard to quote",
+        "fix": "Cut the path to first value to one command, and move everything else into a \"details\" block."
+      },
+      {
+        "key": "emotionalStake",
+        "label": "Emotional Stake",
+        "score": 40,
+        "basis": "heuristic",
+        "rationale": "0 high-arousal term(s), 0 deactivating term(s); no activating language: readers have no physical impulse to forward it",
+        "fix": "Add one concrete stake: what does the reader lose by ignoring this, in their own words?"
+      },
+      {
+        "key": "proofReadiness",
+        "label": "Proof Readiness",
+        "score": 77,
+        "basis": "measured",
+        "rationale": "no unbacked claims detected; 5 specific figure(s) present — verifiable if sourced",
+        "fix": "Add the failure condition: \"This fails if ___.\" It is the cheapest credibility you can buy."
+      },
+      {
+        "key": "launchTiming",
+        "label": "Launch Timing",
+        "score": 50,
+        "basis": "heuristic",
+        "rationale": "a first-run path exists but is long",
+        "fix": "Decide the one channel and the one asset before launch day. \"Post everywhere\" is not a plan."
+      },
+      {
+        "key": "honestyRisk",
+        "label": "Honesty Risk (lower is better)",
+        "score": 4,
+        "basis": "measured",
+        "rationale": "0 blocker(s), 0 warning(s), 1 note(s) in the honesty scan",
+        "fix": "Keep it. The absence of overclaiming is the differentiator, not a constraint."
+      }
+    ],
+    "lowConfidence": true
+  },
+  "category": {
+    "currentCategory": "growth / marketing tooling",
+    "currentCategoryBasis": "heuristic",
+    "saturation": "low",
+    "saturationBasis": "measured",
+    "saturationEvidence": "GitHub search returned 0 repositories for the topic query",
+    "adjacentCategories": [
+      {
+        "name": "spread diagnostics for people who already published",
+        "whyLessCrowded": "the category sells creation; almost nobody sells post-mortem",
+        "tensionScore": 4,
+        "credibilityRisk": "diagnostics cannot promise outcomes, which is unfamiliar to this audience"
+      },
+      {
+        "name": "category-selection advice",
+        "whyLessCrowded": "positions above the tooling layer, where trust is higher",
+        "tensionScore": 3,
+        "credibilityRisk": "sounds like consulting, so it must ship an artifact, not just advice"
+      }
+    ],
+    "proposedPositioning": "It's not growth / marketing tooling. It's spread diagnostics for people who already published — for people who are already looking for something like this.",
+    "proofRequired": "The frame \"spread diagnostics for people who already published\" only survives if you can show diagnostics cannot promise outcomes, which is unfamiliar to this audience. If you cannot, the frame is a costume and the first critical reply will say so.",
+    "failureCondition": {
+      "statement": "This positioning fails if people who are already looking for something like this reads it as another version of growth / marketing tooling.",
+      "observable": "Replies describe the product as \"just another X\" or ask how it differs from a named incumbent.",
+      "horizon": "First 24 hours after publishing"
+    }
+  },
+  "broadcasters": [
+    {
+      "target": "One practitioner who already writes about this problem for a living",
+      "kind": "aggregator",
+      "whereToFind": "Search the exact problem phrasing on a newsletter platform and on the platform where your audience already argues about it; pick someone who has published on this twice or more",
+      "whyTheyCare": "They need material, and a concrete growth / marketing tooling diagnostic is easier to write about than another opinion piece.",
+      "whatMakesThemLookGood": "They cite a tool that produces a specific, checkable output rather than another framework.",
+      "assetToSend": "The one-page diagnosis for their own project, run through the tool unasked. Showing beats telling.",
+      "messageTemplate": "Hi — I ran your <project/post> through a spread diagnostic I built. It came back with:\n\nMost growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.\n\nUseful or noise? No ask either way — happy to delete this if it is the latter.",
+      "whatNotToSay": [
+        "Do not lead with what is wrong with their work.",
+        "Do not attach a press release or a media kit.",
+        "Do not ask them to share before they have replied once."
+      ],
+      "likelyAmplifier": "Their next post, where one line about your tool reaches more of your audience than a month of posting does.",
+      "failureCondition": "This fails if the diagnosis is generic. A practitioner will spot boilerplate in one sentence; only send it if the output names something specific to their project."
+    },
+    {
+      "target": "A community moderator in the single most relevant niche community",
+      "kind": "community-moderator",
+      "whereToFind": "The largest Discord/forum/subreddit for the exact audience. Read the pinned self-promotion rules before anything else.",
+      "whyTheyCare": "Moderators are judged on whether their community gets useful material rather than ads.",
+      "whatMakesThemLookGood": "Posting a tool with a working demo and no signup wall makes them look like they curate well.",
+      "assetToSend": "A build-log style post (what you made, what it told you, what it got wrong) — not an announcement.",
+      "messageTemplate": "Built a growth / marketing tooling diagnostic over the weekend. It told me something I did not want to hear about my own project: Most growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.\n\nSharing in case it is useful to others here. Rules-permitting, of course — happy to delete if it is off-topic.",
+      "whatNotToSay": [
+        "Do not post the same text to several communities on the same day.",
+        "Do not DM members to promote the post.",
+        "Do not ignore a self-promo ban because \"it is genuinely useful\"."
+      ],
+      "likelyAmplifier": "A pinned message or a wiki link, which keeps working for months.",
+      "failureCondition": "This fails if the community bans self-promotion. Check the rules first; being banned costs more than the post was worth."
+    },
+    {
+      "target": "An aggregator that indexes tools in this space",
+      "kind": "aggregator",
+      "whereToFind": "Awesome-lists, topic indexes and tool directories that accept pull requests or submissions.",
+      "whyTheyCare": "Their value is coverage; a missing useful tool is a gap in their index.",
+      "whatMakesThemLookGood": "A clean entry with a correct one-line description.",
+      "assetToSend": "One line: \"Most growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.\" plus a link and the license.",
+      "messageTemplate": "Submitting for the list: <name> — Most growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.\n\nMIT licensed, no signup, works offline. Happy to adjust the description to your format.",
+      "whatNotToSay": [
+        "Do not submit before the tool actually works end to end.",
+        "Do not submit to ten lists in an hour; it reads as spam."
+      ],
+      "likelyAmplifier": "Search traffic to the list, which compounds without you.",
+      "failureCondition": "This fails if the tool needs an API key to do anything. Indexes prefer zero-friction entries."
+    }
+  ],
+  "shareFriction": [
+    {
+      "friction": "Setup cost before first value",
+      "evidence": "13 explicit setup step(s); 5 prerequisite cue(s) detected",
+      "fix": "Collapse to a single command and move prerequisites into a collapsible section."
+    },
+    {
+      "friction": "Quotability",
+      "evidence": "1621 words, 16 headings, 9 code blocks",
+      "fix": "Add a 40-word summary at the top that can be screenshotted on its own."
+    },
+    {
+      "friction": "Broadcaster clarity",
+      "evidence": "no community or tribe cue found in the document",
+      "fix": "Name the community explicitly in the first screen. A broadcaster needs to recognise their own readers."
+    }
+  ],
+  "honesty": {
+    "passed": true,
+    "findings": [
+      {
+        "severity": "note",
+        "matched": "100k stars",
+        "where": "input",
+        "rule": "hype lexicon",
+        "suggestion": "\"100k stars\" is a claim, not evidence. Replace with the specific mechanism or delete it."
+      }
+    ],
+    "scannedFor": [
+      "guaranteed virality",
+      "guaranteed outcome",
+      "star target as a promise",
+      "algorithm hacking",
+      "secret trick framing",
+      "overnight success",
+      "unsourced multiplier",
+      "empty superlative",
+      "vague performance claim",
+      "unsourced adoption figure",
+      "unverifiable endorsement",
+      "hype lexicon"
+    ]
+  },
+  "launchPlan": {
+    "checklist": [
+      {
+        "step": "Replace the one-line description with the proposed positioning sentence.",
+        "gate": "blocker",
+        "reasoning": "The description is the only text most people will ever read; if it names the wrong category, nothing downstream recovers."
+      },
+      {
+        "step": "Produce one screenshot-ready artifact from real data (no personal information).",
+        "gate": "blocker",
+        "reasoning": "A share with no artifact requires the sharer to write an explanation. That is the friction that kills most sharing."
+      },
+      {
+        "step": "Write down the failure condition before launch, not after.",
+        "gate": "blocker",
+        "reasoning": "A plan without a kill criterion cannot be evaluated; it can only be rationalised."
+      },
+      {
+        "step": "Send the asset to one named broadcaster and ask for nothing.",
+        "gate": "warning",
+        "reasoning": "Broadcast drives popularity more than chains do (Goel et al.), but the first message must not ask for a favour."
+      },
+      {
+        "step": "Re-run the honesty scan on the final copy before publishing.",
+        "gate": "blocker",
+        "reasoning": "Copy drifts during editing; a late \"10x\" is how a clean draft becomes a liability."
+      },
+      {
+        "step": "Pick one channel and one asset. Write the other channels into SUMMARY.md as \"later\".",
+        "gate": "warning",
+        "reasoning": "Simultaneous multi-channel launches split attention and make every channel look like a failure."
+      },
+      {
+        "step": "Read the first 20 replies manually and note which sentence gets quoted back.",
+        "gate": "info",
+        "reasoning": "The quoted sentence is the next post; the reply sentiment tells you whether the frame landed or backfired."
+      }
+    ],
+    "assets": [
+      {
+        "channel": "show-hn",
+        "text": "Show HN: README.md — spread diagnostics for people who already published\n\nI built this because people who are already looking for something like this keep hitting the same problem, and the existing tools all solve it by adding more surface area.\n\nREADME.md does one thing: spread diagnostics for people who already published. It runs offline by default, has no signup, and produces a report you can read in a minute.\n\nThe honest limitation: it cannot tell you whether your idea is good. It can tell you which lever is weakest and what to fix first — and it will say \"do not launch yet\" if that is the answer.\n\nEverything is MIT licensed. Feedback welcome, especially where the diagnosis is wrong.",
+        "budget": "one paragraph under 200 words; plain title",
+        "notes": "Title must be plain and non-promotional. Do not put \"viral\" in the title — it triggers the category distrust you are trying to escape."
+      },
+      {
+        "channel": "x-thread",
+        "text": "1/ Most growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.\n\n2/ Most launch advice optimises the hook. The diffusion data says the hook is rarely the bottleneck.\n\n3/ Across ~1B diffusion events, cascades over 100 nodes were about 0.025%. Popularity tracks the largest single broadcast, not the chain (Goel, Watts & Goldstein).\n\n4/ So the question is not \"how do I go viral\". It is \"who is the one person who would pass this on, and what do they need from me\".\n\n5/ I built README.md to answer that: it scores seven levers, names the weakest, and writes the broadcaster brief.\n\n6/ It never invents numbers. If it does not know something it says so, which makes it less impressive and more useful.\n\n7/ Run it on something you already published: <link>\n\nIf it tells you something you did not want to hear, that is the tool working.",
+        "budget": "first post under 240 characters",
+        "notes": "Post 3 carries the credibility. If you drop the citation, the thread becomes opinion."
+      },
+      {
+        "channel": "linkedin",
+        "text": "I stopped asking \"how do I get this in front of more people\" and started asking a harder question.\n\nMost growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.\n\nThe reframe matters because the first question has no answer. The second one has a specific answer, and it is usually \"change the category, not the copy\".\n\nI built a small tool that runs the diagnosis: it scores category clarity, broadcaster fit, share friction, and proof readiness, then names the single weakest lever.\n\nIt refuses to invent statistics. When it does not know something it says \"unavailable\" rather than guessing, which is why the numbers are less satisfying and more trustworthy.\n\nIt also has a \"do not launch yet\" output. That is a feature, not a bug: one unpolished launch attempt per project is the real constraint.\n\n<link>",
+        "budget": "1200-1800 characters performs best",
+        "notes": "Lead with the reframe. LinkedIn rewards first-person, so do not make this read like a launch announcement."
+      },
+      {
+        "channel": "product-hunt",
+        "text": "Tagline: Find out why nobody shared it\n\nDescription: README.md scores your launch on seven levers, names the weakest one, and writes the broadcaster brief. Runs locally, no signup, refuses to invent statistics. Valid output includes \"do not launch yet\".",
+        "budget": "tagline under 60 characters",
+        "notes": "The tagline is a question, not a claim. Claims invite comparison; questions invite a click."
+      },
+      {
+        "channel": "landing-hero",
+        "text": "# Most growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.\n\nScore seven levers, find the bottleneck, and get the broadcaster brief. Free, local, and it will tell you not to launch.",
+        "budget": "headline under 10 words, subhead under 25",
+        "notes": "The paste-ready line is the headline because it is the most compressed true thing you have."
+      },
+      {
+        "channel": "email-subject",
+        "text": "Why nobody forwarded it\nYour category is the problem, not your writing\nA diagnosis you can run in 60 seconds\nThe weakest lever (and how to find yours)",
+        "budget": "under 50 characters, no false urgency",
+        "notes": "No countdown language. Subject lines that promise urgency get opened once and trusted never."
+      },
+      {
+        "channel": "chat-announcement",
+        "text": "Built a small thing that diagnoses why a launch did not spread. It scores seven levers and names the weakest one — mine came back as \"broadcaster fit\", which was annoying and correct.\n\nRuns locally, no signup, no API key needed: <link>\n\nIt refuses to invent stats, and it will tell you not to launch. Feedback welcome, especially if it is wrong about yours.",
+        "budget": "under 120 words for Discord/Slack",
+        "notes": "Share the result about yourself first. It gives others permission to share theirs."
+      },
+      {
+        "channel": "broadcaster-paste",
+        "text": "Most growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.",
+        "budget": "one sentence, no link required",
+        "notes": "This is the single most important asset. If a broadcaster cannot repeat this sentence from memory, nothing else here matters."
+      }
+    ],
+    "killCriteria": [
+      {
+        "statement": "The output reads as generic advice rather than a diagnosis of this specific document.",
+        "observable": "A reader cannot tell which project the report was about without being told.",
+        "horizon": "Immediately, on your own read-through"
+      },
+      {
+        "statement": "A reply corrects a factual claim in the launch copy.",
+        "observable": "Any comment disputing a number, a testimonial, or a capability.",
+        "horizon": "First 24 hours"
+      },
+      {
+        "statement": "People engage with the frame but nobody forwards it.",
+        "observable": "Replies and likes present, shares and DMs absent after 7 days.",
+        "horizon": "7 days"
+      },
+      {
+        "statement": "Installs happen but nobody returns.",
+        "observable": "7-day return rate below 30%.",
+        "horizon": "30 days"
+      }
+    ],
+    "doNotLaunchYet": false
+  },
+  "pasteReady": "Most growth / marketing tooling products are competing on features. This one is spread diagnostics for people who already published — for people who are already looking for something like this.",
+  "failureCondition": {
+    "statement": "This plan fails if the diagnosis is not specific to /home/user/viral-engine/README.md.",
+    "observable": "The report would read identically if you swapped in a different project.",
+    "horizon": "Immediately"
+  },
+  "limitations": [
+    "Category saturation is a keyword heuristic; only the numeric band comes from a measurement.",
+    "Emotional stake is estimated from a keyword lexicon, not measured arousal (Berger & Milkman 2012 is the basis, the lexicon is a proxy).",
+    "No claim is made about whether the underlying product is good, useful, or wanted.",
+    "Saturation: GitHub search returned 0 repositories for the topic query"
+  ]
+}

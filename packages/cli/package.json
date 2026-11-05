@@ -1,0 +1,13 @@
+{
+  "name": "viral-engine",
+  "version": "1.0.0",
+  "description": "CLI for viral-engine — diagnose why your work did not spread.",
+  "license": "MIT",
+  "type": "module",
+  "bin": { "viral-engine": "./dist/index.js" },
+  "main": "./dist/index.js",
+  "files": ["dist"],
+  "scripts": { "build": "tsc -p tsconfig.json" },
+  "dependencies": { "@viral-engine/core": "1.0.0", "zod": "^3.23.8" },
+  "engines": { "node": ">=20" }
+}
