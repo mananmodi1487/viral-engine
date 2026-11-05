@@ -20,28 +20,38 @@
 
 <!-- This repo will hit 100K+ stars -->
 
+<details>
+<summary><b>📈 NEXT LEVEL: the growth projection chart</b> — click to expand</summary>
+
+```ascii
+📈 ASPIRATIONAL GROWTH PROJECTION (honest forecast)
+
+    Stars
+  100K |                                                      ┆
+   10K |                                                      ┆
+    3K |                               ····o········o         ┆
+    1K |             ····o········o····
+   100 |o·······o····
+     0 |
+       +__________________________________________________________
+        now     30d      90d      6mo      9mo      12mo
+
+  o  = the realistic path from this repo's own table in SUMMARY.md
+       (40 wk 1 -> 300 mo 1 -> 1,000 mo 3 -> 3,000 mo 12)
+  ┆  = 10K-100K requires a genuine outlier. Not on this plan.
+
+  A projection, not a history. Nothing here has happened yet, so the
+  timeline runs forward from launch instead of showing past quarters.
+  Backward-dated axes would read as a track record, and there isn't one.
+```
+
+</details>
+
 ---
 
 ## 📈 The curve, labelled honestly
 
-```
- stars
- 100K ┤                                                         ·····o
-  10K │                                              ·····o·····
-   1K │                         ·····o·········o·····
-  100 │      ····o·········o····
-   10 │o·····
-      └────────────────────────────────────────────────────────────────────────────
-       day 1     wk 2      mo 1      mo 2      mo 3       mo 6       mo 12
-
-       └─ 10 strangers ran it  └─ first real push    └─ ~1K = recommended
-
-  ASPIRATIONAL PROJECTION — not a history. This repo has not taken this
-  shape. It is the curve the plan aims at, drawn so you can check
-  whether the first real data point lands on it.
-```
-
-**Why show a projection instead of results?** Because the results don't exist yet — the repo is days old. Drawing an invented history would be the exact thing this repo tells you not to do ([honesty policy](#-the-honesty-policy)). The projection is checkable: come back in a month and see which point we're actually on.
+**The chart above is a projection, not a record.** Why show one instead of results? Because the results don't exist yet — the repo is days old. Drawing an invented history would be the exact thing this repo tells you not to do ([honesty policy](#-the-honesty-policy)). A projection is checkable: come back in a month and see which point we're actually on.
 
 **The dashed reality from the research:** ~0.025% of a billion diffusion events ever exceeded 100 nodes ([Goel et al.](research/virality-patterns.md)). Most curves don't bend. The plan in [`SUMMARY.md`](SUMMARY.md) targets **1,000 in 90 days**, not 100K — because 1,000 is the threshold where GitHub's own recommendation surfaces start sending you traffic for free, and 100K is not plannable at all.
 
