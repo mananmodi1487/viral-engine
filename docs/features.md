@@ -1,4 +1,4 @@
-# The twenty features
+# The feature ledger
 
 The ambitious list, with the status of each. **Built** means there is code and a test. **Partial**
 means something real exists and it is not what the name promises. **Specified** means it is

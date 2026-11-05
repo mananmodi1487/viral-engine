@@ -57,11 +57,11 @@ def one_dimension() -> dict:
 
 def minimal_doc(**over) -> dict:
     doc = {
-        "ods_version": "1.0.0",
+        "ods_version": "2.0.0",
         "artifact": {"id": "x", "name": "X", "type": "github-repo"},
         "current_positioning": {"one_sentence_description": "d", "claimed_category": "c"},
         "honesty_audit": honest_audit().model_dump(),
-        "scorecard": {"aqi_version": "1.0.0", "total": 40, "dimensions": [one_dimension()]},
+        "scorecard": {"aqi_version": "2.0.0", "total": 40, "dimensions": [one_dimension()]},
         "failure_conditions": [
             {"statement": "fails if generic", "observable": "same report", "horizon": "immediately"}
         ],
@@ -77,7 +77,7 @@ class TestWeights(unittest.TestCase):
         self.assertEqual(assert_weights_sum_to_max(), AQI_MAX)
 
     def test_twenty_dimensions(self):
-        self.assertEqual(len(dimension_specs()), 20)
+        self.assertEqual(len(dimension_specs()), 25)
 
     def test_every_dimension_has_a_question(self):
         for s in dimension_specs():
@@ -93,8 +93,8 @@ class TestScoring(unittest.TestCase):
             improvement="add a pairing",
             failure_condition="readers describe it as the old category",
         )
-        self.assertEqual(d.weight, 80)
-        self.assertEqual(d.points, 40.0)
+        self.assertEqual(d.weight, 85)
+        self.assertEqual(d.points, 42.5)
 
     def test_total_equals_sum_of_dimensions(self):
         dims = [
@@ -136,7 +136,7 @@ class TestScoring(unittest.TestCase):
 class TestDocument(unittest.TestCase):
     def test_minimal_document_validates(self):
         doc = validate_document(minimal_doc())
-        self.assertEqual(doc.ods_version, "1.0.0")
+        self.assertEqual(doc.ods_version, "2.0.0")
 
     def test_failure_conditions_are_required(self):
         with self.assertRaises(Exception):
@@ -182,7 +182,7 @@ class TestDocument(unittest.TestCase):
                       confidence=Confidence.HIGH, evidence=["all checks passed"],
                       improvement="i", failure_condition="f")
         with self.assertRaises(Exception):
-            Scorecard(aqi_version="1.0.0", total=5, dimensions=[d])
+            Scorecard(aqi_version="2.0.0", total=5, dimensions=[d])
 
     def test_anti_spam_rules_need_a_limit(self):
         with self.assertRaises(Exception):

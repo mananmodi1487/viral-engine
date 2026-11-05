@@ -150,7 +150,7 @@ cd packages/protocol/python && python -m pytest tests -q
 
 ### The reference example
 
-`protocol/examples/ods-example.json` is a real generated document, 73 KB, kept in the
+`protocol/examples/ods-example.json` is a real generated document, 77 KB, kept in the
 repository so that every binding can be tested against the same input without
 regenerating it. It must validate in every implementation. If it does not, the
 protocol has diverged and that is a bug in one of the implementations — not in the

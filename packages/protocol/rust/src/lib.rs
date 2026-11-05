@@ -727,8 +727,8 @@ mod tests {
             vec!["half the structural checks passed".into()], "add a pairing", "readers say just another X",
         )
         .expect("valid dimension");
-        assert_eq!(d.weight, 80);
-        assert_eq!(d.points, 40.0);
+        assert_eq!(d.weight, 85);
+        assert_eq!(d.points, 42.5);
     }
 
     #[test]
@@ -740,11 +740,11 @@ mod tests {
         )
         .expect("valid");
         let sc = Scorecard {
-            aqi_version: "1.0.0".into(), max: 1000, total: 5.0, band: None, disclaimer: None,
+            aqi_version: "2.0.0".into(), max: 1000, total: 5.0, band: None, disclaimer: None,
             dimensions: vec![d.clone()],
         };
         assert!(sc.validate().is_err());
-        let ok = Scorecard { total: 80.0, ..sc };
+        let ok = Scorecard { total: 85.0, ..sc };
         assert!(ok.validate().is_ok());
     }
 

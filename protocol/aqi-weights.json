@@ -1,34 +1,34 @@
 {
   "$comment": "Single source of truth for the Attempt Quality Index (AQI). Every implementation (TypeScript, Python, Go, Rust, third-party) MUST read these weights rather than hardcoding them. Weights sum to 1000 by construction; scripts/check-aqi-weights.mjs fails the build if they do not.",
-  "aqiVersion": "1.0.0",
+  "aqiVersion": "2.0.0",
   "max": 1000,
-  "notation": "Each dimension carries a raw 0-100 sub-score and a weight. attempt_quality = round(sum(sub_score_i * weight_i) / 100). The maximum attainable value is therefore 1000, which is why the project calls itself 1000/10 while refusing to claim any score predicts virality.",
+  "notation": "Each dimension carries a raw 0-100 sub-score and a weight. attempt_quality = round(sum(sub_score_i * weight_i) / 100). The maximum attainable value is therefore 1000. In 2.0.0 the number of dimensions rose from 20 to 25 and every weight changed; a 1.x score is NOT comparable with a 2.x score, which is why aqi_version is a required field on every document and why the migration tool refuses to upgrade a score silently.",
   "dimensions": [
     {
       "key": "category_clarity",
       "label": "Category Clarity",
-      "weight": 80,
+      "weight": 85,
       "question": "Could a stranger repeat what this is and what it is not, in one sentence, after reading only the first screen?",
       "higherIsBetter": true
     },
     {
       "key": "category_opportunity",
       "label": "Category Opportunity",
-      "weight": 70,
+      "weight": 55,
       "question": "Is the chosen category crowded, and is there a less crowded adjacent category the artifact could credibly claim?",
       "higherIsBetter": true
     },
     {
       "key": "audience_specificity",
       "label": "Audience Specificity",
-      "weight": 60,
+      "weight": 45,
       "question": "Is there one named person who would recognise themselves, or is the audience a demographic?",
       "higherIsBetter": true
     },
     {
       "key": "broadcaster_fit",
       "label": "Broadcaster Fit",
-      "weight": 80,
+      "weight": 75,
       "question": "Can you name a specific broadcaster, where to find them, and why forwarding this is low-cost for them?",
       "higherIsBetter": true
     },
@@ -42,115 +42,191 @@
     {
       "key": "share_friction_reduction",
       "label": "Share Friction Reduction",
-      "weight": 65,
+      "weight": 50,
       "question": "Can a reader forward this without writing an explanation of their own?",
       "higherIsBetter": true
     },
     {
       "key": "emotional_truth",
       "label": "Emotional Truth",
-      "weight": 40,
+      "weight": 30,
       "question": "Is there an activating, honest stake — or manufactured urgency?",
       "higherIsBetter": true
     },
     {
       "key": "proof_readiness",
       "label": "Proof Readiness",
-      "weight": 65,
+      "weight": 45,
       "question": "Could every specific claim survive a hostile reader with a search engine?",
       "higherIsBetter": true
     },
     {
       "key": "launch_timing",
       "label": "Launch Timing",
-      "weight": 30,
+      "weight": 25,
       "question": "Is there a working first-run path and a reason this week beats next month?",
       "higherIsBetter": true
     },
     {
       "key": "honesty_integrity",
       "label": "Honesty Integrity",
-      "weight": 80,
+      "weight": 85,
       "question": "Are there invented figures, fabricated testimonials, guaranteed outcomes, outrage bait, or dark patterns?",
       "higherIsBetter": true
     },
     {
       "key": "failure_awareness",
       "label": "Failure Awareness",
-      "weight": 50,
+      "weight": 40,
       "question": "Is there a written failure condition with an observable signal and a horizon, decided before launch?",
       "higherIsBetter": true
     },
     {
       "key": "experimentability",
       "label": "Experimentability",
-      "weight": 40,
+      "weight": 30,
       "question": "Is there a small, cheap test that could change the plan before it costs anything real?",
       "higherIsBetter": true
     },
     {
       "key": "accessibility",
       "label": "Accessibility",
-      "weight": 40,
+      "weight": 35,
       "question": "Does this work for screen readers, low bandwidth, small screens, and people who do not share the author's context?",
       "higherIsBetter": true
     },
     {
       "key": "privacy_safety",
       "label": "Privacy Safety",
-      "weight": 30,
+      "weight": 25,
       "question": "Does this operation require taking data it does not need, and does it work offline?",
       "higherIsBetter": true
     },
     {
       "key": "abuse_resistance",
       "label": "Abuse Resistance",
-      "weight": 30,
+      "weight": 25,
       "question": "Could this technique be trivially repurposed into spam, astroturfing, harassment, or manipulation?",
       "higherIsBetter": true
     },
     {
       "key": "cultural_resonance",
       "label": "Cultural Resonance",
-      "weight": 30,
+      "weight": 25,
       "question": "Does the framing survive translation and cultural context, or does it only work inside one subculture?",
       "higherIsBetter": true
     },
     {
       "key": "language_simplicity",
       "label": "Language Simplicity",
-      "weight": 30,
+      "weight": 25,
       "question": "Would a smart reader outside the field understand it on first read?",
       "higherIsBetter": true
     },
     {
       "key": "asset_completeness",
       "label": "Asset Completeness",
-      "weight": 40,
+      "weight": 30,
       "question": "Does a forwarder have the thing they need — a one-liner, a screenshot, a citable summary — already made for them?",
       "higherIsBetter": true
     },
     {
       "key": "post_launch_learnability",
       "label": "Post-Launch Learnability",
-      "weight": 30,
+      "weight": 25,
       "question": "Will this attempt produce a lesson even if it fails, and will that lesson be written down?",
       "higherIsBetter": true
     },
     {
       "key": "ethical_defensibility",
       "label": "Ethical Defensibility",
-      "weight": 45,
+      "weight": 40,
       "question": "If the target audience read this report verbatim, would the plan still look acceptable?",
       "higherIsBetter": true
+    },
+    {
+      "key": "visual_shareability",
+      "label": "Visual Shareability",
+      "weight": 30,
+      "question": "Can this be understood from one image or one screenshot, by someone who will not read the text?",
+      "higherIsBetter": true,
+      "distinctFrom": "asset_completeness counts whether assets exist; this judges whether any of them would survive being reposted alone, with no caption and no context."
+    },
+    {
+      "key": "first_value_speed",
+      "label": "First-Value Speed",
+      "weight": 30,
+      "question": "How long from arriving to the first moment of understanding or use?",
+      "higherIsBetter": true,
+      "distinctFrom": "share_friction_reduction is about the cost of forwarding; this is the cost of arriving, which fails for different reasons and is fixed differently."
+    },
+    {
+      "key": "technical_credibility",
+      "label": "Technical Credibility",
+      "weight": 30,
+      "question": "Would a skeptical practitioner find this substantive, or does it hand-wave?",
+      "higherIsBetter": true,
+      "distinctFrom": "proof_readiness asks whether claims can be checked at all; this asks whether the underlying work looks competent to someone who would know."
+    },
+    {
+      "key": "community_extensibility",
+      "label": "Community Extensibility",
+      "weight": 25,
+      "question": "Can someone other than the author add to this, and would they want to?",
+      "higherIsBetter": true,
+      "distinctFrom": "long_term_maintainability is about whether the thing keeps working; this is about whether it can grow beyond its maker."
+    },
+    {
+      "key": "long_term_maintainability",
+      "label": "Long-Term Maintainability",
+      "weight": 25,
+      "question": "Will this still work in two years without its original author?",
+      "higherIsBetter": true,
+      "distinctFrom": "community_extensibility is about contribution; this is about survival — dependencies, promised surfaces, and whether abandoning it strands users."
     }
   ],
   "bands": [
-    { "min": 0, "max": 249, "label": "Not ready", "meaning": "Do not launch. Something structural is missing." },
-    { "min": 250, "max": 449, "label": "Fragile", "meaning": "Fix the weakest two dimensions before any distribution." },
-    { "min": 450, "max": 649, "label": "Workable", "meaning": "One narrow channel, one broadcaster, written kill criteria." },
-    { "min": 650, "max": 824, "label": "Strong", "meaning": "Defensible attempt. Still state what would make it fail." },
-    { "min": 825, "max": 1000, "label": "Exceptional", "meaning": "Rare. Re-audit honesty before launch; high scores attract scrutiny." }
+    {
+      "min": 0,
+      "max": 249,
+      "label": "Not ready",
+      "meaning": "Do not launch. Something structural is missing."
+    },
+    {
+      "min": 250,
+      "max": 449,
+      "label": "Fragile",
+      "meaning": "Fix the weakest two dimensions before any distribution."
+    },
+    {
+      "min": 450,
+      "max": 649,
+      "label": "Workable",
+      "meaning": "One narrow channel, one broadcaster, written kill criteria."
+    },
+    {
+      "min": 650,
+      "max": 824,
+      "label": "Strong",
+      "meaning": "Defensible attempt. Still state what would make it fail."
+    },
+    {
+      "min": 825,
+      "max": 1000,
+      "label": "Exceptional",
+      "meaning": "Rare. Re-audit honesty before launch; high scores attract scrutiny."
+    }
   ],
-  "disclaimer": "The AQI is a weighted rubric for attempt quality. It is not a forecast, not a probability, and not a ranking. High scores have launched into silence; low scores have spread. Treat it as a checklist with arithmetic, and read limitations.md before quoting a number."
+  "disclaimer": "The AQI is a weighted rubric for attempt quality. It is not a forecast, not a probability, and not a ranking. High scores have launched into silence; low scores have spread. Treat it as a checklist with arithmetic, and read limitations.md before quoting a number.",
+  "previousVersion": "1.0.0",
+  "changelog": [
+    {
+      "version": "2.0.0",
+      "change": "Twenty dimensions became twenty-five. Weight came off the six dimensions that depend most on judgement (category_opportunity 70->55, audience_specificity 60->45, share_friction_reduction 65->50, emotional_truth 40->30, launch_timing 30->25, ethical_defensibility 45->40) and went onto five dimensions that can be observed rather than argued (visual_shareability 30, first_value_speed 30, technical_credibility 30, community_extensibility 25, long_term_maintainability 25), with the remainder returning to category_clarity (80->85), honesty_integrity (80->85), broadcaster_fit (80->75) and broadcast_stake (65). Every weight changed, so no 1.x score is comparable with a 2.x score."
+    },
+    {
+      "version": "1.0.0",
+      "change": "Initial twenty dimensions, summing to 1000."
+    }
+  ]
 }

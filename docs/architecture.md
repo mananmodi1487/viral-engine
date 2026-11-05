@@ -31,7 +31,7 @@ So the pipeline is inverted:
              └──────────────────┬─────────────────────────┘
                                 │
              ┌──────────────────▼─────────────────────────┐
-             │ score/aqi.ts   Signals+Docs → 20 dims      │──▶ AQI 0-1000
+             │ score/aqi.ts   Signals+Docs → 25 dims      │──▶ AQI 0-1000
              │  every dimension declares its basis        │
              └──────────────────┬─────────────────────────┘
                                 │
@@ -84,7 +84,7 @@ winning over the GitHub shorthand — a bug found when `./README.md` was parsed 
 | `ods.schema.json` | JSON Schema 2020-12. The contract, not the TypeScript interface. |
 | `conformance.md` | What conformance means, how to run the checks, the bugs it found |
 | `schema-versioning.md` | How versions change and what breaks |
-| `examples/ods-example.json` | 73 KB real document, regenerable, validated by every binding |
+| `examples/ods-example.json` | 77 KB real document, regenerable, validated by every binding |
 | `src/aqi.ts`, `python/`, `go/`, `rust/` | Four bindings, with honest per-language status |
 
 **The rule that keeps the protocol a protocol:** a hardcoded weight is a fork. TS imports the
@@ -126,7 +126,7 @@ fails.
 
 `packages/core/src/`
 
-- `score/aqi.ts` — 20 dimension functions, `computeAqi`, `weakestDimension`, `topLostPoints`.
+- `score/aqi.ts` — 25 dimension functions, `computeAqi`, `weakestDimension`, `topLostPoints`.
   Missing dimensions are filled as `unavailable` at zero, not dropped: averaging only the
   dimensions you have would make one perfect dimension read as 100%.
 - `analyze/ods.ts` — assembles the document, applies the ethics gate, snake_cases every protocol

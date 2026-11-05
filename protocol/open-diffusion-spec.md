@@ -1,8 +1,8 @@
-# Open Diffusion Spec (ODS) 1.0.0
+# Open Diffusion Spec (ODS) 2.0.0
 
 **A public, implementable, evidence-labelled way to describe an artifact and its diffusion state.**
 
-Status: `1.0.0` — stable for the 1.x line. Owned by nobody. Dedicated to the public domain (CC0 1.0): the text, the schema, and the weights file. Implementing this document requires no permission, fee, or attribution.
+Status: `2.0.0` — stable. The 1.x line is documented and its documents remain readable: a 1.x scorecard is migrated by relabelling its version, never by being re-scored with 2.0 weights, because the two rubric versions are not comparable. Owned by nobody. Dedicated to the public domain (CC0 1.0): the text, the schema, and the weights file. Implementing this document requires no permission, fee, or attribution.
 
 ---
 
@@ -42,7 +42,7 @@ Three design commitments make it different from a JSON dump of opinions:
 
 ```json
 {
-  "ods_version": "1.0.0",
+  "ods_version": "2.0.0",
   "artifact": { "id": "example-001", "name": "Example", "type": "github-repo" },
   "current_positioning": {
     "one_sentence_description": "A spread diagnostic for people who already published.",
@@ -58,7 +58,7 @@ Three design commitments make it different from a JSON dump of opinions:
     "passed": true
   },
   "scorecard": {
-    "aqi_version": "1.0.0",
+    "aqi_version": "2.0.0",
     "max": 1000,
     "total": 0,
     "dimensions": []
@@ -124,9 +124,9 @@ steps. The Tools must refuse it; see `governance/anti-abuse.md`.
 
 ## 5. Conformance
 
-An implementation is **ODS 1.0 conformant** if it:
+An implementation is **ODS 2.0 conformant** if it:
 
-1. emits a document validating against `ods-1.0.0.schema.json`;
+1. emits a document validating against `ods.schema.json` at `ods_version 2.0.0`, and reports `scorecard.aqi_version` — scores from different rubric versions are not comparable and must not be pooled;
 2. uses `unavailable` rather than an invented value when it cannot determine something;
 3. includes at least one top-level `failure_condition`;
 4. includes `ethics_review.do_not_launch_yet` as a boolean, and sets it when its own honesty audit
@@ -149,9 +149,9 @@ you can buy. There is a test suite: `npm run conformance`.
   scraping.
 - **No personal profiles.** `broadcaster_analysis` names *roles plus discovery methods*, never a
   scraped individual. This is a schema-level privacy decision, not a policy suggestion.
-- **No emoji-enriched "AI score" of 97/100.** Twenty dimensions with evidence beats one number
-  with none. The single number exists only as a sum of the twenty, and only so two attempts can be
-  compared.
+- **No emoji-enriched "AI score" of 97/100.** 25 dimensions with evidence beats one number with
+  none. The single number exists only as a sum of the 25, and only so two attempts can be compared
+  like for like.
 
 ## 7. Versioning, extensions, and forks
 
@@ -186,7 +186,7 @@ in the reference implementation — see `protocol/conformance.md`.
 ## 9. Citing ODS
 
 ```
-Viral Engine Commons. (2026). Open Diffusion Spec 1.0.0.
+Viral Engine Commons. (2026). Open Diffusion Spec 2.0.0.
 https://github.com/mananmodi1487/viral-engine/blob/main/protocol/open-diffusion-spec.md
 ```
 

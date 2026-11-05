@@ -353,7 +353,7 @@ const server = createServer(async (req, res) => {
         return send(res, 200, 'User-agent: *\nAllow: /\n\n# This site has no tracking, so there is nothing here to disallow.\n', 'text/plain; charset=utf-8');
       }
       if (path === '/api/health') {
-        return json(res, 200, { ok: true, name: 'viral-engine-commons', odsVersion: '1.0.0', aqiVersion: AQI_VERSION, telemetry: false, auth: false });
+        return json(res, 200, { ok: true, name: 'viral-engine-commons', odsVersion: '2.0.0', aqiVersion: AQI_VERSION, telemetry: false, auth: false });
       }
       if (path === '/api/protocol/schema') {
         const p = join(ROOT, 'packages', 'protocol', 'ods.schema.json');

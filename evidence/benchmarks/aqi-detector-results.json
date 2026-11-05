@@ -167,5 +167,5 @@
     "Local-mode quality is identical to hosted, because no case uses a model. That is a property of the design, not a measurement.",
     "Passing this harness means the engine notices the right things in these 30 documents. It does not mean it will notice them in yours."
   ],
-  "generatedAt": "2026-11-05T10:09:07.830Z"
+  "generatedAt": "2026-11-05T10:31:16.290Z"
 }

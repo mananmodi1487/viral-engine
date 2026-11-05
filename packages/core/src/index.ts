@@ -90,3 +90,17 @@ export type {
   ProviderCapability,
   Resolution,
 } from '../../providers/src/index.js';
+
+/* ---- v3: share payloads, artifact types, modes, and the stress test ---- */
+export { buildSharePayloads, failureCard, fromAqi } from './share/payloads.js';
+export type { ShareInput, SharePayloads } from './share/payloads.js';
+export {
+  ARTIFACT_TYPES,
+  artifactTypeSpec,
+  guessArtifactType,
+} from './ingest/artifact-types.js';
+export type { ArtifactType, ArtifactTypeSpec } from './ingest/artifact-types.js';
+export { roast, therapist, killYourDarling, explainLikeImFive } from './modes/index.js';
+export type { ModeInput, ModeOutput } from './modes/index.js';
+export { stressTest } from './research/stress-test.js';
+export type { StressTest, Hypothesis, FailureMode, IndicatorGroup, KillCriterion } from './research/stress-test.js';

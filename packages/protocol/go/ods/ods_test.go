@@ -65,24 +65,24 @@ func TestPointsAreWeightScaled(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if d.Weight != 80 {
-		t.Fatalf("expected weight 80, got %d", d.Weight)
+	if d.Weight != 85 {
+		t.Fatalf("expected weight 85, got %d", d.Weight)
 	}
-	if d.Points != 40 {
-		t.Fatalf("expected 40 points, got %v", d.Points)
+	if d.Points != 42.5 {
+		t.Fatalf("expected 42.5 points, got %v", d.Points)
 	}
 }
 
 func TestScorecardTotalMustAddUp(t *testing.T) {
 	w := weights(t)
 	d, _ := NewDimension(w, "category_clarity", 100, BasisMeasured, ConfidenceHigh, []string{"all checks passed"}, "i", "f")
-	sc := Scorecard{AQIVersion: "1.0.0", Max: 1000, Total: 5, Dimensions: []Dimension{*d}}
+	sc := Scorecard{AQIVersion: "2.0.0", Max: 1000, Total: 5, Dimensions: []Dimension{*d}}
 	if err := sc.Validate(); err == nil {
 		t.Fatal("expected a mismatch error")
 	}
-	sc.Total = 80
+	sc.Total = 85
 	if err := sc.Validate(); err != nil {
-		t.Fatalf("80 points should validate: %v", err)
+		t.Fatalf("85 points should validate: %v", err)
 	}
 }
 

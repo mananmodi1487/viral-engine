@@ -476,6 +476,275 @@ function ethicalDefensibility(honesty: HonestyCheck, abuseScore: number, text: s
   });
 }
 
+/* ---------- dimensions added in AQI 2.0.0 ----------
+ *
+ * Each of these is answerable from the artifact itself, which is why weight was
+ * moved here from the judgement-dependent dimensions. The five share a property:
+ * a stranger could check the answer, and the failure condition names the
+ * observable that would prove the score wrong.
+ */
+
+function visualShareability(s: Signals, text: string): AqiDimension {
+  let score = 30;
+  const evidence: string[] = [];
+  const images = (text.match(/!\[[^\]]*\]\([^)]+\)|<img\b/gi) ?? []).length;
+  const shortBoldLine = /^\s*(?:\*\*|__)[^*_\n]{6,90}(?:\*\*|__)\s*$/m.test(text);
+  const table = /^\s*\|.*\|\s*$/m.test(text);
+
+  if (images > 0) {
+    score += 26;
+    evidence.push(`${images} image(s) in the artifact — something can be reposted alone`);
+  } else {
+    evidence.push('no image: nothing survives being reposted without its caption');
+  }
+  if (images > 2) score += 6;
+  if (s.codeBlockCount > 0) {
+    score += 12;
+    evidence.push(`${s.codeBlockCount} code block(s), which screenshot well`);
+  }
+  if (shortBoldLine) {
+    score += 14;
+    evidence.push('has a short bold standfirst that reads as a card');
+  }
+  if (table) {
+    score += 10;
+    evidence.push('has a table, which screenshots readably');
+  }
+  if (s.wordCount > 900 && images === 0) {
+    score -= 18;
+    evidence.push('long prose with no visual anchor anywhere');
+  }
+
+  return dimension('visual_shareability', clamp(score), {
+    basis: 'structural',
+    confidence: images > 0 ? 'medium' : 'low',
+    evidence,
+    assumptions: [
+      'A screenshot is the cheapest possible forward, so an artifact with nothing screenshot-worthy asks the forwarder to write something themselves.',
+      'Code blocks and tables count as visual only because they survive being cropped.',
+    ],
+    missingData: ['No test of whether a real screenshot of this is legible at mobile width.'],
+    improvement:
+      'Add one image at 2:1 that carries the before/after, with real alt text, and one bold line above it that states the claim.',
+    failureCondition:
+      'This fails if a screenshot of the artifact goes round with no caption and nobody can tell what it is a screenshot of.',
+  });
+}
+
+function firstValueSpeed(s: Signals, text: string): AqiDimension {
+  let score = 30;
+  const evidence: string[] = [];
+  const firstCode = text.indexOf('```');
+  const intro = firstCode === -1 ? text.slice(0, 1400) : text.slice(0, Math.max(0, firstCode));
+  const wordsBeforeCode = intro.trim().split(/\s+/).filter(Boolean).length;
+  const oneCommand =
+    firstCode !== -1 &&
+    /```[a-z]*\n\s*(?:npx|npm i|npm install|pip install|cargo|go get|curl|docker run|brew install)/i.test(text);
+  const demoLink = /\bhttps?:\/\/[^\s)]*(?:demo|play|try|sandbox|examples?)/i.test(text);
+  const liveUrl = /\bhttps?:\/\/\S+/.test(text);
+
+  if (oneCommand) {
+    score += 26;
+    evidence.push('a single install-or-run command appears in the document');
+  } else if (firstCode !== -1) {
+    score += 8;
+    evidence.push('a code block exists, but not a one-line install');
+  } else {
+    evidence.push('no first-run command at all');
+  }
+
+  if (firstCode !== -1 && wordsBeforeCode <= 90) {
+    score += 14;
+    evidence.push(`only ${wordsBeforeCode} words before the first code block`);
+  } else if (firstCode === -1) {
+    score -= 6;
+    evidence.push('the reader must read the whole thing before doing anything');
+  } else {
+    evidence.push(`${wordsBeforeCode} words before the first code block`);
+  }
+
+  if (demoLink) {
+    score += 16;
+    evidence.push('links to a demo or an examples directory');
+  } else if (liveUrl) {
+    score += 6;
+    evidence.push('links somewhere, but not to something runnable');
+  }
+
+  if (s.wordCount > 1600) {
+    score -= 12;
+    evidence.push(`${s.wordCount} words before any of this matters`);
+  }
+
+  return dimension('first_value_speed', clamp(score), {
+    basis: 'measured',
+    confidence: 'medium',
+    evidence,
+    assumptions: [
+      'First value is reached when the reader can either run the thing or describe it correctly, whichever comes first.',
+    ],
+    missingData: ['No measurement of actual time-to-first-value with a real user on a clean machine.'],
+    improvement: 'Put one runnable command and one sentence above everything else, and move the motivation below it.',
+    failureCondition: 'This fails if a reader has to scroll past the fold to find the first thing they can do.',
+  });
+}
+
+function technicalCredibility(s: Signals, text: string): AqiDimension {
+  let score = 34;
+  const evidence: string[] = [];
+  const hasTests =
+    /\b(?:npm test|pytest|vitest|jest|cargo test|go test|unittest)\b/i.test(text) || /\b\d+\s+tests?\b/i.test(text);
+  const hasBench = /\b(?:benchmark|p95|p99|latency|throughput|\d+\s*ms\b|\d+\s*rps\b)/i.test(text);
+  const hasArchitecture = /\b(?:architecture|design decision|trade-?off|why not|alternative)\b/i.test(text);
+  const hasLimits = /\b(?:limitation|does not|doesn't|cannot|out of scope|known issue|non-?goal)\b/i.test(text);
+  const hasVersion = /\b(?:v\d+\.\d+|semver|changelog|breaking change)\b/i.test(text);
+  const vagueBandwagon = /\b(?:revolutionary|game-?chang\w+|effortless|blazing|seamless|magical|world-class)\b/i.test(
+    text,
+  );
+
+  if (hasTests) {
+    score += 18;
+    evidence.push('names a test suite or a test count');
+  } else evidence.push('no mention of tests');
+  if (hasBench) {
+    score += 14;
+    evidence.push('reports a measurable number');
+  } else evidence.push('no measured number anywhere');
+  if (hasArchitecture) {
+    score += 12;
+    evidence.push('explains a design decision or trade-off');
+  } else evidence.push('states what it does, not why it is built that way');
+  if (hasLimits) {
+    score += 14;
+    evidence.push('states a limitation');
+  } else evidence.push('claims no limitation, which reads as inexperience');
+  if (hasVersion) {
+    score += 6;
+    evidence.push('has version or changelog discipline');
+  }
+  if (vagueBandwagon) {
+    score -= 16;
+    evidence.push('uses a superlative a practitioner would discount');
+  }
+
+  return dimension('technical_credibility', clamp(score), {
+    basis: 'structural',
+    confidence: hasTests && hasBench ? 'medium' : 'low',
+    evidence,
+    assumptions: ['A skeptical practitioner reads for what is admitted, not for what is claimed.'],
+    missingData: ["No review by a practitioner in the artifact's own field."],
+    improvement:
+      'Add one paragraph titled "What this does not do" and one number with the method that produced it.',
+    failureCondition:
+      'This fails if an engineer in the field cannot find a single thing they could verify, or a single thing the author admits is unfinished.',
+  });
+}
+
+function communityExtensibility(text: string): AqiDimension {
+  let score = 24;
+  const evidence: string[] = [];
+  const contrib = /\b(?:contributing|contributor|pull request|open an issue|good first issue|help wanted)\b/i.test(
+    text,
+  );
+  const license = /\b(?:MIT|Apache-2\.0|BSD|GPL|AGPL|MPL|CC0|CC[ -]BY|unlicense)\b/i.test(text);
+  const plugin = /\b(?:plugin|extension point|sdk|customi[sz]e|extend)\b/i.test(text);
+  const schema = /\b(?:schema|specification|protocol|machine-readable|json)\b/i.test(text);
+  const governance = /\b(?:governance|maintainer|decision log|rfc|code of conduct|CoC)\b/i.test(text);
+
+  if (license) {
+    score += 18;
+    evidence.push('states a license, so reuse is permitted by default');
+  } else evidence.push('no license stated: legally nobody may build on it');
+  if (contrib) {
+    score += 18;
+    evidence.push('tells a contributor how to start');
+  } else evidence.push('no contribution path');
+  if (plugin) {
+    score += 14;
+    evidence.push('has an extension point');
+  }
+  if (schema) {
+    score += 12;
+    evidence.push('has a machine-readable contract others can target');
+  }
+  if (governance) {
+    score += 10;
+    evidence.push('names who decides what');
+  }
+
+  return dimension('community_extensibility', clamp(score), {
+    basis: 'structural',
+    confidence: 'medium',
+    evidence,
+    assumptions: [
+      'A project with no license and no contribution path cannot accumulate contributors, whatever its quality.',
+    ],
+    missingData: ['No evidence anyone has actually extended it.'],
+    improvement:
+      'State the license, add a CONTRIBUTING.md with one good-first-task, and name the file a plugin would target.',
+    failureCondition:
+      'This fails if a willing contributor cannot tell, within five minutes, whether they are allowed to build on it and where to start.',
+  });
+}
+
+function longTermMaintainability(s: Signals, text: string): AqiDimension {
+  let score = 32;
+  const evidence: string[] = [];
+  const depCount = /\b(\d+)\s+(?:runtime\s+)?dependenc(?:y|ies)\b/i.exec(text);
+  const depTalk = /\b(?:dependencies|deps|zero-dep|no dependencies|dependency-free)\b/i.test(text);
+  const sunset = /\b(?:sunset|abandon|archive|deprecat|maintained by|bus factor)\b/i.test(text);
+  const stable = /\b(?:stable|1\.x|semver|backwards?[- ]compat\w*|deprecation policy)\b/i.test(text);
+  const vendors = /\b(?:vendored|self-contained|single file|no build step|statically linked)\b/i.test(text);
+
+  if (depCount) {
+    const n = Number(depCount[1]);
+    if (n === 0) {
+      score += 26;
+      evidence.push('declares zero runtime dependencies');
+    } else if (n <= 2) {
+      score += 16;
+      evidence.push(`declares ${n} runtime dependencies`);
+    } else if (n > 8) {
+      score -= 14;
+      evidence.push(`declares ${n} runtime dependencies`);
+    } else {
+      evidence.push(`declares ${n} runtime dependencies`);
+    }
+  } else if (depTalk) {
+    score += 8;
+    evidence.push('mentions its dependency posture');
+  } else evidence.push('dependency posture unstated');
+
+  if (stable) {
+    score += 14;
+    evidence.push('states a stability or compatibility policy');
+  } else evidence.push('no compatibility policy');
+  if (sunset) {
+    score += 12;
+    evidence.push('says what happens if it is abandoned');
+  }
+  if (vendors) {
+    score += 10;
+    evidence.push('can run without a package manager');
+  }
+  if (s.wordCount < 120) {
+    score -= 8;
+    evidence.push('too little detail to judge survival');
+  }
+
+  return dimension('long_term_maintainability', clamp(score), {
+    basis: 'structural',
+    confidence: 'low',
+    evidence,
+    assumptions: ['The dominant way a useful tool becomes useless is that it stopped being installable.'],
+    missingData: ['No check that the install still works on a clean machine today, which is the only real test.'],
+    improvement:
+      'State the dependency count, pin the versions, and write one paragraph titled "if this project is abandoned".',
+    failureCondition:
+      'This fails if the install breaks within a year because a transitive dependency moved and nobody had written down how to fix it.',
+  });
+}
+
 /* ---------- assembly ---------- */
 
 export function scoreAqi(input: AqiInputs & { networkCalls?: number; hasForwardable?: boolean; assetCount?: number }): AqiResult {
@@ -505,6 +774,11 @@ export function scoreAqi(input: AqiInputs & { networkCalls?: number; hasForwarda
     assetCompleteness(hasForwardable, assetCount),
     postLaunchLearnability(text),
     ethicalDefensibility(honesty, abuseResistance(input).score, text),
+    visualShareability(s, text),
+    firstValueSpeed(s, text),
+    technicalCredibility(s, text),
+    communityExtensibility(text),
+    longTermMaintainability(s, text),
   ];
 
   return computeAqi(dims);

@@ -35,10 +35,19 @@ import {
   toMarkdown,
   toTerminal,
   checkInbound,
+  extractSignals,
+  buildSharePayloads,
+  failureCard,
+  ARTIFACT_TYPES,
+  roast,
+  therapist,
+  killYourDarling,
+  explainLikeImFive,
+  stressTest,
 } from '@viral-engine/core';
-import type { OdsDocument, ProviderName } from '@viral-engine/core';
+import type { OdsDocument, ProviderName, AqiDimension, Signals } from '@viral-engine/core';
 
-const VERSION = '2.0.0';
+const VERSION = '3.0.0';
 
 const HELP = `
 viral-engine commons — ethical diffusion infrastructure
@@ -59,6 +68,14 @@ COMMANDS
   simulate <target>       what critics will say
   honesty-audit <target>  claims that would not survive being checked
   report <target>         full report to file (md | html)
+  card <target>           the share card: SVG, alt text, badge, and the one-line forward
+  thread <target>         a four-post thread built from the actual numbers
+  stress-test             the 100k-star stress test. Explains mechanisms; predicts nothing.
+  roast <target>          a funny, honest critique of the copy. Never of the person.
+  therapist <target>      separates the author from the artifact. Not therapy, and says so.
+  kill-my-darling <target> [sentence]   argues against the line you are attached to
+  explain <target>        plain-language version, with the uncertainty kept in
+  types                   list the 33 artifact types and what each one must contain
   doctor                  check what is configured, locally, without phoning home
   local-mode [on|off]     write a config that forbids all network access
   providers               list providers, what they may produce, and their privacy posture
@@ -90,6 +107,8 @@ OPTIONS
   --fail-on-ethics-violation   exit 4 when do_not_launch_yet is true
   --generate-pr           print a ready-to-run gh command instead of a diff
   --saturation-count <n>  supply a repo count yourself (skips any query)
+  --type <artifact-type>  declare the artifact type (see: viral-engine types)
+  --darling "<sentence>"  the sentence to argue against, for kill-my-darling
   --no-colour             plain output
   -q, --quiet             suppress the extras (the asset gallery, the asset listing)
   --verbose               print the limitations inline
@@ -103,6 +122,9 @@ EXAMPLES
   viral-engine score --text "A productivity app for busy professionals." --offline
   viral-engine report . --output html -o report.html
   viral-engine assets ./README.md --channel hackernews --offline
+  viral-engine card ./README.md --offline -o card            # card.svg + card.alt.txt + badge.json
+  viral-engine roast ./README.md --offline
+  viral-engine stress-test --output markdown
 
 EXIT CODES
   0 clean · 1 error · 2 usage · 3 honesty blocker · 4 ethics violation · 5 refused
@@ -130,6 +152,10 @@ interface Args {
   audience?: string;
   channel?: string;
   saturationCount?: number;
+  /** Declared artifact type; the rubric is applied differently per type. */
+  artifactType?: string;
+  /** The sentence to argue against, for kill-my-darling. */
+  darling?: string;
   rest: string[];
 }
 
@@ -204,6 +230,8 @@ function parseArgs(argv: string[]): Args {
         break;
       }
       case '--text': a.text = next(); break;
+      case '--type': a.artifactType = next(); break;
+      case '--darling': a.darling = next(); break;
       default:
         if (arg.startsWith('--text=')) a.text = arg.slice('--text='.length);
         else if (arg.startsWith('--')) throw new UsageError(`unknown option "${arg}" (try --help)`);
@@ -246,6 +274,8 @@ async function main(): Promise<number> {
     case 'protocol': return printProtocol();
     case 'upgrade': return upgrade();
     case 'init': return initProject(args);
+    case 'types': return listArtifactTypes();
+    case 'stress-test': return runStressTest(args);
   }
 
   if (args.command === 'migrate') {
@@ -261,7 +291,8 @@ async function main(): Promise<number> {
   }
 
   const known = ['analyze', 'score', 'category', 'broadcaster', 'friction', 'assets',
-    'experiment', 'simulate', 'honesty-audit', 'report'];
+    'experiment', 'simulate', 'honesty-audit', 'report',
+    'card', 'thread', 'roast', 'therapist', 'kill-my-darling', 'explain'];
   if (!known.includes(args.command)) {
     // A bare path or URL is treated as `analyze`.
     if (!args.command.startsWith('-') && (args.text === undefined)) {
@@ -276,6 +307,21 @@ async function main(): Promise<number> {
   if (!args.target && !args.text) {
     console.error('error: no target. Pass a repo, a path, a URL, or --text "..."');
     return 2;
+  }
+
+  /* The four modes read the artifact directly rather than through a full ODS
+     document: they are about a sentence, not a launch. Running the whole pipeline
+     to roast a README would be slower and would tempt the roaster into quoting
+     scores it was not asked to produce. */
+  if (['roast', 'therapist', 'kill-my-darling', 'explain'].includes(args.command)) {
+    try {
+      return await runMode(args);
+    } catch (err) {
+      const msg = (err as Error).message;
+      if (/^Refused:/.test(msg)) { console.error(msg); return 5; }
+      console.error(`error: ${msg}`);
+      return 1;
+    }
   }
 
   try {
@@ -353,6 +399,7 @@ async function runAnalysis(args: Args): Promise<number> {
     },
     language: args.language,
     channel: args.channel,
+    artifactType: args.artifactType,
   });
 
   const elapsed = Date.now() - started;
@@ -416,6 +463,14 @@ function render(args: Args, doc: OdsDocument): string | undefined {
       return renderSection(doc, 'Critics', args);
     case 'honesty-audit':
       return renderSection(doc, 'Honesty', args);
+    case 'card': {
+      void writeCard(args, doc);
+      return undefined;
+    }
+    case 'thread': {
+      void renderThread(args, doc);
+      return undefined;
+    }
     default:
       break;
   }
@@ -805,6 +860,265 @@ function submitOutcome(args: Args): number {
   console.log('  · Failures are more valuable than wins and are never hidden from the index.');
   console.log('  · Never submit someone else\'s outcome without their consent.');
   console.log('  · Read evidence/README.md before submitting.');
+  return 0;
+}
+
+// concatenated into the CLI bundle at build time by the import below.
+/* ---------- share cards, threads, modes, artifact types ----------
+ *
+ * These live at the end of the CLI because they are the leaf commands: they take
+ * an artifact, print something a human will paste somewhere, and stop.
+ */
+
+/** Shared: read the artifact the same way every command does. */
+async function loadForModes(args: Args): Promise<{ text: string; title?: string; signals: Signals }> {
+  const localConfig = readLocalConfig();
+  const offline = args.offline || localConfig?.offline === true || args.provider === 'none';
+  const ing = await ingest(args.target ?? '', { offline, text: args.text });
+  const text = [ing.source.title, ing.source.description, ing.source.body].filter(Boolean).join('\n\n');
+  return { text, title: ing.source.title, signals: extractSignals(text) };
+}
+
+async function runMode(args: Args): Promise<number> {
+  const { text, title, signals } = await loadForModes(args);
+  const input = { text, title, signals };
+
+  const out =
+    args.command === 'roast' ? roast(input)
+      : args.command === 'therapist' ? therapist(input)
+        : args.command === 'kill-my-darling' ? killYourDarling(input, args.darling)
+          : explainLikeImFive(input);
+
+  if (args.format === 'json') {
+    process.stdout.write(JSON.stringify(out, null, 2) + '\n');
+  } else {
+    process.stdout.write(out.body + '\n');
+    if (!args.quiet) {
+      console.log('');
+      console.log('KEEP IN MIND');
+      for (const k of out.keepInMind) console.log(`  · ${k}`);
+      console.log('');
+      console.log('WHAT THIS CANNOT DO');
+      for (const l of out.limits) console.log(`  · ${l}`);
+    }
+  }
+
+  if (args.out) {
+    const full = resolve(args.out);
+    mkdirSync(dirname(full), { recursive: true });
+    writeFileSync(full, args.format === 'json' ? JSON.stringify(out, null, 2) : out.body, 'utf8');
+    console.error(`wrote ${full}`);
+  }
+  return 0;
+}
+
+function listArtifactTypes(): number {
+  console.log('');
+  console.log('  ARTIFACT TYPES — the rubric is applied differently to each, because');
+  console.log('  "good" means something different for a changelog and a book proposal.');
+  console.log('');
+  for (const t of ARTIFACT_TYPES) {
+    console.log(`  ${t.key}`);
+    console.log(`    reader's job    ${t.readerJob}`);
+    console.log(`    must contain    ${t.expects.join(' · ')}`);
+    console.log(`    its own failure ${t.characteristicFailure}`);
+    if (t.ingest !== 'text') {
+      console.log(`    ingesting       ${t.ingest}`);
+      if (t.workaround) console.log(`                    ${t.workaround}`);
+    }
+    console.log('');
+  }
+  console.log('  Pass any of these with --type <key>. Without it, the type is guessed');
+  console.log('  from structure, and anything unrecognised is treated as `document` —');
+  console.log('  which gets a generic judgment, and a generic judgment is usually wrong.');
+  console.log('');
+  return 0;
+}
+
+function runStressTest(args: Args): number {
+  const t = stressTest();
+
+  if (args.format === 'json') {
+    process.stdout.write(JSON.stringify(t, null, 2) + '\n');
+    return 0;
+  }
+
+  const md = [
+    '# The 100k-star stress test',
+    '',
+    `> ${t.disclaimer}`,
+    '',
+    t.whatThisIs,
+    '',
+    '## If this were adopted widely, what would probably be carrying it',
+    '',
+    ...t.adoptionHypotheses.flatMap((h) => [
+      `### ${h.id} — ${h.claim}`,
+      '',
+      `*Basis: ${h.basis}. Confidence: ${h.confidence}.*`,
+      '',
+      h.grounds,
+      '',
+      '**Leading indicators**',
+      ...h.leadingIndicators.map((i) => `- ${i}`),
+      '',
+      '**Counter-indicators** (what would tell you it is not happening)',
+      ...h.counterIndicators.map((i) => `- ${i}`),
+      '',
+    ]),
+    '## If it failed despite good engineering, what would have killed it',
+    '',
+    '| Failure mode | Looks like | First signal | Response |',
+    '|---|---|---|---|',
+    ...t.failureModes.map((f) => `| **${f.mode}** | ${f.looksLike} | ${f.earlySignal} | ${f.response} |`),
+    '',
+    '## What to measure, and how each number could mislead',
+    '',
+    ...t.indicators.flatMap((g) => [
+      `### ${g.window}`,
+      '',
+      '| Indicator | Why it matters | Misleading if |',
+      '|---|---|---|',
+      ...g.indicators.map((i) => `| ${i.name} | ${i.why} | ${i.misleadingIf} |`),
+      '',
+    ]),
+    '## Kill criteria',
+    '',
+    ...t.killCriteria.flatMap((k) => [
+      `**${k.statement}**`,
+      '',
+      `- Observable: ${k.observable}`,
+      `- Horizon: ${k.horizon}`,
+      `- Scope: ${k.scope}`,
+      '',
+    ]),
+    '## The memo',
+    '',
+    '### If it works',
+    '',
+    t.memo.ifItWorks,
+    '',
+    '### If it fails',
+    '',
+    t.memo.ifItFails,
+    '',
+    '## What would make it infrastructure',
+    '',
+    ...t.whatWouldMakeItInfrastructure.map((x) => `- ${x}`),
+    '',
+    '## What would make people distrust it',
+    '',
+    ...t.whatWouldMakePeopleDistrustIt.map((x) => `- ${x}`),
+    '',
+    '---',
+    '',
+    '*No number in this document is a prediction. It contains no model of attention,*',
+    '*no training data, and no fitted curve. Its only use is deciding what to measure*',
+    '*early and when to stop promoting.*',
+  ].join('\n');
+
+  if (args.out) {
+    const full = resolve(args.out);
+    mkdirSync(dirname(full), { recursive: true });
+    writeFileSync(full, md, 'utf8');
+    console.error(`wrote ${full}`);
+  } else {
+    process.stdout.write(md + '\n');
+  }
+  return 0;
+}
+
+/**
+ * `card`: the share payloads, written as a directory of files.
+ *
+ * Deliberately not a single combined artefact. A card.svg you can drop into a
+ * README, a card.alt.txt you are forced to keep next to it, and a badge.json that
+ * GitHub can serve are three different jobs.
+ */
+async function writeCard(args: Args, doc: OdsDocument): Promise<number> {
+  const dims = doc.scorecard.dimensions;
+  const leverage = [...dims]
+    .map((d) => ({ d, lost: Math.round(((100 - d.score) * d.weight) / 100) }))
+    .sort((a, b) => b.lost - a.lost);
+
+  const fc = doc.failure_conditions[0];
+  const payloads = buildSharePayloads({
+    artifactName: doc.artifact.name,
+    total: doc.scorecard.total,
+    band: doc.scorecard.band,
+    aqiVersion: doc.scorecard.aqi_version,
+    dimensions: dims as unknown as AqiDimension[],
+    forwardable: (doc.launch_assets.one_line_broadcast_summary as string | undefined) ?? null,
+    topLeverage: leverage.slice(0, 3).map((x) => x.d as unknown as AqiDimension),
+    failureCondition: fc ?? null,
+    asOf: doc.generated_at.slice(0, 10),
+  });
+
+  const dir = resolve(args.out ?? 'viral-engine-card');
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, 'card.svg'), payloads.cardSvg, 'utf8');
+  writeFileSync(join(dir, 'card.alt.txt'), payloads.cardAlt + '\n', 'utf8');
+  writeFileSync(join(dir, 'badge.json'), JSON.stringify(payloads.badgeJson, null, 2) + '\n', 'utf8');
+  writeFileSync(join(dir, 'badge.md'), payloads.badgeMarkdown + '\n', 'utf8');
+  writeFileSync(join(dir, 'forwardable.txt'), payloads.forwardableLine + '\n', 'utf8');
+  writeFileSync(join(dir, 'social.txt'), payloads.socialPost + '\n', 'utf8');
+  writeFileSync(join(dir, 'thread.md'), payloads.thread.map((t, i) => `${i + 1}/ ${t}`).join('\n\n') + '\n', 'utf8');
+  writeFileSync(join(dir, 'blurb.md'), payloads.blurb + '\n', 'utf8');
+  if (fc) {
+    const failure = failureCard(doc.artifact.name, fc);
+    writeFileSync(join(dir, 'failure-card.svg'), failure.svg, 'utf8');
+    writeFileSync(join(dir, 'failure-card.alt.txt'), failure.alt + '\n', 'utf8');
+  }
+  writeFileSync(
+    join(dir, 'WHAT-THIS-DOES-NOT-PROVE.md'),
+    ['# What this does not prove', '', ...payloads.whatThisDoesNotProve.map((x) => `- ${x}`), ''].join('\n'),
+    'utf8',
+  );
+
+  console.error(`wrote ${dir}`);
+  console.error(`  card.svg + card.alt.txt   the share image and the alt text it must ship with`);
+  console.error(`  failure-card.svg          the failure condition as a card`);
+  console.error(`  forwardable.txt           the one sentence a reader can paste, unedited`);
+  console.error(`  badge.json + badge.md     a README badge that states the band, not just a number`);
+  console.error(`  WHAT-THIS-DOES-NOT-PROVE.md`);
+  if (!args.quiet) {
+    console.log('');
+    console.log(payloads.forwardableLine);
+    console.log('');
+    console.log(payloads.socialPost);
+  }
+  return 0;
+}
+
+async function renderThread(args: Args, doc: OdsDocument): Promise<number> {
+  const dims = doc.scorecard.dimensions as unknown as AqiDimension[];
+  const leverage = [...dims]
+    .map((d) => ({ d, lost: Math.round(((100 - d.score) * d.weight) / 100) }))
+    .sort((a, b) => b.lost - a.lost);
+
+  const payloads = buildSharePayloads({
+    artifactName: doc.artifact.name,
+    total: doc.scorecard.total,
+    band: doc.scorecard.band,
+    aqiVersion: doc.scorecard.aqi_version,
+    dimensions: dims,
+    forwardable: (doc.launch_assets.one_line_broadcast_summary as string | undefined) ?? null,
+    topLeverage: leverage.slice(0, 3).map((x) => x.d),
+    failureCondition: doc.failure_conditions[0] ?? null,
+    asOf: doc.generated_at.slice(0, 10),
+  });
+
+  const body = payloads.thread.map((t, i) => `${i + 1}/ ${t}`).join('\n\n');
+  if (args.out) {
+    const full = resolve(args.out);
+    mkdirSync(dirname(full), { recursive: true });
+    writeFileSync(full, body + '\n', 'utf8');
+    console.error(`wrote ${full}`);
+  } else {
+    console.log(body);
+  }
+  console.log('');
+  console.log(`note: post 1 is ${payloads.thread[0].length} chars. No post is a promise, and none asks for shares.`);
   return 0;
 }
 
