@@ -25,8 +25,9 @@ inputs:
     description: |-
       When to fail the check:
         violations  — fail only on ethics violations or an honesty blocker (default)
+        blockers    — fail on an honesty blocker, but not on an ethics violation
         blocked     — fail whenever the document says do_not_launch_yet
-        regression  — also fail when the AQI total drops versus the base branch
+        regression  — fail when the AQI total drops versus the base branch
         never       — report but never fail
     required: false
     default: 'violations'
@@ -91,7 +92,7 @@ runs:
 
     - name: Install
       shell: bash
-      working-directory: ${{ github.action_path }}/../..
+      working-directory: ${{ github.action_path }}/../../..
       run: |
         set -euo pipefail
         # Prefer the lockfile; fall back for forked checkouts where the path differs.
@@ -107,7 +108,7 @@ runs:
         INPUT_TYPE: ${{ inputs.artifact-type }}
       run: |
         set -euo pipefail
-        ROOT="${{ github.action_path }}/../.."
+        ROOT="${{ github.action_path }}/../../.."
 
         ARGS=(analyze "$INPUT_PATH" --output json -o viral-engine-ods.json)
         if [ "$INPUT_OFFLINE" = "true" ]; then ARGS+=(--offline); fi
@@ -312,6 +313,16 @@ runs:
               exit 1
             fi
             echo "no violations, no blockers" ;;
+          blockers)
+            # The workflow that calls this action has always passed
+            # 'fail-on: blockers', which this step did not implement — so the check
+            # that gates README pull requests exited 2 on a *configuration* error
+            # and never evaluated the copy at all.
+            if [ "${BLOCKERS:-0}" -gt 0 ]; then
+              echo "::error::${BLOCKERS} honesty blocker(s). Fix the claim before merging."
+              exit 1
+            fi
+            echo "no honesty blockers" ;;
           blocked)
             if [ "${BLOCKED}" = "true" ]; then
               echo "::error::The document says do not launch yet. Read the reason, then decide."

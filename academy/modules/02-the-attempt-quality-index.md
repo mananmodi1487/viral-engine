@@ -69,5 +69,5 @@ dimension is not doing any work for you.
 - Whether the weights are right. They are one person's judgement, published so you can argue
   with them. Change them and you have a fork, which is legitimate — but it is a fork, and its
   scores will not compare with anyone else's.
-- Whether 20 dimensions is the right number. It is probably too many to read and about right to
+- Whether 25 dimensions is the right number. It is probably too many to read and about right to
   rank with.

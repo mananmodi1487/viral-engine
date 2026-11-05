@@ -298,7 +298,7 @@ export const ANALYZE_SCRIPT = `
 export function scorecardPage(): string {
   return `
 <h1>The Attempt Quality Index</h1>
-<p class="lede">Twenty dimensions, each scored 0–100, each weighted, summing to exactly ${AQI_MAX}. Nothing here predicts reach. What it measures is whether an <em>attempt</em> is defensible — which is the only part you control.</p>
+<p class="lede">25 dimensions, each scored 0–100, each weighted, summing to exactly ${AQI_MAX}. Nothing here predicts reach. What it measures is whether an <em>attempt</em> is defensible — which is the only part you control.</p>
 
 <div class="notice">
   <strong>What this is not.</strong> It is not a forecast, not a probability, and not a ranking of your work. High scores have launched into silence. Low scores have spread. It is a checklist with arithmetic, and the arithmetic is published so you can disagree with it precisely instead of vaguely.

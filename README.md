@@ -205,8 +205,8 @@ It rewrites them into their evidence class rather than deleting them:
 
 | A claim people write | What the audit turns it into | Why |
 |---|---|---|
-| guaranteed viral growth | `[measured change]` + a plan for how to measure it | nobody can guarantee this |
-| 10x your audience | `[n → m reach in T days, source: ___]` | a multiplier with no base |
+| "guaranteed viral growth" | `[measured change]` + a plan for how to measure it | nobody can guarantee this |
+| "10x your audience" | `[n → m reach in T days, source: ___]` | a multiplier with no base |
 | used by 10,000+ developers | `used by [n], as of [date] — we cannot count the rest` | a number you cannot defend |
 | only 3 spots left | *deleted* | manufactured scarcity |
 
@@ -270,7 +270,7 @@ suite. Anyone can implement it. Four implementations ship here:
 
 | Language | Tests actually run | Status |
 |---|---|---|
-| TypeScript | 199 tests, every commit | **Reference** |
+| TypeScript | 254 tests, every commit | **Reference** |
 | Python | 19 tests, local + CI | **Tested** |
 | Go | `go test ./...` in CI | **CI-only** — never executed by the author, no toolchain available |
 | Rust | `cargo test` in CI | **CI-only** — same, and one function may be wrong |
@@ -441,7 +441,7 @@ The most valuable contribution is a disagreement with a claim, recorded in publi
 most valuable is a failure record.
 
 ```bash
-npm ci && npm run check     # weights · typecheck · 199 tests
+npm ci && npm run check     # weights · typecheck · honesty · 254 tests
 npm run bench               # evaluation harness; fails on a precision regression
 ```
 

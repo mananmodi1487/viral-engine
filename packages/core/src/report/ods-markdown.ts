@@ -378,7 +378,7 @@ export function odsToMarkdown(doc: OdsDocument): string {
   L.push('');
   L.push('---');
   L.push('');
-  L.push('<sub>Viral Engine Commons · free forever, no telemetry · ODS 1.0 · MIT / CC BY 4.0</sub>');
+  L.push('<sub>Viral Engine Commons · free forever, no telemetry · ODS 2.0 · MIT / CC BY 4.0</sub>');
   L.push('');
 
   return L.join('\n');

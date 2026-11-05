@@ -33,6 +33,8 @@ jobs:
         run: npm test
       - name: AQI rubric integrity
         run: npm run check:weights
+      - name: The repository's own prose obeys its honesty rules
+        run: npm run check:honesty -- --ci
       - name: Evaluation harness (fails on a precision regression)
         run: npm run bench
       - name: Build
@@ -76,10 +78,19 @@ jobs:
           node -e '
             const d = require("/tmp/ods.json");
             const fail = (m) => { console.error("::error::" + m); process.exit(1); };
-            if (d.ods_version !== "1.0.0") fail("ods_version");
+            if (d.ods_version !== "2.0.0") fail("ods_version");
+            if (d.scorecard?.aqi_version !== "2.0.0") fail("scorecard.aqi_version");
             if (!d.ethics_review || typeof d.ethics_review.do_not_launch_yet !== "boolean") fail("ethics_review");
             if (typeof d.scorecard?.total !== "number") fail("scorecard.total");
-            if (d.scorecard.dimensions.length !== 20) fail("expected 20 AQI dimensions");
+            if (d.scorecard.dimensions.length !== 25) fail("expected 25 AQI dimensions");
+            // The published example and this document must both satisfy the schema.
+            // tests/schema-validation.test.ts does the recursive check locally; this is
+            // the belt-and-braces version that runs against real CLI output.
+            const schema = require("./packages/protocol/ods.schema.json");
+            const extra = Object.keys(d).filter(
+              (k) => !(k in (schema.properties || {})) && !Object.keys(schema.patternProperties || {}).some((re) => new RegExp(re).test(k))
+            );
+            if (extra.length) fail("fields the schema forbids: " + extra.join(", "));
             if (!d.failure_conditions?.length) fail("no failure conditions");
             const sum = d.scorecard.dimensions.reduce((a, x) => a + x.points, 0);
             if (Math.abs(sum - d.scorecard.total) > 2) fail("points do not sum to total");
@@ -164,10 +175,41 @@ jobs:
           workspaces: packages/protocol/rust
       - name: Clippy
         working-directory: packages/protocol/rust
-        run: cargo clippy --all-targets -- -D warnings
+        # Diagnostics go to the job summary as well as the log: the log is only
+        # visible to someone with the run open, and this binding has never compiled
+        # clean, so the first thing anyone needs is the actual error text.
+        run: |
+          set -u
+          if cargo clippy --all-targets -- -D warnings > /tmp/clippy.log 2>&1; then
+            cat /tmp/clippy.log
+            exit 0
+          fi
+          cat /tmp/clippy.log
+          {
+            echo '### cargo clippy failed'
+            echo ''
+            echo '```'
+            tail -120 /tmp/clippy.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 1
       - name: Test
         working-directory: packages/protocol/rust
-        run: cargo test --all-targets
+        run: |
+          set -u
+          if cargo test --all-targets > /tmp/cargo-test.log 2>&1; then
+            cat /tmp/cargo-test.log
+            exit 0
+          fi
+          cat /tmp/cargo-test.log
+          {
+            echo '### cargo test failed'
+            echo ''
+            echo '```'
+            tail -120 /tmp/cargo-test.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 1
 
   conformance:
     name: cross-language conformance
@@ -217,7 +259,7 @@ jobs:
           python -c "
           from viral_engine_ods import assert_weights_sum_to_max, dimension_specs, AQI_MAX
           assert_weights_sum_to_max()
-          assert len(dimension_specs()) == 20, len(dimension_specs())
+          assert len(dimension_specs()) == 25, len(dimension_specs())
           print('python weights ok', AQI_MAX)
           "
           (cd packages/protocol/go && go run ./... 2>/dev/null || true)

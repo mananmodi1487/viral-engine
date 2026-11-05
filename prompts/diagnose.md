@@ -20,6 +20,6 @@ Rules:
 - Use `unavailable` rather than guessing. A guessed number is worse than a stated gap.
 - Any heuristic must be labelled heuristic.
 - Name the single weakest lever. That is the only thing worth fixing first.
-- If any blocking claim exists (guaranteed results, unsourced figures, invented testimonials), say DO NOT LAUNCH YET and explain why.
+- If any blocking claim exists ("guaranteed results", unsourced figures, invented testimonials), say DO NOT LAUNCH YET and explain why.
 
 Research basis: Berger & Milkman (2012) on arousal; Goel, Watts & Goldstein (2012/2016) on broadcast vs. chains. Cite these only where they apply; do not stretch them.

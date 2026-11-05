@@ -60,7 +60,7 @@ export function assetAlchemist(
         `2/ Most launch advice optimises the hook. The diffusion data says the hook is rarely the bottleneck.\n\n` +
         `3/ Across ~1B diffusion events, cascades over 100 nodes were about 0.025%. Popularity tracks the largest single broadcast, not the chain (Goel, Watts & Goldstein).\n\n` +
         `4/ So the question is not "how do I go viral". It is "who is the one person who would pass this on, and what do they need from me".\n\n` +
-        `5/ ${name} answers that. It scores 20 dimensions, names the weakest, and writes the broadcaster brief.\n\n` +
+        `5/ ${name} answers that. It scores 25 dimensions, names the weakest, and writes the broadcaster brief.\n\n` +
         `6/ It never invents numbers. When it does not know something it says unknown — which makes it less impressive and more useful.\n\n` +
         `7/ Run it on something you already published: <link>\n\n` +
         `If it tells you something you did not want to hear, it is working.`,
@@ -83,7 +83,7 @@ export function assetAlchemist(
       budget: 'tagline under 60 characters, description under 260',
       text:
         `Tagline: Find out why nobody shared it\n\n` +
-        `Description: ${name} scores an attempt at diffusion on 20 dimensions, names the weakest, and writes the broadcaster brief. Runs locally, no signup, refuses to invent statistics. "Do not launch yet" is a valid output.`,
+        `Description: ${name} scores an attempt at diffusion on 25 dimensions, names the weakest, and writes the broadcaster brief. Runs locally, no signup, refuses to invent statistics. "Do not launch yet" is a valid output.`,
       notes: 'The tagline is a question, not a claim. Claims invite comparison; questions invite a click.',
     },
     {
@@ -156,7 +156,7 @@ export function assetAlchemist(
     ],
     limitations: [
       'Templates cannot know your specifics, so every asset is a scaffold until you replace the placeholders.',
-      'Channel norms change. The budgets here are current as of ODS 1.0 and are stated so you can check them.',
+      'Channel norms change. The budgets here are current as of ODS 2.0 and are stated so you can check them.',
       'No asset can fix a real proof gap. If the claim is unsupported, the copy is just a better-dressed problem.',
     ],
     output: {
