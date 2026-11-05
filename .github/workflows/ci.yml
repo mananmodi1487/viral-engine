@@ -33,6 +33,8 @@ jobs:
         run: npm test
       - name: AQI rubric integrity
         run: npm run check:weights
+      - name: The repository's own prose obeys its honesty rules
+        run: npm run check:honesty -- --ci
       - name: Evaluation harness (fails on a precision regression)
         run: npm run bench
       - name: Build

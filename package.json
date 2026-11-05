@@ -34,8 +34,8 @@
     "conformance": "vitest run tests/conformance.test.ts",
     "check:weights": "node scripts/check-aqi-weights.mjs",
     "check:honesty": "tsx scripts/self-honesty-check.ts",
-    "check": "npm run check:weights && npm run typecheck && npm run test && npm run test:api",
-    "python:test": "python3 -m pytest packages/protocol/python -q || python3 -m unittest discover -s packages/protocol/python -t .",
+    "check": "npm run check:weights && npm run typecheck && npm run test && npm run test:api && npm run check:honesty && npm run python:test",
+    "python:test": "node scripts/python-test.mjs",
     "academy": "tsx academy/exercises/check.ts"
   },
   "dependencies": {

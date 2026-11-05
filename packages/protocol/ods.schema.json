@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://viralenginecommons.org/protocol/ods-2.0.0.schema.json",
-  "title": "Open Diffusion Spec (ODS) 1.0.0",
+  "title": "Open Diffusion Spec (ODS) 2.0.0",
   "description": "A machine-readable description of an artifact and its diffusion state. ODS is a public protocol: it is owned by nobody, implementable by anybody, and every field that carries a judgement must carry its evidence basis. Fields are additive across minor versions; see schema-versioning.md.",
   "type": "object",
   "additionalProperties": false,
@@ -16,19 +16,31 @@
   ],
   "properties": {
     "ods_version": {
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "pattern": "^\\d+\\.\\d+\\.\\d+$",
       "description": "Semantic version of the ODS schema this document conforms to.",
-      "const": "2.0.0"
+      "const": "2.0.0",
+      "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
     },
     "document_id": {
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "Stable identifier for this assessment. Suggested: uuidv7 or content hash.",
-      "pattern": "^[A-Za-z0-9_:-]{6,128}$"
+      "pattern": "^[A-Za-z0-9_:-]{6,128}$",
+      "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
     },
     "generated_at": {
-      "type": "string",
-      "format": "date-time"
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
     },
     "generator": {
       "type": "object",
@@ -39,10 +51,18 @@
       ],
       "properties": {
         "name": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "version": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "mode": {
           "enum": [
@@ -53,10 +73,18 @@
           ]
         },
         "provider": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "model": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "network_calls": {
           "type": "integer",
@@ -75,15 +103,26 @@
       ],
       "properties": {
         "id": {
-          "type": "string",
-          "minLength": 1
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "name": {
-          "type": "string",
-          "minLength": 1
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "type": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "description": "Artifact class. Open vocabulary; these are the values the reference implementation emits.",
           "examples": [
             "github-repo",
@@ -121,26 +160,47 @@
             "release-notes",
             "app-store-listing",
             "raw-text"
-          ]
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "url": {
-          "type": "string",
-          "format": "uri"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri",
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "language": {
-          "type": "string",
-          "description": "BCP-47 tag."
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "BCP-47 tag.",
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "license": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "created_by": {
-          "type": "string",
-          "description": "Optional. Omit in anonymised case studies."
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Optional. Omit in anonymised case studies.",
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "summary": {
-          "type": "string",
-          "maxLength": 2000
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 2000,
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         }
       }
     },
@@ -162,42 +222,34 @@
               "kind": {
                 "enum": [
                   "github-repo",
-                  "local-folder",
-                  "readme",
-                  "package-json",
-                  "docs-folder",
-                  "website",
-                  "landing-page",
-                  "pdf",
-                  "docx",
-                  "txt",
-                  "markdown",
-                  "html",
-                  "screenshot-ocr",
-                  "audio-transcript",
-                  "video-transcript",
-                  "tweet-thread",
-                  "product-hunt",
-                  "hacker-news",
-                  "youtube",
-                  "notion-public",
-                  "google-docs",
-                  "figma-public",
-                  "app-store-listing",
-                  "email-draft",
-                  "raw-text"
-                ]
+                  "url",
+                  "readme-text",
+                  "free-text"
+                ],
+                "$comment": "The ingestion channel, not the artifact type. artifact.type carries what the document IS; this carries how it reached the tool. The two are deliberately different enums: a pasted changelog is kind \"free-text\" and type \"changelog\"."
               },
               "ref": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "fetched_at": {
-                "type": "string",
-                "format": "date-time"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time",
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "degraded_reason": {
-                "type": "string",
-                "description": "Set when the input could not be read in full. Never silently omit."
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Set when the input could not be read in full. Never silently omit.",
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "consent": {
                 "enum": [
@@ -229,33 +281,61 @@
       ],
       "properties": {
         "one_sentence_description": {
-          "type": "string",
-          "minLength": 1
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "claimed_category": {
-          "type": "string",
-          "minLength": 1
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "actual_category_signals": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "target_audience": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "core_promise": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "core_tension": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "emotional_stake": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "basis": {
           "$ref": "#/$defs/basis"
@@ -285,7 +365,11 @@
         "competitors": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "adjacent_categories": {
@@ -299,13 +383,25 @@
             ],
             "properties": {
               "name": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "why_less_crowded": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "credibility_risk": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "tension_score": {
                 "type": "number",
@@ -313,15 +409,23 @@
                 "maximum": 5
               },
               "proof_needed": {
-                "type": "string",
-                "description": "What would have to be true for this claim to survive a critic."
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "What would have to be true for this claim to survive a critic.",
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               }
             }
           }
         },
         "recommended_category": {
-          "type": "string",
-          "minLength": 1
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "category_confidence": {
           "type": "number",
@@ -331,20 +435,36 @@
         "evidence": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "missing_data": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "proposed_positioning": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "proof_required": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "failure_condition": {
           "$ref": "#/$defs/failureCondition"
@@ -371,29 +491,49 @@
         "named_people": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           },
           "description": "Roles or communities, never invented individuals."
         },
         "where_they_gather": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "what_they_already_believe": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "what_they_would_lose_by_sharing": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "evidence": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         }
       }
@@ -408,7 +548,11 @@
       ],
       "properties": {
         "primary_broadcaster_type": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "specific_broadcaster_candidates": {
           "type": "array",
@@ -422,17 +566,33 @@
             ],
             "properties": {
               "candidate": {
-                "type": "string",
-                "description": "A role plus a discovery method. Never a scraped personal profile."
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "A role plus a discovery method. Never a scraped personal profile.",
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "where_to_find": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "why_they_might_care": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "what_makes_them_look_good": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "consent_status": {
                 "enum": [
@@ -443,19 +603,35 @@
                 ]
               },
               "contact_channel": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               }
             }
           }
         },
         "broadcaster_stake": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "share_asset_needed": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "consent_outreach_template": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "consent_posture": {
           "enum": [
@@ -467,14 +643,22 @@
         "anti_spam_rules": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           },
           "minItems": 1
         },
         "what_not_to_say": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "max_contacts": {
@@ -483,7 +667,11 @@
           "description": "Hard cap on outreach for this artifact. A policy constant, not a user setting."
         },
         "likely_amplifier": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "failure_condition": {
           "$ref": "#/$defs/failureCondition"
@@ -519,13 +707,25 @@
             ],
             "properties": {
               "friction": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "evidence": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "fix": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               }
             }
           }
@@ -533,7 +733,11 @@
         "reductions": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "forwardable_artifact_exists": {
@@ -569,13 +773,21 @@
         "dark_patterns_detected": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "required_fixes": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "passed": {
@@ -601,16 +813,32 @@
                 ]
               },
               "matched": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "where": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "rule": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "suggestion": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               }
             }
           }
@@ -618,7 +846,11 @@
         "scanned_for": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         }
       }
@@ -634,8 +866,12 @@
       ],
       "properties": {
         "aqi_version": {
-          "type": "string",
-          "description": "Rubric version that produced these numbers. Required because scores from different rubric versions are not comparable: 1.x had 20 dimensions and different weights."
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Rubric version that produced these numbers. Required because scores from different rubric versions are not comparable: 1.x had 20 dimensions and different weights.",
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "max": {
           "type": "number"
@@ -646,10 +882,18 @@
           "maximum": 1000
         },
         "band": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "disclaimer": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "dimensions": {
           "type": "array",
@@ -699,7 +943,11 @@
                 ]
               },
               "label": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "weight": {
                 "type": "integer",
@@ -729,29 +977,49 @@
               "evidence": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
                 },
                 "minItems": 1
               },
               "assumptions": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
                 }
               },
               "missing_data": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
                 }
               },
               "improvement": {
-                "type": "string",
-                "minLength": 1
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "failure_condition": {
-                "type": "string",
-                "minLength": 1
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "do_not_launch_yet": {
                 "type": "boolean"
@@ -766,48 +1034,92 @@
       "additionalProperties": false,
       "properties": {
         "hacker_news_title": {
-          "type": "string",
-          "maxLength": 80
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 80,
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "show_hn_body": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "x_thread": {
           "type": "array",
           "items": {
-            "type": "string",
-            "maxLength": 280
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 280,
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "linkedin_post": {
-          "type": "string",
-          "maxLength": 3000
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 3000,
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "product_hunt_tagline": {
-          "type": "string",
-          "maxLength": 60
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 60,
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "product_hunt_description": {
-          "type": "string",
-          "maxLength": 260
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 260,
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "email_announcement": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "email_subject_lines": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "discord_message": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "landing_hero": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "one_line_broadcast_summary": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "alt_text": {
           "type": "object",
@@ -815,20 +1127,36 @@
           "description": "Every image asset must ship with alt text. Not optional in the reference implementation.",
           "properties": {
             "scorecard": {
-              "type": "string"
+              "type": [
+                "string",
+                "null"
+              ],
+              "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
             },
             "category_map": {
-              "type": "string"
+              "type": [
+                "string",
+                "null"
+              ],
+              "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
             },
             "before_after": {
-              "type": "string"
+              "type": [
+                "string",
+                "null"
+              ],
+              "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
             }
           }
         },
         "placeholders_used": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           },
           "description": "Every [bracketed placeholder] the generator emitted, so a user knows exactly what is not yet true."
         }
@@ -852,27 +1180,55 @@
             ],
             "properties": {
               "name": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "hypothesis": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "method": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "cost": {
-                "type": "string",
-                "description": "Time and money. A test that costs a week is not a pre-launch test."
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Time and money. A test that costs a week is not a pre-launch test.",
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "success_criterion": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "kill_criterion": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "decision_it_changes": {
-                "type": "string",
-                "description": "The decision this test exists to change. A test that changes no decision is a ritual."
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The decision this test exists to change. A test that changes no decision is a ritual.",
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               }
             }
           }
@@ -880,24 +1236,72 @@
         "success_criteria": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "kill_criteria": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "measurement_plan": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "pre_registered": {
           "type": "boolean",
           "description": "Criteria written before the test ran. Post-hoc criteria are how experiments become storytelling."
+        },
+        "kill_criteria_detail": {
+          "type": "array",
+          "description": "Structured kill criteria: what you would observe, over what horizon, that would stop the promotion. Distinct from kill_criteria, which is the prose form for a human reader.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "statement",
+              "observable",
+              "horizon"
+            ],
+            "properties": {
+              "statement": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
+              },
+              "observable": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
+              },
+              "horizon": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
+              }
+            }
+          }
         }
       }
     },
@@ -915,19 +1319,31 @@
         "signals_to_track": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "questions_to_ask": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "update_triggers": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         },
         "outcome_recorded": {
@@ -959,7 +1375,11 @@
             ],
             "properties": {
               "risk": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               },
               "assessment": {
                 "enum": [
@@ -969,7 +1389,11 @@
                 ]
               },
               "note": {
-                "type": "string"
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
               }
             }
           }
@@ -978,7 +1402,11 @@
           "type": "boolean"
         },
         "do_not_launch_reason": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "audience_could_read_this": {
           "type": "boolean",
@@ -998,7 +1426,11 @@
       "additionalProperties": false,
       "properties": {
         "reading_level": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "jargon_density": {
           "type": "number",
@@ -1009,12 +1441,20 @@
           "type": "boolean"
         },
         "plain_language_rewrite": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
         },
         "screen_reader_notes": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ],
+            "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
           }
         }
       }
@@ -1022,7 +1462,11 @@
     "limitations": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": [
+          "string",
+          "null"
+        ],
+        "$comment": "null means the implementation could not determine this from the artifact. It is not the empty string and not \"unknown\": an empty string is a value, and a wrong value is worse than an absent one."
       },
       "minItems": 1,
       "description": "What this document cannot tell you. Required by convention in the reference implementation."
@@ -1078,5 +1522,10 @@
       }
     }
   },
-  "$comment": "ODS 2.0.0. Breaking change from 1.0.0: the Attempt Quality Index moved from 20 to 25 dimensions, so the dimension key enum changed and every weight changed. A 1.x document is migrated, never silently re-scored — see protocol/schema-versioning.md and `viral-engine migrate`."
+  "$comment": "ODS 2.0.0. Breaking change from 1.0.0: the Attempt Quality Index moved from 20 to 25 dimensions, so the dimension key enum changed and every weight changed. A 1.x document is migrated, never silently re-scored \u2014 see protocol/schema-versioning.md and `viral-engine migrate`.",
+  "patternProperties": {
+    "^x_[a-z0-9_]+$": {
+      "description": "A namespaced extension. Allowed by schema-versioning.md rule 1: it must not be required for the document to validate, must not change the meaning of an ODS field, and must not contain personal data about third parties. Implementations must ignore keys they do not know."
+    }
+  }
 }

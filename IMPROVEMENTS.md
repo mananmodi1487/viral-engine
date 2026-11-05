@@ -14,7 +14,7 @@ policy and this version is judged against it — what each change cost.
 **Before:** one implementation. The scoring rules lived in `score.ts`. If you disagreed with a
 weight, your only option was to fork and become incomparable.
 
-**Now:** `ODS 1.0.0` — a published specification, a JSON Schema, a machine-readable rubric
+**Now:** `ODS 2.0.0` — a published specification, a JSON Schema, a machine-readable rubric
 (`protocol/aqi-weights.json`) that every implementation loads at runtime, and a conformance suite
 with a status column per language.
 
@@ -33,11 +33,11 @@ wrong. The label is the honest part; a claim of "four languages" would not be.
 
 ---
 
-## 2. From a 0-100 score to a 1000-point rubric with 20 dimensions
+## 2. From a 0-100 score to a 1000-point rubric with 25 dimensions
 
 **Before:** seven levers, one 0-100 number, five bands.
 
-**Now:** twenty weighted dimensions summing to exactly 1000, each carrying evidence, confidence,
+**Now:** 25 weighted dimensions summing to exactly 1000, each carrying evidence, confidence,
 basis, assumptions, missing data, improvement action, and failure condition. The schema rejects a
 dimension missing any of them.
 
@@ -45,7 +45,7 @@ dimension missing any of them.
 you can argue with, and — more importantly — a document you can diff between commits.
 
 **What it cost:** readability. Twenty dimensions is too many to read. The report therefore shows
-only the three highest-leverage dimensions by default and says it is doing so. The full twenty
+only the three highest-leverage dimensions by default and says it is doing so. The full 25
 exist so that the ranking is defensible, not so that anyone reads them.
 
 **Deliberate design choice worth naming:** 1000 points, not 100. A number like 583 does not look

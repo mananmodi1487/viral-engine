@@ -4,7 +4,7 @@ There are none, on purpose.
 
 A quiz measures recall of the module's content. The modules do not contain facts worth recalling;
 they contain a method you have to apply to your own artifact. A quiz would let a student pass by
-remembering "twenty dimensions" without ever writing a failure condition, which is the opposite of
+remembering "25 dimensions" without ever writing a failure condition, which is the opposite of
 the point.
 
 ## What replaces a quiz
