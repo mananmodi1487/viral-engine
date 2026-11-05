@@ -383,7 +383,7 @@ ${AQI_BANDS.map((b) => `<tr><td class="num">${b.min}–${b.max}</td><td><strong>
 export function protocolPage(): string {
   return `
 <h1>Open Diffusion Spec 1.0</h1>
-<p class="lede">A public, implementable, evidence-labelled way to describe an artifact and its diffusion state. Owned by nobody. Implementable by anybody. Licensed Apache-2.0 for the schema files and CC BY 4.0 for the text.</p>
+<p class="lede">A public, implementable, evidence-labelled way to describe an artifact and its diffusion state. Owned by nobody, implementable by anybody. The specification and the schema are dedicated to the public domain (CC0 1.0); the prose around them is CC BY 4.0. No permission, fee, or attribution is required to implement it.</p>
 
 <div class="panel tight">
 <h3 style="margin-top:0">Why a protocol exists for this</h3>

@@ -252,7 +252,7 @@ function footer(): string {
   <div>
     <h4>Why it exists</h4>
     <p class="tiny" style="margin:0">Free forever. No account, no telemetry, no paywall, no premium tier. There is nothing to upgrade to, and nothing withheld to make you want to.</p>
-    <p class="tiny" style="margin:8px 0 0">Core code MIT · docs CC BY 4.0 · protocol Apache-2.0</p>
+    <p class="tiny" style="margin:8px 0 0">Core code MIT · docs CC BY 4.0 · protocol CC0 1.0</p>
   </div>
 </div></footer>`;
 }

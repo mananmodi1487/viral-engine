@@ -2,7 +2,7 @@
 
 **A public, implementable, evidence-labelled way to describe an artifact and its diffusion state.**
 
-Status: `1.0.0` — stable for the 1.x line. Owned by nobody. Licensed CC BY 4.0 (text) / Apache-2.0 (schema files).
+Status: `1.0.0` — stable for the 1.x line. Owned by nobody. Dedicated to the public domain (CC0 1.0): the text, the schema, and the weights file. Implementing this document requires no permission, fee, or attribution.
 
 ---
 

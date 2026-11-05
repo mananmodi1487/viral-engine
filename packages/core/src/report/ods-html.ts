@@ -178,7 +178,7 @@ ${((doc.experiments as unknown as { pre_launch_tests: Array<Record<string, strin
 <ul>${doc.limitations.map((l) => `<li>${esc(l)}</li>`).join('\n')}</ul>
 
 <footer>
-<p><strong>Viral Engine Commons</strong> — free forever, no telemetry, no account. Core code MIT · docs CC BY 4.0 · protocol Apache-2.0.</p>
+<p><strong>Viral Engine Commons</strong> — free forever, no telemetry, no account. Core code MIT · docs CC BY 4.0 · protocol CC0 1.0 (public domain).</p>
 <p>This is a rubric, not a forecast. It contains no prediction of reach and no guarantee of any outcome. Every number is reproducible from the evidence printed beside it.</p>
 </footer>
 </main>
