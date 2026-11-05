@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 500" width="880" height="500" role="img" aria-label="Three viral hooks with their patterns, target audiences and failure risks">
+  <rect width="880" height="500" fill="#0d1117" rx="12"/>
+  <rect x="0.5" y="0.5" width="879" height="499" fill="none" stroke="#30363d" rx="12"/>
+
+  <circle cx="26" cy="26" r="5" fill="#f85149"/>
+  <circle cx="44" cy="26" r="5" fill="#d29922"/>
+  <circle cx="62" cy="26" r="5" fill="#3fb950"/>
+  <text x="84" y="31" font-family="ui-monospace,Menlo,monospace" font-size="12" fill="#8b949e">viral-engine · section 3 of 8 · hooks</text>
+  <line x1="0" y1="48" x2="880" y2="48" stroke="#21262d"/>
+
+  <!-- hook 1 -->
+  <rect x="28" y="68" width="824" height="128" rx="8" fill="#161b22" stroke="#21262d"/>
+  <rect x="28" y="68" width="4" height="128" rx="2" fill="#58a6ff"/>
+  <text x="52" y="98" font-family="ui-sans-serif,system-ui,sans-serif" font-size="16.5" font-weight="600" fill="#e6edf3">&#8220;You&#8217;re not afraid of AI taking your job. You&#8217;re afraid</text>
+  <text x="52" y="124" font-family="ui-sans-serif,system-ui,sans-serif" font-size="16.5" font-weight="600" fill="#e6edf3">of being the last person to notice.&#8221;</text>
+  <text x="52" y="152" font-family="ui-monospace,Menlo,monospace" font-size="11.5" fill="#58a6ff">REFRAME</text>
+  <text x="52" y="176" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11.5" fill="#8b949e">mid-career professionals who suspect they&#8217;re behind</text>
+  <text x="560" y="152" font-family="ui-monospace,Menlo,monospace" font-size="11.5" fill="#f85149">risk</text>
+  <text x="600" y="152" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11.5" fill="#8b949e">reads as presumptuous if</text>
+  <text x="600" y="172" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11.5" fill="#8b949e">they don&#8217;t self-identify by line 3</text>
+
+  <!-- hook 2 -->
+  <rect x="28" y="212" width="824" height="128" rx="8" fill="#161b22" stroke="#21262d"/>
+  <rect x="28" y="212" width="4" height="128" rx="2" fill="#d29922"/>
+  <text x="52" y="242" font-family="ui-sans-serif,system-ui,sans-serif" font-size="16.5" font-weight="600" fill="#e6edf3">&#8220;The app my professor doesn&#8217;t want you to use</text>
+  <text x="52" y="268" font-family="ui-sans-serif,system-ui,sans-serif" font-size="16.5" font-weight="600" fill="#e6edf3">(but your GPA depends on it).&#8221;</text>
+  <text x="52" y="296" font-family="ui-monospace,Menlo,monospace" font-size="11.5" fill="#d29922">FORBIDDEN INSIDER</text>
+  <text x="52" y="320" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11.5" fill="#8b949e">students who already suspect the system is stacked</text>
+  <text x="560" y="296" font-family="ui-monospace,Menlo,monospace" font-size="11.5" fill="#f85149">risk</text>
+  <text x="600" y="296" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11.5" fill="#8b949e">keep it playful &#8212; genuinely</text>
+  <text x="600" y="316" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11.5" fill="#8b949e">anti-education will get pushback</text>
+
+  <!-- hook 3 -->
+  <rect x="28" y="356" width="824" height="112" rx="8" fill="#161b22" stroke="#21262d"/>
+  <rect x="28" y="356" width="4" height="112" rx="2" fill="#3fb950"/>
+  <text x="52" y="386" font-family="ui-sans-serif,system-ui,sans-serif" font-size="16.5" font-weight="600" fill="#e6edf3">&#8220;I tracked 4 habits for 30 days. My placement offer</text>
+  <text x="52" y="412" font-family="ui-sans-serif,system-ui,sans-serif" font-size="16.5" font-weight="600" fill="#e6edf3">came on day 26.&#8221;</text>
+  <text x="52" y="440" font-family="ui-monospace,Menlo,monospace" font-size="11.5" fill="#3fb950">RECEIPT</text>
+  <text x="128" y="440" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11.5" fill="#8b949e">final-year students in placement season</text>
+  <text x="560" y="440" font-family="ui-monospace,Menlo,monospace" font-size="11.5" fill="#f85149">risk</text>
+  <text x="600" y="440" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11.5" fill="#8b949e">only usable if the story is true</text>
+
+  <text x="28" y="488" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#484f58">Every hook ships with its pattern, its audience, and the way it fails. Three hooks, never one.</text>
+</svg>
