@@ -39,6 +39,19 @@ import {
   AQI_MAX,
   AQI_VERSION,
   AQI_BANDS,
+  buildSharePayloads,
+  failureCard,
+  ARTIFACT_TYPES,
+  artifactTypeSpec,
+  guessArtifactType,
+  roast,
+  therapist,
+  killYourDarling,
+  explainLikeImFive,
+  stressTest,
+  calibrate,
+  spearman,
+  extractSignals,
 } from '../../../packages/core/src/index.js';
 import type { OdsDocument } from '../../../packages/core/src/index.js';
 import { layout, esc } from './layout.js';
@@ -119,6 +132,8 @@ interface AnalyzeBody {
   offline?: boolean;
   strict?: boolean;
   saturationCount?: number;
+  /** Declared artifact type. Omit to infer it structurally. */
+  artifactType?: string;
 }
 
 async function buildDoc(body: AnalyzeBody): Promise<{ doc: OdsDocument; degraded: string[]; ms: number }> {
@@ -133,6 +148,7 @@ async function buildDoc(body: AnalyzeBody): Promise<{ doc: OdsDocument; degraded
 
   const ing = await ingest(body.target ?? '', { offline, text: body.text });
   const doc = await analyzeOds(ing.source, {
+    artifactType: body.artifactType,
     offline,
     networkCalls: offline ? 0 : ing.source.fetchedFrom === 'network' ? 1 : 0,
     saturationCount: body.saturationCount,
@@ -372,6 +388,40 @@ const server = createServer(async (req, res) => {
           formula: 'attempt_quality = round(sum(sub_score_i * weight_i / 100))',
         });
       }
+      if (path === '/api/types') {
+        return json(res, 200, {
+          count: ARTIFACT_TYPES.length,
+          note: 'The rubric is applied differently per type, because "good" means something different for a changelog and a book proposal.',
+          types: ARTIFACT_TYPES,
+        });
+      }
+      if (path === '/api/calibration') {
+        const file = join(ROOT, 'evidence', 'outcomes', 'records.jsonl');
+        const rows = existsSync(file)
+          ? readFileSync(file, 'utf8')
+            .split('\n')
+            .filter((l) => l.trim() && !l.trim().startsWith('//'))
+            .flatMap((l) => {
+              try {
+                return [JSON.parse(l) as Record<string, unknown>];
+              } catch {
+                return [];
+              }
+            })
+          : [];
+        // Rows missing a required field are counted and reported, never defaulted.
+        const required = ['aqi', 'aqiVersion', 'outcome', 'outcomeUnit', 'label', 'horizonDays'];
+        const usable = rows.filter((r) => required.every((k) => r[k] !== undefined && r[k] !== null));
+        const report = calibrate(usable as never);
+        return json(res, 200, {
+          ...report,
+          rejected: rows.length - usable.length,
+          note: 'A correlation is reported only above 30 records. Below that the honest answer is that there is not enough data, and this endpoint says so rather than printing a coefficient.',
+        });
+      }
+      if (path === '/api/stress-test') {
+        return json(res, 200, stressTest());
+      }
       if (path === '/api/evidence') {
         return json(res, 200, {
           note: 'Evidence records are labelled. No aggregate statistic is published until enough labelled records exist to make one honest.',
@@ -438,7 +488,54 @@ const server = createServer(async (req, res) => {
         return handleOutcomes(res, body as unknown as Record<string, unknown>);
       }
 
+      /*
+       * The modes and the share payloads read the artifact directly. They do not
+       * need a full ODS document, and running the whole pipeline to roast a
+       * README would be slower while tempting the output to quote scores nobody
+       * asked for.
+       */
+      if (path === '/api/mode') {
+        const which = String((body as unknown as Record<string, unknown>).mode ?? '');
+        const textIn = body.text ?? '';
+        if (!textIn.trim()) throw new HttpError(400, 'Send { "mode": "roast|therapist|kill-my-darling|explain", "text": "..." }');
+        if (textIn.length > 100_000) throw new HttpError(413, 'Text is over 100KB.');
+        const input = { text: textIn, title: body.target, signals: extractSignals(textIn) };
+        const darling = (body as unknown as { darling?: string }).darling;
+        const out =
+          which === 'roast' ? roast(input)
+            : which === 'therapist' ? therapist(input)
+              : which === 'kill-my-darling' ? killYourDarling(input, darling)
+                : which === 'explain' ? explainLikeImFive(input)
+                  : null;
+        if (!out) throw new HttpError(400, 'mode must be roast | therapist | kill-my-darling | explain');
+        return json(res, 200, out);
+      }
+
       const { doc, ms } = await buildDoc(body);
+
+      if (path === '/api/share') {
+        const leverage = [...doc.scorecard.dimensions]
+          .map((d) => ({ d, lost: Math.round(((100 - d.score) * d.weight) / 100) }))
+          .sort((a, b) => b.lost - a.lost);
+        const payloads = buildSharePayloads({
+          artifactName: doc.artifact.name,
+          total: doc.scorecard.total,
+          band: doc.scorecard.band,
+          aqiVersion: doc.scorecard.aqi_version,
+          dimensions: doc.scorecard.dimensions as never,
+          forwardable: (doc.launch_assets.one_line_broadcast_summary as string | undefined) ?? null,
+          topLeverage: leverage.slice(0, 3).map((x) => x.d) as never,
+          failureCondition: doc.failure_conditions[0] ?? null,
+          asOf: doc.generated_at.slice(0, 10),
+        });
+        const fc = doc.failure_conditions[0];
+        const failure = fc ? failureCard(doc.artifact.name, fc) : null;
+        return json(res, 200, {
+          ...payloads,
+          failureCard: failure,
+          contentType: 'the card is generated locally from the document; the analyzed text is never sent anywhere',
+        });
+      }
 
       const pick: Record<string, () => unknown> = {
         '/api/analyze': () => ({ doc, html: resultFragment(doc, ms), ms }),

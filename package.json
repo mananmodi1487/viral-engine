@@ -25,6 +25,7 @@
     "dev": "tsx apps/cli/src/index.ts",
     "serve": "tsx apps/web/src/server.ts",
     "test": "vitest run",
+    "test:api": "tsx scripts/test-api.ts",
     "test:watch": "vitest",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "example": "tsx apps/cli/src/index.ts analyze ./README.md --offline",
@@ -33,7 +34,7 @@
     "conformance": "vitest run tests/conformance.test.ts",
     "check:weights": "node scripts/check-aqi-weights.mjs",
     "check:honesty": "tsx scripts/self-honesty-check.ts",
-    "check": "npm run check:weights && npm run typecheck && npm run test",
+    "check": "npm run check:weights && npm run typecheck && npm run test && npm run test:api",
     "python:test": "python3 -m pytest packages/protocol/python -q || python3 -m unittest discover -s packages/protocol/python -t .",
     "academy": "tsx academy/exercises/check.ts"
   },

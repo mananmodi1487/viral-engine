@@ -700,6 +700,11 @@ ${[
   ['POST', '/api/honesty-audit', 'Unbacked claims and rewrites'],
   ['POST', '/api/report', 'Rendered report: markdown | html'],
   ['POST', '/api/outcomes', 'Validate an Evidence Commons submission'],
+  ['POST', '/api/share', 'Card SVG, alt text, badge, thread, and the one-line forward'],
+  ['POST', '/api/mode', 'roast · therapist · kill-my-darling · explain'],
+  ['GET', '/api/types', 'All 33 artifact types and what each must contain'],
+  ['GET', '/api/calibration', 'Does the score relate to outcomes? Includes the answer "not enough data"'],
+  ['GET', '/api/stress-test', 'The 100k-star stress test. Speculative, and says so in the payload'],
   ['GET', '/api/evidence', 'Index of published evidence records'],
   ['GET', '/api/protocol/schema', 'The ODS JSON Schema'],
   ['GET', '/api/protocol/weights', 'The AQI weights file'],
@@ -717,7 +722,8 @@ ${[
   "channel": "hackernews",       // optional, narrows the generated assets
   "language": "en",              // BCP-47
   "offline": true,               // true = zero network calls. Default true.
-  "saturationCount": 1200        // optional, if you measured it yourself
+  "saturationCount": 1200,       // optional, if you measured it yourself
+  "artifactType": "changelog"    // optional; see /api/types. A wrong type applies the wrong rubric
 }</pre>
 
 <h2>Example</h2>
