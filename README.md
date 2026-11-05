@@ -270,7 +270,7 @@ suite. Anyone can implement it. Four implementations ship here:
 
 | Language | Tests actually run | Status |
 |---|---|---|
-| TypeScript | 254 tests, every commit | **Reference** |
+| TypeScript | 260 tests, every commit | **Reference** |
 | Python | 19 tests, local + CI | **Tested** |
 | Go | `go test ./...` in CI | **CI-only** — never executed by the author, no toolchain available |
 | Rust | `cargo test` in CI | **CI-only** — same, and one function may be wrong |
@@ -441,7 +441,7 @@ The most valuable contribution is a disagreement with a claim, recorded in publi
 most valuable is a failure record.
 
 ```bash
-npm ci && npm run check     # weights · typecheck · honesty · 254 tests
+npm ci && npm run check     # weights · typecheck · honesty · 260 tests
 npm run bench               # evaluation harness; fails on a precision regression
 ```
 

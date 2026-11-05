@@ -30,7 +30,11 @@ use std::path::{Path, PathBuf};
 // ---------------------------------------------------------------------------
 
 /// Everything that can be wrong with an ODS document.
-#[derive(Debug, Clone, PartialEq, Eq)]
+///
+/// `Eq` is deliberately absent: `OutOfRange(f64)` carries a float, and `f64` is only
+/// `PartialEq` because NaN is not equal to itself. Deriving `Eq` here does not compile
+/// — and did not, which is why this crate had never built.
+#[derive(Debug, Clone, PartialEq)]
 pub enum ValidationError {
     MissingField(&'static str),
     UnknownDimension(String),
@@ -536,6 +540,13 @@ pub struct Dimension {
 
 impl Dimension {
     /// Build a dimension, or refuse with the reason.
+    ///
+    /// Eight parameters is the point: a dimension without evidence is a decoration,
+    // without an improvement it is a verdict, and without a failure condition it
+    // cannot be argued with. Folding them into a struct would move the requirement
+    // one level away from the call site, which is exactly where it needs to bite.
+    // The Go binding's NewDimension takes the same eight.
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         weights: &Weights,
         key: &str,

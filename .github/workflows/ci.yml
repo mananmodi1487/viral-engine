@@ -192,6 +192,10 @@ jobs:
             tail -120 /tmp/clippy.log
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+          # Publish each diagnostic as a check annotation too. An annotation is
+          # visible from the pull request and from the API without downloading the
+          # job log, which is the difference between a fixable failure and a red X.
+          node "$GITHUB_WORKSPACE/scripts/ci-annotate.mjs" --title clippy --file /tmp/clippy.log
           exit 1
       - name: Test
         working-directory: packages/protocol/rust
@@ -209,6 +213,7 @@ jobs:
             tail -120 /tmp/cargo-test.log
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+          node "$GITHUB_WORKSPACE/scripts/ci-annotate.mjs" --title "cargo test" --file /tmp/cargo-test.log
           exit 1
 
   conformance:
