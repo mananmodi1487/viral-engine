@@ -1,0 +1,46 @@
+CC0 1.0 Universal (CC0 1.0) — Public Domain Dedication
+Applies to: protocol/open-diffusion-spec.md, protocol/aqi-weights.json,
+            protocol/schema-versioning.md, protocol/conformance.md
+
+CANONICAL TEXT
+  https://creativecommons.org/publicdomain/zero/1.0/legalcode
+  https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt
+
+This file does not reproduce the legal code. Reproducing a legal instrument from
+memory produces a document that looks authoritative and is not, which is a worse
+outcome than a link. The canonical text at the URL above is the operative one.
+
+WHAT THIS DEDICATION DOES, IN PLAIN LANGUAGE
+
+  The person who associated a work with this deed has dedicated the work to the
+  public domain by waiving all of their rights to the work worldwide under
+  copyright law, including all related and neighbouring rights, to the extent
+  allowed by law.
+
+  You can copy, modify, distribute and perform the work, even for commercial
+  purposes, all without asking permission.
+
+  In no way are the patent or trademark rights of any person affected, nor are
+  the rights that other persons may have in the work or in how the work is used.
+
+  Unless expressly stated otherwise, the person who associated a work with this
+  deed makes no warranties about the work, and disclaims liability for all uses
+  of the work, to the fullest extent permitted by applicable law.
+
+WHAT IT MEANS FOR THE SPECIFICALLY IMPORTANT CASE
+
+  You may implement the Open Diffusion Spec in a closed-source product, in a
+  competing product, in a product that criticises this one, or in a product built
+  by someone who has never heard of this repository. You may fork the spec, rename
+  it, and change it. No permission, fee, notice, or attribution is required.
+
+  You may not describe your implementation as "ODS 1.0.0 conformant" if it
+  disagrees with protocol/conformance.md. That is a factual claim about behaviour,
+  not a licensed trademark, and the checks are public.
+
+WHY CC0 AND NOT CC BY
+
+  The spec is the part of this project that must be free of every friction,
+  including the friction of remembering where it came from. A protocol that asks
+  for attribution on every derivative document is a protocol that asks a lawyer's
+  question of a person trying to describe their own work.

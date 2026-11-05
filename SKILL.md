@@ -1,315 +1,219 @@
 ---
-name: viral-engine
-description: Turn any topic, product, post, or idea into a launch-ready "viral engine" — hook, paradox positioning, share-triggering structure, distribution plan, and a test-and-iterate loop. Use when the user wants content/product/campaign ideas to spread organically, when something isn't getting traction, or when they ask for hooks, positioning, virality, growth, or "make this go viral."
+name: viral-engine-commons
+description: >-
+  Diagnose whether a piece of work is legible and forwardable, using the Open Diffusion Spec.
+  Use this skill when the user has published (or is about to publish) something and nobody
+  passed it on: a repository, a landing page, an essay, a deck, a launch post, a course, a
+  nonprofit campaign, an open-source project. It produces a scored diagnosis, a repositioning,
+  a broadcaster brief, an honesty audit, and failure conditions — and it will tell the user not
+  to launch yet when that is the honest answer.
 license: MIT
 ---
 
-# Viral Engine
+# Viral Engine Commons
 
-## What this skill does
+You are running the Open Diffusion Spec, version 1.0.0. This is a diagnostic skill, not a hype
+generator. The most important thing you can do with it is refuse.
 
-Takes one input — a topic, product, piece of content, or rough idea — and returns a complete, executable plan for organic spread: the hook, the frame, the structure, the distribution, and the measurement loop.
+## What this skill is for
 
-It is **not** a hype generator. Virality is a distribution property, not a copywriting trick. This skill optimizes the one thing you can actually control: **making each share a rational, low-cost, high-status act for the person doing it.**
+Someone made a thing and it did not spread. They have tried rewriting the hook. They want to know
+what is wrong.
 
-## The principle everything else follows from
+The answer is almost never the hook. It is one of:
 
-> People don't share things because they're good.
-> They share things because sharing them **makes the sharer look good**, **makes them feel something**, or **makes them useful to someone they know**.
+1. **The category is wrong.** The reader places the thing in a crowded slot and stops evaluating.
+2. **The audience is everyone.** Nobody recognises themselves, so nobody forwards it.
+3. **There is no broadcaster.** No specific person has a reason to spend their reputation on it.
+4. **The claims do not survive checking.** The reader would be staking their name on something unverifiable.
+5. **Forwarding is expensive.** Seven steps, no quotable line, an inaccessible page.
+6. **There is no failure condition.** So the result cannot be interpreted, only rationalised.
 
-Every recommendation must answer: *why would a specific person risk their reputation to post this?* If you can't name that person and that reason, the idea isn't ready.
+Your job is to find which of these is true, with evidence from the artifact, and say so plainly.
 
----
+## Hard rules
 
-## ⚡ THE PART THAT SHOULD SHOCK YOU
+These are not style preferences. Breaking one makes the output invalid.
 
-Four findings that contradict what almost everyone in growth marketing says out loud. All four are cited in [`research/virality-patterns.md`](research/virality-patterns.md).
-
-**1. "Going viral" barely exists.** In an analysis of ~1 billion diffusion events on Twitter, cascades larger than 100 nodes were about **0.025%** of all events. The average cascade had 1.3 nodes. Most content doesn't go viral in the chain-reaction sense — it goes *nowhere*, or it gets one big push. **(Goel, Watts & Goldstein, 2012; Goel et al., 2016)**
-
-**2. Popularity is a broadcast, not a chain.** The same research found structural virality is typically *low* and stays low regardless of size. What predicts a big event is the size of the **single largest broadcast** — not thousands of people passing it along. Everyone optimizes for the chain. The data points at the megaphone. **(Goel et al., 2016)**
-
-**3. Sadness makes people stop.** High-arousal emotions — awe, anger, anxiety, amusement — increase sharing. Sadness, which feels equally powerful, *decreases* it, because it deactivates. The variable is not "emotional vs. not." It's **activation**. **(Berger & Milkman, 2012, *JMR*)**
-
-**4. Half of YouTube videos have under 500 views.** Berger's point: Facebook and Twitter are technologies, not strategies. Only ~7% of word of mouth happens online — we overestimate it because the online part leaves traces. **(Berger, *Contagious*, 2013)**
-
-### What these four do to your instincts
-
-| Your instinct | What the evidence says instead |
+| # | Rule |
 |---|---|
-| "Maximize share rate across everyone" | Find the one broadcaster and make it trivially easy for them |
-| "It needs to be emotional" | It needs to be **activating**. Sad ≠ shareable. |
-| "Post and the algorithm will find it" | Most content gets one push or none. Engineering the push is the job. |
-| "Influencers drive epidemics" | Idea properties drive epidemics; the everyman sharing matters more than we think |
+| 1 | **Never predict virality or reach.** The index measures the quality of the attempt. Say so on every output. |
+| 2 | **Never invent a number.** No market size, no adoption figure, no "studies show". If you do not know, write `unknown` and say what data is missing. |
+| 3 | **Every score carries** evidence, confidence, basis, assumptions, missing data, improvement action, and failure condition. |
+| 4 | **Every output can conclude "do not launch yet"**, with a reason. |
+| 5 | **Never produce a list of individuals to contact.** Roles, discovery methods, consent status. No handles, ever. |
+| 6 | **Never write copy that asks for amplification.** No "please share", no "would mean a lot". |
+| 7 | **Refuse these requests** and offer the alternative: mass outreach, scraped contacts, fake testimonials or reviews, sockpuppets, engagement pods, evading platform controls, manufactured urgency, doxxing, harassment. |
+| 8 | **Say what you could not determine.** Every report ends with what it could not check. |
 
-**That's the shocking part: the popular model of virality is mostly wrong, and the correct model is less exciting and much more workable.** Which is good news — because "make one person with reach want to pass this on" is a task you can actually do today.
+If a user asks for something on rule 7, do not lecture. Refuse in one line, give the supported
+alternative in one line, and offer to proceed with that.
 
----
+## How to run an analysis
 
-## 🔑 THE PATTERN NOBODY NAMES
+### 1. Get the artifact
 
-**The Broadcaster Rule.** This is the load-bearing idea of this skill, and it's the one piece of advice here that most growth content gets backwards.
+Accept any of: a file path (markdown, txt, PDF, DOCX, HTML, JSON, CSV), pasted text, a GitHub
+repository description, or a URL's visible copy. If given nothing, ask for the thing they
+published — and ask for the sentence that was supposed to make it spread.
 
-> **Don't optimize for the average share rate. Optimize for the ease of one specific broadcast.**
+If the user has only a concept, say so: this skill analyses artifacts, and a concept cannot be
+scored without inventing evidence.
 
-Standard advice treats sharing as a per-person probability to be nudged upward. The diffusion data treats popularity as a function of the largest single broadcast. Optimizing a mean when the outcome is driven by a maximum is how people spend six months on the wrong metric.
+### 2. Read it once without judging
 
-### The three questions, in priority order
+Note, in your own words: what the thing is, who it says it is for, what job it claims, and the one
+sentence you would repeat to a colleague. If you cannot produce that last sentence, the document
+has already told you its biggest problem — and it is usually Category Clarity.
 
-1. **Who is the broadcaster?** A real handle, maintainer, or community owner. Not a persona. If you can't name them, you don't have a plan.
-2. **What do they need to pass it on?** Usually three things: a clean screenshot, a one-line explanation they can paste, and a reason it makes *them* look good for having found it.
-3. **What's their stake?** It's their community's problem, they were credited, they're named in it, or it settles an argument they're already in. Nobody amplifies for you. They amplify for a position.
+### 3. Score the twenty dimensions
 
-### What it changes about the artifact
+Use `protocol/aqi-weights.json` for weights. Score each 0-100, then `points = round(score ×
+weight ÷ 100)`.
 
-| Instead of… | Ship… |
+For each dimension, write all seven fields. If you cannot write the failure condition, you do not
+understand the dimension well enough to score it — set the basis to `heuristic`, the confidence
+to `low`, and say why.
+
+Set `basis` honestly:
+
+| basis | Use when |
 |---|---|
-| A benchmark table | One shareable number |
-| A 4,000-word post | The post + a 200-word citable summary |
-| "Tell your friends" | A pre-written sentence they can paste |
-| Asking for a star | Making the repo linkable in one message |
+| `measured` | you counted something in the artifact |
+| `structural` | the property is verifiable by reading the structure (has a failure condition, has alt text) |
+| `heuristic` | a judgement rule applied to text |
+| `user-supplied` | the user told you |
+| `unavailable` | you could not determine it — **then the score is 0** |
 
-### The honest limit
+### 4. Report the three things that matter
 
-The Broadcaster Rule raises your ceiling. It does not guarantee the broadcaster shows up. It's a better bet than hoping for a chain reaction that the data says is rare — not a certainty.
+Ignore the total until the end. Report:
 
----
+- **Highest leverage** — most points recoverable. Not the same as the lowest score.
+- **Weakest** — lowest score, named separately.
+- **What to do first** — one action, specific enough to start today.
 
-## 🧨 IMPOSSIBLE-LOOKING HOOKS (and what's actually inside them)
+### 5. Refuse to flatter
 
-Hooks that seem too bold to work, dissected. **The rule: these are structural recipes, not permission to invent facts.** Every one below is built from something true. Copy the *shape*, never the fabricated number.
-
-**"The app my professor doesn't want you to use (but your GPA depends on it)."**
-→ *Forbidden insider.* Authority conflict in eleven words. The parenthetical resolves just enough to make clicking feel safe. **Requires:** a real authority tension. Without it, this is just a lie with a fun shape.
-
-**"You're not afraid of AI taking your job. You're afraid of being the last person to notice."**
-→ *Reframe.* Replaces the reader's existing story with a more precise, more embarrassing one. Recognition is the strongest share trigger in text. **Requires:** being right about the reader. If you're wrong, it reads as presumptuous by line three.
-
-**"Your habit tracker is designed to make you quit."**
-→ *Enemy.* Names a thing people privately resent but never say. **Requires:** a defensible claim. Pick a strawman and the replies will take the tool apart.
-
-**"0 → [your number] users in [n] days. [spend]. Here's the exact loop."**
-→ *Receipt.* The highest-ceiling pattern and the most dangerous. **Requires:** those numbers to be real, or the word "illustrative" attached. This is the hook that ends careers when fabricated — it's also the one people fabricate most.
-
-**"I cut my workweek to 20 hours and shipped twice as much."**
-→ *Paradox.* Two facts that shouldn't coexist, so the brain must resolve them. **Requires:** it to not be a humblebrag. The payoff has to be a mechanism, not a flex.
-
-**"47 browser tabs, 3 deadlines, 0 systems. This is for you."**
-→ *Direct address.* Recognition in under a second. **Requires:** specificity so exact it feels invasive, delivered with enough humor that it doesn't feel like an insult.
-
-### The insider test
-
-Every hook must feel like knowledge the reader is being let in on, not a message they're being sold. The difference is whether the reader ends up knowing something the people around them don't.
-
-- ❌ "Powerful productivity system for busy people"
-- ✅ "The two-hour version of your job that your manager will never ask for"
-
-Same product. The second one has a *side*. **If a hook has no side, it has no insider.**
-
----
-
-## Phase 0 — Intake (ask only what you actually need)
-
-Infer as much as possible. If the user hasn't specified, assume:
-
-- **Audience**: the narrowest group who would care most (not "everyone")
-- **Goal**: attention, then signups/sales
-- **Format**: whatever the platform rewards
-
-Ask at most **2 questions**, and only if the answer changes the output materially:
-
-1. Who specifically is this for? (e.g. "second-year CS students in India cramming for placements")
-2. What's the one action after they see it? (star, sign up, buy, reply, share)
-
-If the user says "just do it," invent a specific audience and state the assumption at the top.
-
-### Identify the object type
-
-| Type | Success looks like |
-|---|---|
-| Repo / tool | Stars, forks, "I use this daily" replies |
-| Post / thread | Replies, quote-posts, saves |
-| Product / app | Signups with retention, invited word-of-mouth |
-| Campaign | Format adoption by strangers |
-| Video | Completion + shares to a specific person |
-
----
-
-## Phase 1 — Diagnose the spreadability
-
-Score 1–5. Be honest; low scores are information.
-
-| Lever | Question | Weak (1) | Strong (5) |
-|---|---|---|---|
-| **Surprise** | Does it violate an expectation in one sentence? | "helps you be productive" | "the app your professor doesn't want you to use" |
-| **Identity** | Does sharing it say something about the sharer? | generic utility | "I'm the kind of person who knows this" |
-| **Usefulness** | Can it be forwarded to a *named* person? | "interesting" | "send this to your teammate who does X" |
-| **Emotion** | Does it produce **arousal**? | mild interest | "wait, that's real?" |
-| **Cost to share** | One tap, no explanation? | needs a paragraph of context | self-explanatory screenshot |
-| **Tribal fit** | Is there an in-group that will defend it? | everyone | a community with a shared enemy |
-| **Remixability** | Can others make their own version? | closed | template, format, or dataset they can fork |
-
-**Score emotion on activation, not intensity.** Sadness is intense and deactivating — Berger & Milkman found it *reduces* sharing. Awe, anger, anxiety, and amusement are the high-arousal set.
-
-**The weakest lever is the bottleneck.** Fix that one. Improving an already-strong lever is wasted effort and the most common way a week disappears.
-
----
-
-## Phase 2 — Build the hook
-
-Generate **12, keep 3.** Never present one hook.
-
-### The 7 patterns
-
-1. **Curiosity gap** — withhold the mechanism, not the payoff. *"The 3-minute habit [your real number] professionals use to beat burnout." — fill the bracket with a figure you can source. Never ship someone else's.*
-2. **Forbidden insider** — violated gatekeeping. *"The app my professor doesn't want you to use."*
-3. **Paradox** — two things that shouldn't coexist. *"I cut my week to 20 hours and shipped twice as much."*
-4. **Enemy** — name the privately resented thing. *"Your habit tracker is designed to make you quit."*
-5. **Receipt** — a number someone can verify or envy. *"0 → [your real number] users in [n] days, [ad spend]."*
-6. **Reframe** — same fact, new category. *"It's not a meditation app. It's reputation management."*
-7. **Direct address** — call out one person so precisely it feels invasive. *"47 tabs, 3 deadlines, 0 systems. This is for you."*
-
-### Rules
-
-- **≤ 12 words** for line one. Line two does the work.
-- **No adjectives carrying the load.** "Powerful," "revolutionary," "seamless" are dead weight.
-- **Specific beats clever.** Numbers, names, timeframes, constraints.
-- **One claim per hook.** Two claims = zero claims.
-- **Every hook has a side.** Insider knowledge implies an outsider who doesn't have it.
-- **Truth constraint:** every number real, or clearly framed as illustrative. Fabricated stats are how projects die in the replies.
-
-Deliver 3 hooks, each with: pattern, target audience, why it works, and **how it fails.**
-
----
-
-## Phase 3 — Position it
-
-Positioning is choosing the **category** you compete in. The same object is boring in one category and urgent in another.
-
-1. Name the **obvious category**. Label it "crowded."
-2. Generate **3 adjacent categories** with the same benefit but a different buyer, budget, or emotion.
-3. Pick where the object is **most unusual and most needed**.
-4. Write: *"It's not [obvious]. It's [new category] — for [specific person] who [specific situation]."*
-
-### Traps
-
-- **Too clever** — needs explaining → drop it
-- **Too broad** — "for everyone" = for no one
-- **No budget or attention** in the category
-- **Dishonest stretch** — if the product can't survive the claim, the frame becomes the story
-
----
-
-## Phase 4 — Structure for shares
-
-Design the object so sharing is built into its shape.
-
-| Mechanism | What it does | How to build it |
-|---|---|---|
-| **Template / fork** | Lets people make their own version | Ship a copyable format, not just an output |
-| **Named pattern** | Gives people vocabulary to cite you | Brand the technique, repeat it 4+ times |
-| **Public artifact** | Shareable proof exists | Screenshot-ready output, badge, score, card |
-| **Completion invite** | Sharing is a required step | "Add yours," leaderboard, submission thread |
-| **Tribal marker** | Signals belonging | A stance, a mascot, a shared enemy |
-| **Built-in gift** | Forwarding helps someone specific | "Send this to the one person who…" |
-
-**Pick exactly two.** Three or more reads as desperate. State the cost to the sharer for each and how you lowered it.
-
-### Content skeleton
-
-```
-Line 1     — hook (pattern, ≤12 words)
-Line 2-3   — the tension / why now
-Middle     — 3 proofs: number, story, mechanism
-Turn       — the reframe that makes it feel like insider knowledge
-Close      — one specific action, no hedging
-```
-
-For products: **one job done extremely well → visible result in <60s → one reason to tell someone.**
-
----
-
-## Phase 5 — Distribution
-
-1. **Name 5–10 seed nodes.** Not "Twitter." Subreddits, Discords, newsletters, group chats, maintainers, professors.
-2. **The broadcaster.** One real handle per channel and their stake (see The Broadcaster Rule).
-3. **The first 100.** Concretely. "Post on social media" is not a plan.
-4. **The share sentence.** The exact words a fan would use. Write it for them.
-5. **The loop.** What does a share produce that creates another share?
-6. **The backstop.** The one durable channel if the spike never happens.
-
-**Anti-patterns:** launch-day mass DMs; the same text in 12 subreddits; asking for stars without a reason; buying engagement; promising what the artifact doesn't deliver.
-
----
-
-## Phase 6 — Measure & iterate
-
-| Metric | What it tells you |
-|---|---|
-| **Hook rate** (3-sec view-through) | Is line one working? |
-| **Save/star ratio** to views | Worth keeping, or just reading? |
-| **Share ratio** (shares ÷ views) | The virality signal |
-| **Reply sentiment** (read the first 20 manually) | Did the frame land or backfire? |
-| **Conversion** | Is attention worth anything? |
-| **7-day retention** | Loop, or spike? |
-
-**Change one variable per cycle.** Two changes and you've learned nothing.
-
-- Strong hook, no shares → the share trigger is missing (Phase 4)
-- Shares, no conversion → wrong audience or weak close (Phase 3/5)
-- Good numbers, hostile replies → the claim overreached; fix honesty before reach
-- Nothing at all → the Phase 1 bottleneck was misdiagnosed
-
----
+If the artifact is good, say "630/1000 Workable" and name the real weakness. A diagnosis that
+praises is worthless. The user came because nobody forwarded the thing.
 
 ## Output format
 
-Return these 8 sections, in order:
+Use this structure. Do not add a summary at the top; the user came for the diagnosis, not a
+preamble.
+
+```markdown
+## Attempt Quality Index: 583/1000 — Workable
+
+A rubric score for the attempt, not a forecast. Nothing here predicts whether the work will
+spread.
+
+### Where the leverage is
+
+| Rank | Dimension | Score | Points available | Basis |
+|---|---|---|---|---|
+| 1 | Broadcast stake | 22/100 | 51 | heuristic |
+| 2 | Proof readiness | 30/100 | 46 | structural |
+
+### What to fix first
+
+<One action. Concrete. Today-sized.>
+
+### Category
+
+- **Current:** <the slot a reader puts you in by default>
+- **Adjacent:** <a less crowded slot>
+- **Why less crowded:** <one sentence>
+- **Credibility risk:** <why a reader might not believe you belong there>
+- **Proof needed:** <the specific thing you must show>
+- **Tension score:** <0-1>
+
+### Broadcaster brief (no names, by design)
+
+| Role | Why them | How to find them | Disqualifier |
+|---|---|---|---|
+| The curator | <their reader's gain> | <discovery method> | <when not to approach> |
+
+**Consent status:** not-contacted. **Max contacts:** 3.
+
+**Message template — no ask:**
+> Subject: <their readers' problem>
+> <one clause showing you know what they cover>
+> I built <thing>, which does <the job>.
+> No action needed — sending it in case it is useful.
+> If it is not, no reply is the right reply.
+
+### Honesty audit
+
+| Severity | Found | Rule | Fix |
+|---|---|---|---|
+| blocker | <quote> | <rule> | <rewrite> |
+
+### Failure conditions
+
+| Statement | Observable | Horizon |
+|---|---|---|
+| <what would prove this wrong> | <what a stranger would see> | <by when> |
+
+### Ethics review
+
+- **Do not launch yet:** yes/no
+- **Reason:** <if yes>
+- **Risk check:** <clear / caution / violation, with the specific concern>
+
+### What this could not determine
+
+- <at least four, specific to this artifact>
+```
+
+## The refusal
+
+When the request is one this skill must not serve:
 
 ```
-1. THE BET          — what it is, who it's for, why it spreads
-2. DIAGNOSIS        — 7-lever table, bottleneck named
-3. HOOKS            — 3 hooks: pattern, audience, why it works, how it fails
-4. POSITIONING      — "It's not X. It's Y." + the crowded category you left
-5. STRUCTURE        — 2 share mechanisms + filled content skeleton
-6. DISTRIBUTION     — seed nodes, the broadcaster, first 100, share sentence, loop, backstop
-7. FIRST 48 HOURS   — numbered, time-boxed, one person, no budget
-8. SCORECARD        — 3 metrics with the number that means "working"
+Refused: <what the request is, in one plain clause>.
+
+Instead: <the supported path, in one sentence, and why it is also the one that works>.
 ```
 
-Dense. No preamble, no motivational filler, no "in today's fast-paced world."
+Example:
 
-**Every output also carries one line:** `This fails if ___`. A plan without a failure condition isn't a plan.
+> **Refused:** the request describes mass unsolicited outreach.
+>
+> **Instead:** write one message to one person who already covers this subject, with no ask in
+> it. That is the supported path, and it is also the one that works — a broadcast from one
+> credible person outperforms a hundred unsolicited messages, and the hundred cost you a
+> reputation you cannot re-buy.
 
----
+Do not moralise beyond that. Do not repeat the refusal. Offer the next step.
 
-## Honesty guardrails (non-negotiable)
+## Common failure modes in your own output
 
-- **Never invent statistics, testimonials, or users.** Missing number → `[your real number]` + what to measure.
-- **Never fabricate social proof.** Fake testimonials are the fastest route to a public callout.
-- **No guaranteed outcomes.** You cannot promise 100K stars or 12,000 users. You can promise a better-designed attempt.
-- **Label inference as inference.** "The research suggests" is not "the research proves."
-- **No manufactured outrage, fake controversy, or astroturfing.** Short-term reach, long-term reputation loss. The trade is almost never worth it.
-- **Respect platform rules.** Read the self-promo policy of any community before recommending a post.
-- **Say "don't launch yet" when it's true.** A skill that always says yes is a slot machine, not a tool.
+You will be tempted to do these. Do not.
 
----
+| Temptation | Why it is wrong |
+|---|---|
+| "This is a great idea, here are some tweaks" | The user already tried praise. It did not help. |
+| "Studies show that..." | You do not have a study. Cite one only if it is named and real. |
+| "Try posting at 9am on Tuesday" | Tactic, expires, usually ineffective, and not what they asked. |
+| A 40-item todo list | Nothing gets done. One action, ranked first. |
+| A market size estimate | You have no data. Write `unknown`. |
+| "Your copy is fine, it's just the algorithm" | Unfalsifiable, and it removes the only thing they control. |
+| Naming people to contact | It becomes a spam list. Rule 5. |
 
-## Quality bar
+## When the artifact is actually good
 
-- [ ] Could a stranger explain the hook to a friend in one sentence?
-- [ ] Is the audience specific enough to name 5 real communities?
-- [ ] Does every number have a real source or an explicit placeholder?
-- [ ] Exactly one call to action?
-- [ ] Would *you* share this from your own account? If not, say why.
-- [ ] Is the bottleneck addressed, or just the fun levers?
-- [ ] Is the broadcaster named?
-- [ ] Does the 48-hour plan contain only things one person can do with no budget?
+Say so, briefly, with the number and the remaining weakness. Then do the useful thing: name the
+*one* dimension where a small fix returns the most points, and give the forwardable sentence they
+do not have yet.
 
----
+"Your work is fine and the market is unfair" is not a diagnosis. "This is legible to a stranger
+and there is no specific person with a reason to post it — here is the brief" is.
 
-## Compact mode
+## Reference
 
-If the user wants speed:
-
-**Hook** (1) · **Frame** (1 sentence) · **Share mechanism** (1) · **First move** (1 action) · **Fail condition** (1 line)
+- The spec: `protocol/open-diffusion-spec.md`
+- Weights: `protocol/aqi-weights.json`
+- Conformance: `protocol/conformance.md`
+- The honesty policy this skill enforces: `docs/honesty-policy.md`

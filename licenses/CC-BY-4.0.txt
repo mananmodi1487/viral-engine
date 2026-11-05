@@ -1,0 +1,48 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+Applies to: docs/, academy/, evidence/, governance/, research/, templates/,
+            README.md, SKILL.md, CASE_STUDY.md and the other prose in this repository
+
+CANONICAL TEXT
+  https://creativecommons.org/licenses/by/4.0/legalcode
+  Human-readable summary: https://creativecommons.org/licenses/by/4.0/
+
+Not reproduced here, for the same reason as CC0-1.0.txt: a legal instrument
+retyped from memory is worse than a link.
+
+WHAT IT PERMITS
+
+  Share — copy and redistribute the material in any medium or format, for any
+  purpose, including commercially.
+
+  Adapt — remix, transform, and build upon the material, for any purpose,
+  including commercially.
+
+  The licensor cannot revoke these freedoms as long as you follow the license
+  terms.
+
+UNDER THESE TERMS
+
+  Attribution — you must give appropriate credit, provide a link to the license,
+  and indicate if changes were made. You may do so in any reasonable manner, but
+  not in any way that suggests the licensor endorses you or your use.
+
+  No additional restrictions — you may not apply legal terms or technological
+  measures that legally restrict others from doing anything the license permits.
+
+WHAT ATTRIBUTION LOOKS LIKE HERE
+
+  Minimum, and acceptable:
+
+    Adapted from Viral Engine Commons (CC BY 4.0),
+    https://github.com/mananmodi1487/viral-engine. Changed: shortened, added
+    a section on newsletters.
+
+  Also acceptable: a footer link, a citation, a sentence in an introduction. This
+  project will not send anyone a letter about attribution. The license asks; the
+  authors will not enforce beyond asking.
+
+WHAT THIS DOES NOT COVER
+
+  Code is MIT (see ../LICENSE). The specification is CC0 (see CC0-1.0.txt).
+  Output you generate with the tool is yours and carries no license obligation
+  (see README.md in this directory).

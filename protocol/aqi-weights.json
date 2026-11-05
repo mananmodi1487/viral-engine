@@ -1,0 +1,156 @@
+{
+  "$comment": "Single source of truth for the Attempt Quality Index (AQI). Every implementation (TypeScript, Python, Go, Rust, third-party) MUST read these weights rather than hardcoding them. Weights sum to 1000 by construction; scripts/check-aqi-weights.mjs fails the build if they do not.",
+  "aqiVersion": "1.0.0",
+  "max": 1000,
+  "notation": "Each dimension carries a raw 0-100 sub-score and a weight. attempt_quality = round(sum(sub_score_i * weight_i) / 100). The maximum attainable value is therefore 1000, which is why the project calls itself 1000/10 while refusing to claim any score predicts virality.",
+  "dimensions": [
+    {
+      "key": "category_clarity",
+      "label": "Category Clarity",
+      "weight": 80,
+      "question": "Could a stranger repeat what this is and what it is not, in one sentence, after reading only the first screen?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "category_opportunity",
+      "label": "Category Opportunity",
+      "weight": 70,
+      "question": "Is the chosen category crowded, and is there a less crowded adjacent category the artifact could credibly claim?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "audience_specificity",
+      "label": "Audience Specificity",
+      "weight": 60,
+      "question": "Is there one named person who would recognise themselves, or is the audience a demographic?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "broadcaster_fit",
+      "label": "Broadcaster Fit",
+      "weight": 80,
+      "question": "Can you name a specific broadcaster, where to find them, and why forwarding this is low-cost for them?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "broadcast_stake",
+      "label": "Broadcast Stake",
+      "weight": 65,
+      "question": "What does the broadcaster gain — standing, a settled argument, usefulness to their people — by passing this on?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "share_friction_reduction",
+      "label": "Share Friction Reduction",
+      "weight": 65,
+      "question": "Can a reader forward this without writing an explanation of their own?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "emotional_truth",
+      "label": "Emotional Truth",
+      "weight": 40,
+      "question": "Is there an activating, honest stake — or manufactured urgency?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "proof_readiness",
+      "label": "Proof Readiness",
+      "weight": 65,
+      "question": "Could every specific claim survive a hostile reader with a search engine?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "launch_timing",
+      "label": "Launch Timing",
+      "weight": 30,
+      "question": "Is there a working first-run path and a reason this week beats next month?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "honesty_integrity",
+      "label": "Honesty Integrity",
+      "weight": 80,
+      "question": "Are there invented figures, fabricated testimonials, guaranteed outcomes, outrage bait, or dark patterns?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "failure_awareness",
+      "label": "Failure Awareness",
+      "weight": 50,
+      "question": "Is there a written failure condition with an observable signal and a horizon, decided before launch?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "experimentability",
+      "label": "Experimentability",
+      "weight": 40,
+      "question": "Is there a small, cheap test that could change the plan before it costs anything real?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "accessibility",
+      "label": "Accessibility",
+      "weight": 40,
+      "question": "Does this work for screen readers, low bandwidth, small screens, and people who do not share the author's context?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "privacy_safety",
+      "label": "Privacy Safety",
+      "weight": 30,
+      "question": "Does this operation require taking data it does not need, and does it work offline?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "abuse_resistance",
+      "label": "Abuse Resistance",
+      "weight": 30,
+      "question": "Could this technique be trivially repurposed into spam, astroturfing, harassment, or manipulation?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "cultural_resonance",
+      "label": "Cultural Resonance",
+      "weight": 30,
+      "question": "Does the framing survive translation and cultural context, or does it only work inside one subculture?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "language_simplicity",
+      "label": "Language Simplicity",
+      "weight": 30,
+      "question": "Would a smart reader outside the field understand it on first read?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "asset_completeness",
+      "label": "Asset Completeness",
+      "weight": 40,
+      "question": "Does a forwarder have the thing they need — a one-liner, a screenshot, a citable summary — already made for them?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "post_launch_learnability",
+      "label": "Post-Launch Learnability",
+      "weight": 30,
+      "question": "Will this attempt produce a lesson even if it fails, and will that lesson be written down?",
+      "higherIsBetter": true
+    },
+    {
+      "key": "ethical_defensibility",
+      "label": "Ethical Defensibility",
+      "weight": 45,
+      "question": "If the target audience read this report verbatim, would the plan still look acceptable?",
+      "higherIsBetter": true
+    }
+  ],
+  "bands": [
+    { "min": 0, "max": 249, "label": "Not ready", "meaning": "Do not launch. Something structural is missing." },
+    { "min": 250, "max": 449, "label": "Fragile", "meaning": "Fix the weakest two dimensions before any distribution." },
+    { "min": 450, "max": 649, "label": "Workable", "meaning": "One narrow channel, one broadcaster, written kill criteria." },
+    { "min": 650, "max": 824, "label": "Strong", "meaning": "Defensible attempt. Still state what would make it fail." },
+    { "min": 825, "max": 1000, "label": "Exceptional", "meaning": "Rare. Re-audit honesty before launch; high scores attract scrutiny." }
+  ],
+  "disclaimer": "The AQI is a weighted rubric for attempt quality. It is not a forecast, not a probability, and not a ranking. High scores have launched into silence; low scores have spread. Treat it as a checklist with arithmetic, and read limitations.md before quoting a number."
+}

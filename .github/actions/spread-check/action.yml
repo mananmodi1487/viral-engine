@@ -1,48 +1,63 @@
-name: 'viral-engine spread check'
-description: 'Diagnose whether pull-request changes to launch copy weakened the category, broadcaster clarity, or honesty policy. Comments on the PR.'
-author: 'viral-engine contributors'
+name: 'Viral Engine Commons: ODS spread check'
+description: >-
+  Analyse the launch copy in a pull request against the Open Diffusion Spec and comment
+  on the PR. Never invents a number, never predicts virality, and can block a merge
+  when the copy makes a claim it cannot support.
+author: 'Viral Engine Commons contributors'
 branding:
   icon: 'activity'
   color: 'green'
 
 inputs:
   path:
-    description: 'File to analyse. Defaults to README.md.'
+    description: 'File or directory to analyse. Defaults to README.md.'
     required: false
     default: 'README.md'
   github-token:
-    description: 'Token used to post the PR comment.'
+    description: 'Token used to post or update the PR comment.'
     required: false
     default: ${{ github.token }}
   comment:
-    description: 'Post a comment on the pull request (true/false).'
+    description: 'Post a sticky comment on the pull request (true/false).'
     required: false
     default: 'true'
   fail-on:
-
-    description: |
+    description: |-
       When to fail the check:
-        blockers  — fail only on honesty blockers (default; recommended)
-        never     — report but never fail
-        regression — fail if any score drops versus the base branch
+        violations  — fail only on ethics violations or an honesty blocker (default)
+        blocked     — fail whenever the document says do_not_launch_yet
+        regression  — also fail when the AQI total drops versus the base branch
+        never       — report but never fail
     required: false
-    default: 'blockers'
+    default: 'violations'
   offline:
-    description: 'Run with no network access (disables category saturation lookup).'
+    description: 'Run with no network access at all (true/false). Default true.'
     required: false
     default: 'true'
   provider:
-    description: 'LLM provider for narrative prose: none | auto | anthropic | openai | ollama'
+    description: 'LLM provider for narrative prose only: none | auto | anthropic | openai | ollama'
     required: false
     default: 'none'
+  min-aqi:
+    description: 'Optional floor. Fail if the Attempt Quality Index total is below this. 0 disables it.'
+    required: false
+    default: '0'
 
 outputs:
-  score:
-    description: 'Overall score 0-100'
+  aqi:
+    description: 'Attempt Quality Index total, 0-1000. Not a virality probability.'
+  band:
+    description: 'AQI band: Not ready | Fragile | Workable | Strong | Exceptional'
+  do-not-launch-yet:
+    description: 'true | false. Present on every run, because "not yet" is a valid answer.'
   blockers:
-    description: 'Number of honesty blockers found'
+    description: 'Number of honesty blockers found.'
+  violations:
+    description: 'Number of ethics violations found.'
   report-path:
-    description: 'Where the markdown report was written'
+    description: 'Where the markdown report was written.'
+  ods-path:
+    description: 'Where the ODS JSON document was written.'
 
 runs:
   using: 'composite'
@@ -52,12 +67,15 @@ runs:
       with:
         node-version: '20'
 
-    - name: Install viral-engine
+    - name: Install
       shell: bash
+      working-directory: ${{ github.action_path }}/../..
       run: |
-        cd "$GITHUB_ACTION_PATH/../.." && npm ci --omit=dev --no-audit --no-fund 2>/dev/null || npm install --omit=dev --no-audit --no-fund
+        set -euo pipefail
+        # Prefer the lockfile; fall back for forked checkouts where the path differs.
+        npm ci --no-audit --no-fund || npm install --no-audit --no-fund
 
-    - name: Run diagnosis
+    - name: Analyse the copy
       id: run
       shell: bash
       env:
@@ -66,57 +84,119 @@ runs:
         INPUT_PROVIDER: ${{ inputs.provider }}
       run: |
         set -euo pipefail
-        ROOT="$GITHUB_ACTION_PATH/../.."
-        ARGS=(analyze "$INPUT_PATH" --format md -o viral-engine-report.md)
+        ROOT="${{ github.action_path }}/../.."
+
+        ARGS=(analyze "$INPUT_PATH" --output json -o viral-engine-ods.json)
         if [ "$INPUT_OFFLINE" = "true" ]; then ARGS+=(--offline); fi
         if [ "$INPUT_PROVIDER" != "none" ]; then ARGS+=(--provider "$INPUT_PROVIDER"); fi
-        npx tsx "$ROOT/packages/cli/src/index.ts" "${ARGS[@]}" || true
 
-        # Emit machine-readable values for the comment step.
-        npx tsx "$ROOT/packages/cli/src/index.ts" analyze "$INPUT_PATH" --format json --offline \
-          -o viral-engine-report.json >/dev/null 2>&1 || true
-        if [ -f viral-engine-report.json ]; then
-          SCORE=$(node -e "const r=require('./viral-engine-report.json');console.log(r.scorecard.overall)")
-          BLOCKERS=$(node -e "const r=require('./viral-engine-report.json');console.log(r.honesty.findings.filter(f=>f.severity==='blocker').length)")
-        else
-          SCORE=0
-          BLOCKERS=0
+        # A non-zero exit here is a finding, not a crash: the CLI uses exit 3 for
+        # an honesty blocker and 4 for an ethics violation. We capture the code so
+        # the enforcement step can distinguish "found a problem" from "broke".
+        set +e
+        npx tsx "$ROOT/apps/cli/src/index.ts" "${ARGS[@]}" >/tmp/ve-cli.log 2>&1
+        CODE=$?
+        set -e
+        echo "cli-exit=$CODE" >> "$GITHUB_OUTPUT"
+        cat /tmp/ve-cli.log
+
+        if [ "$CODE" -eq 2 ] || [ "$CODE" -eq 1 ]; then
+          echo "::error::viral-engine could not analyse ${INPUT_PATH} (exit ${CODE}). See the log above."
+          exit 1
         fi
-        echo "score=$SCORE" >> "$GITHUB_OUTPUT"
-        echo "blockers=$BLOCKERS" >> "$GITHUB_OUTPUT"
-        echo "report-path=viral-engine-report.md" >> "$GITHUB_OUTPUT"
-        echo "### viral-engine: ${SCORE}/100, ${BLOCKERS} honesty blocker(s)" >> "$GITHUB_STEP_SUMMARY"
-        [ -f viral-engine-report.md ] && head -60 viral-engine-report.md >> "$GITHUB_STEP_SUMMARY"
 
-    - name: Comment on pull request
+        npx tsx "$ROOT/apps/cli/src/index.ts" analyze "$INPUT_PATH" --output markdown \
+          -o viral-engine-report.md >/dev/null 2>&1 || true
+
+        # Read the ODS document. Every value below is read defensively: a missing
+        # field becomes a blank output, never a crashed job.
+        read_out() {
+          node -e "
+            try {
+              const d = require('./viral-engine-ods.json');
+              const v = $1;
+              process.stdout.write(v === undefined || v === null ? '' : String(v));
+            } catch { process.stdout.write(''); }
+          "
+        }
+        AQI=$(read_out "d.scorecard && d.scorecard.total")
+        BAND=$(read_out "d.scorecard && d.scorecard.band")
+        BLOCKED=$(read_out "d.ethics_review && d.ethics_review.do_not_launch_yet")
+        BLOCKERS=$(read_out "d.honesty_audit && (d.honesty_audit.findings||[]).filter(f=>f.severity==='blocker').length")
+        VIOLATIONS=$(read_out "d.ethics_review && (d.ethics_review.ethical_risk_check||[]).filter(r=>r.assessment==='violation').length")
+
+        echo "aqi=${AQI:-0}" >> "$GITHUB_OUTPUT"
+        echo "band=${BAND:-unknown}" >> "$GITHUB_OUTPUT"
+        echo "do-not-launch-yet=${BLOCKED:-false}" >> "$GITHUB_OUTPUT"
+        echo "blockers=${BLOCKERS:-0}" >> "$GITHUB_OUTPUT"
+        echo "violations=${VIOLATIONS:-0}" >> "$GITHUB_OUTPUT"
+        echo "report-path=viral-engine-report.md" >> "$GITHUB_OUTPUT"
+        echo "ods-path=viral-engine-ods.json" >> "$GITHUB_OUTPUT"
+
+        {
+          echo "### Viral Engine Commons: ${AQI:-0}/1000, ${BAND:-unknown}"
+          echo ""
+          echo "Attempt Quality Index. This is a rubric score for the attempt, not a"
+          echo "probability that the work will spread."
+          if [ "${BLOCKED:-false}" = "true" ]; then
+            echo ""
+            echo "**Do not launch yet.** The document states a blocking condition."
+          fi
+        } >> "$GITHUB_STEP_SUMMARY"
+        [ -f viral-engine-report.md ] && head -80 viral-engine-report.md >> "$GITHUB_STEP_SUMMARY"
+
+    - name: Comment on the pull request
       if: inputs.comment == 'true' && github.event_name == 'pull_request'
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
-        SCORE: ${{ steps.run.outputs.score }}
+        AQI: ${{ steps.run.outputs.aqi }}
+        BAND: ${{ steps.run.outputs.band }}
+        BLOCKED: ${{ steps.run.outputs.do-not-launch-yet }}
         BLOCKERS: ${{ steps.run.outputs.blockers }}
+        VIOLATIONS: ${{ steps.run.outputs.violations }}
       run: |
         set -euo pipefail
-        MARKER='<!-- viral-engine-report -->'
+        MARKER='<!-- viral-engine-ods-report -->'
         {
           echo "$MARKER"
-          echo "## viral-engine spread check"
+          echo "## Viral Engine Commons: spread check"
           echo ""
-          echo "**Score: ${SCORE}/100** · **Honesty blockers: ${BLOCKERS}**"
+          echo "**Attempt Quality Index: ${AQI}/1000** (${BAND}) · **Honesty blockers: ${BLOCKERS}** · **Ethics violations: ${VIOLATIONS}**"
+          if [ "${BLOCKED}" = "true" ]; then
+            echo ""
+            echo "> **Do not launch yet.** The document itself states a blocking condition,"
+            echo "> and the reason is in the report below. This is a valid outcome, not a bug."
+          fi
           echo ""
-          echo "This checks the copy, not the code. It answers one question: *did this change make the work harder to pass on?*"
+          echo "This checks the copy, not the code. It answers one question: *did this"
+          echo "change make the work easier to understand, easier to pass on, and harder"
+          echo "to misrepresent?*"
           echo ""
-          sed 's/^/    /' viral-engine-report.md | head -c 55000
+          echo "The index measures the quality of the attempt. It does not predict reach,"
+          echo "and no implementation of it can."
           echo ""
-          echo "<sub>No invented statistics, no virality promises. A failing check means fix the claim, not the check.</sub>"
+          if [ -f viral-engine-report.md ]; then
+            echo "<details><summary>Full report</summary>"
+            echo ""
+            echo '```markdown'
+            head -c 50000 viral-engine-report.md
+            echo '```'
+            echo ""
+            echo "</details>"
+          fi
+          echo ""
+          echo "<sub>A failing check means fix the claim, not the check. Report a false"
+          echo "positive and it gets added to the public eval dataset.</sub>"
         } > /tmp/ve-comment.md
 
-        PR=${{ github.event.pull_request.number }}
+        PR="${{ github.event.pull_request.number }}"
         EXISTING=$(gh api "repos/${{ github.repository }}/issues/${PR}/comments" \
-          --jq ".[] | select(.body | contains(\"$MARKER\")) | .id" | head -1 || true)
+          --jq ".[] | select(.body | contains(\"viral-engine-ods-report\")) | .id" | head -1 || true)
         if [ -n "${EXISTING:-}" ]; then
-          gh api -X PATCH "repos/${{ github.repository }}/issues/comments/${EXISTING}" -f body="$(cat /tmp/ve-comment.md)" >/dev/null
-          echo "updated existing comment ${EXISTING}"
+          gh api -X PATCH "repos/${{ github.repository }}/issues/comments/${EXISTING}" \
+            -f body="$(cat /tmp/ve-comment.md)" >/dev/null
+          echo "updated comment ${EXISTING}"
         else
           gh pr comment "$PR" --body-file /tmp/ve-comment.md
           echo "created comment"
@@ -126,18 +206,51 @@ runs:
       shell: bash
       env:
         FAIL_ON: ${{ inputs.fail-on }}
+        MIN_AQI: ${{ inputs.min-aqi }}
+        AQI: ${{ steps.run.outputs.aqi }}
+        BLOCKED: ${{ steps.run.outputs.do-not-launch-yet }}
         BLOCKERS: ${{ steps.run.outputs.blockers }}
+        VIOLATIONS: ${{ steps.run.outputs.violations }}
       run: |
         set -euo pipefail
+        if [ "${MIN_AQI:-0}" != "0" ] && [ "${AQI:-0}" -lt "${MIN_AQI}" ]; then
+          echo "::error::AQI ${AQI} is below the configured floor of ${MIN_AQI}."
+          exit 1
+        fi
         case "$FAIL_ON" in
-          never) echo "policy: never fail"; exit 0 ;;
-          blockers)
-            if [ "${BLOCKERS:-0}" -gt 0 ]; then
-              echo "::error::viral-engine found ${BLOCKERS} honesty blocker(s). Fix the claim before merging."
+          never)
+            echo "policy: never fail"; exit 0 ;;
+          violations)
+            if [ "${VIOLATIONS:-0}" -gt 0 ]; then
+              echo "::error::${VIOLATIONS} ethics violation(s). Fix the approach, not the check."
               exit 1
             fi
-            echo "no honesty blockers"
-            ;;
-          regression) echo "policy: regression requires base-branch comparison; see docs/architecture.md"; exit 0 ;;
-          *) echo "::error::unknown fail-on value '$FAIL_ON'"; exit 2 ;;
+            if [ "${BLOCKERS:-0}" -gt 0 ]; then
+              echo "::error::${BLOCKERS} honesty blocker(s). Fix the claim before merging."
+              exit 1
+            fi
+            echo "no violations, no blockers" ;;
+          blocked)
+            if [ "${BLOCKED}" = "true" ]; then
+              echo "::error::The document says do not launch yet. Read the reason, then decide."
+              exit 1
+            fi
+            echo "clear to launch" ;;
+          regression)
+            # base-branch comparison needs the merge base; see docs/architecture.md
+            echo "::warning::regression policy needs a base-branch run; treated as 'blocked' for now"
+            if [ "${BLOCKED}" = "true" ]; then exit 1; fi ;;
+          *)
+            echo "::error::unknown fail-on value '$FAIL_ON'"; exit 2 ;;
         esac
+
+    - name: Upload the report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: viral-engine-ods
+        path: |
+          viral-engine-report.md
+          viral-engine-ods.json
+        if-no-files-found: warn
+        retention-days: 30

@@ -127,10 +127,27 @@ export const OUTBOUND_RULES: ReplacementRule[] = [
  */
 const NEGATION = /(?:\bno\b|\bnot\b|\bnever\b|\bcannot\b|\bcan't\b|\bnobody\b|\bwithout\b|\bavoid\w*\b|\bdon't\b|\bdoesn't\b|\bwon't\b|\bfails? to\b|\bagainst\b|\brather than\b|\binstead of\b)[^.!?]{0,48}$/i;
 
-function isNegated(text: string, index: number): boolean {
-  const start = Math.max(0, index - 70);
-  const preceding = text.slice(start, index);
-  return NEGATION.test(preceding);
+/**
+ * Negation guard.
+ *
+ * Two checks, because one is not enough:
+ *  1. the clause *before* the match  -- "We never promise 100K stars"
+ *  2. the clause *inside* the match  -- "will never promise 100,000 stars"
+ *
+ * The second case is why this function was rewritten: v1's single-sided check
+ * flagged "We will never promise 100,000 stars" as a blocker, because the match
+ * began at "will" and the negation sat after the start index. A guard that only
+ * looks backwards turns honest disclaimers into violations, which is the
+ * specific failure this project criticises other tools for.
+ */
+function isNegated(text: string, index: number, matchedLength = 0): boolean {
+  const preceding = text.slice(Math.max(0, index - 70), index);
+  if (NEGATION.test(preceding)) return true;
+  if (matchedLength > 0) {
+    const inside = text.slice(index, index + matchedLength);
+    if (NEGATION.test(inside.replace(/[^\s]+$/, ''))) return true;
+  }
+  return false;
 }
 
 function scan(
@@ -144,7 +161,7 @@ function scan(
     let m: RegExpExecArray | null;
     let shown = 0;
     while ((m = re.exec(text)) && shown < 3) {
-      if (isNegated(text, m.index)) continue;
+      if (isNegated(text, m.index, m[0].length)) continue;
       findings.push({
         severity: rule.severity,
         matched: m[0].trim(),
@@ -170,7 +187,7 @@ export function checkInbound(text: string): HonestyCheck {
     const idx = hay.indexOf(term);
     if (idx !== -1) {
       const already = findings.some((f) => f.matched.toLowerCase().includes(term));
-      if (!already && !isNegated(text, idx)) {
+      if (!already && !isNegated(text, idx, term.length)) {
         findings.push({
           severity: 'note',
           matched: term,

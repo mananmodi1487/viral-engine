@@ -1,0 +1,171 @@
+{
+  "cases": 32,
+  "passed": 31,
+  "failed": 1,
+  "passRate": 0.969,
+  "metrics": [
+    {
+      "target": "weak_category",
+      "support": 3,
+      "truePositives": 3,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "precision": 1,
+      "recall": 1,
+      "falsePositiveRate": 0
+    },
+    {
+      "target": "unclear_audience",
+      "support": 3,
+      "truePositives": 3,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "precision": 1,
+      "recall": 1,
+      "falsePositiveRate": 0
+    },
+    {
+      "target": "missing_broadcaster",
+      "support": 1,
+      "truePositives": 1,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "precision": 1,
+      "recall": 1,
+      "falsePositiveRate": 0
+    },
+    {
+      "target": "inflated_claims",
+      "support": 4,
+      "truePositives": 4,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "precision": 1,
+      "recall": 1,
+      "falsePositiveRate": 0
+    },
+    {
+      "target": "fake_social_proof",
+      "support": 2,
+      "truePositives": 2,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "precision": 1,
+      "recall": 1,
+      "falsePositiveRate": 0
+    },
+    {
+      "target": "missing_failure_condition",
+      "support": 2,
+      "truePositives": 2,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "precision": 1,
+      "recall": 1,
+      "falsePositiveRate": 0
+    },
+    {
+      "target": "high_share_friction",
+      "support": 2,
+      "truePositives": 1,
+      "falsePositives": 0,
+      "falseNegatives": 1,
+      "precision": 1,
+      "recall": 0.5,
+      "falsePositiveRate": 0
+    },
+    {
+      "target": "manipulative_language",
+      "support": 2,
+      "truePositives": 2,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "precision": 1,
+      "recall": 1,
+      "falsePositiveRate": 0
+    },
+    {
+      "target": "poor_launch_timing",
+      "support": 2,
+      "truePositives": 2,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "precision": 1,
+      "recall": 1,
+      "falsePositiveRate": 0
+    },
+    {
+      "target": "inaccessible_copy",
+      "support": 3,
+      "truePositives": 3,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "precision": 1,
+      "recall": 1,
+      "falsePositiveRate": 0
+    },
+    {
+      "target": "privacy_risk",
+      "support": 2,
+      "truePositives": 2,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "precision": 1,
+      "recall": 1,
+      "falsePositiveRate": 0
+    },
+    {
+      "target": "abuse_risk",
+      "support": 2,
+      "truePositives": 2,
+      "falsePositives": 0,
+      "falseNegatives": 0,
+      "precision": 1,
+      "recall": 1,
+      "falsePositiveRate": 0
+    }
+  ],
+  "macro": {
+    "precision": 1,
+    "recall": 0.958,
+    "f1": 0.979,
+    "falsePositiveRate": 0
+  },
+  "failures": [],
+  "knownMisses": [
+    {
+      "id": "share-friction-02",
+      "difficulty": "hard",
+      "rationale": "Very long document with no quotable block.",
+      "expected": [
+        "high_share_friction"
+      ],
+      "mustNot": [
+        "manipulative_language"
+      ],
+      "detected": [
+        "unclear_audience",
+        "missing_broadcaster",
+        "missing_failure_condition",
+        "poor_launch_timing"
+      ],
+      "truePositives": [],
+      "falseNegatives": [
+        "high_share_friction"
+      ],
+      "falsePositives": [],
+      "knownMiss": "Short prose with nothing quotable. The document is a wall of first-person narration with no blockquote, no heading structure and no single sentence that survives being pasted out of context — but it is only ~160 words, and every rule that detects a wall of prose keys on length. A pruning rule ('no sentence under 20 words') would not fire either, because two sentences are short. Fixing this properly needs a readability model, not another threshold. Left visible rather than tuned away.",
+      "passed": false
+    }
+  ],
+  "limitations": [
+    "The dataset was written by the same people who wrote the detectors. That is a conflict of interest and it inflates every number here.",
+    "n is small. These are hand-written cases, not a random sample of the internet.",
+    "Detectors are keyword and structure rules. They detect the shape of a problem, not the problem. A well-written weak category passes.",
+    "No human rated usefulness in this run. \"Detected\" is not the same as \"helped\".",
+    "Multilingual quality is untested: every case is English.",
+    "Local-mode quality is identical to hosted, because no case uses a model. That is a property of the design, not a measurement.",
+    "Passing this harness means the engine notices the right things in these 30 documents. It does not mean it will notice them in yours."
+  ],
+  "generatedAt": "2026-11-05T10:09:07.830Z"
+}

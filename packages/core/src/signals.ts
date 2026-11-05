@@ -141,7 +141,28 @@ serious operators
 practitioners
 professionals who
 experts who
-anyone who
+anyone who has
+anyone who is
+everyone who
+`);
+
+/**
+ * Terms that look like an audience but name the whole world. When one of these is
+ * the only identity cue, the audience is unclear, not universal. Kept separate so
+ * `identityMarkers` stays a pure signal and the judgement lives in the scorer.
+ */
+export const GENERIC_AUDIENCE = lex(`
+anyone
+anybody
+everyone
+everybody
+all people
+users
+customers
+people
+professionals
+busy people
+modern teams
 `);
 
 /**
