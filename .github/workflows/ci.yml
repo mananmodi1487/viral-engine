@@ -166,6 +166,8 @@ jobs:
     name: rust binding
     runs-on: ubuntu-latest
     steps:
+      - name: probe annotation plumbing
+        run: echo "::error title=probe::annotation plumbing test"
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
         with:
