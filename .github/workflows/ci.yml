@@ -78,10 +78,19 @@ jobs:
           node -e '
             const d = require("/tmp/ods.json");
             const fail = (m) => { console.error("::error::" + m); process.exit(1); };
-            if (d.ods_version !== "1.0.0") fail("ods_version");
+            if (d.ods_version !== "2.0.0") fail("ods_version");
+            if (d.scorecard?.aqi_version !== "2.0.0") fail("scorecard.aqi_version");
             if (!d.ethics_review || typeof d.ethics_review.do_not_launch_yet !== "boolean") fail("ethics_review");
             if (typeof d.scorecard?.total !== "number") fail("scorecard.total");
-            if (d.scorecard.dimensions.length !== 20) fail("expected 20 AQI dimensions");
+            if (d.scorecard.dimensions.length !== 25) fail("expected 25 AQI dimensions");
+            // The published example and this document must both satisfy the schema.
+            // tests/schema-validation.test.ts does the recursive check locally; this is
+            // the belt-and-braces version that runs against real CLI output.
+            const schema = require("./packages/protocol/ods.schema.json");
+            const extra = Object.keys(d).filter(
+              (k) => !(k in (schema.properties || {})) && !Object.keys(schema.patternProperties || {}).some((re) => new RegExp(re).test(k))
+            );
+            if (extra.length) fail("fields the schema forbids: " + extra.join(", "));
             if (!d.failure_conditions?.length) fail("no failure conditions");
             const sum = d.scorecard.dimensions.reduce((a, x) => a + x.points, 0);
             if (Math.abs(sum - d.scorecard.total) > 2) fail("points do not sum to total");
@@ -219,7 +228,7 @@ jobs:
           python -c "
           from viral_engine_ods import assert_weights_sum_to_max, dimension_specs, AQI_MAX
           assert_weights_sum_to_max()
-          assert len(dimension_specs()) == 20, len(dimension_specs())
+          assert len(dimension_specs()) == 25, len(dimension_specs())
           print('python weights ok', AQI_MAX)
           "
           (cd packages/protocol/go && go run ./... 2>/dev/null || true)

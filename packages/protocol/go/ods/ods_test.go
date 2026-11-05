@@ -18,8 +18,8 @@ func weights(t *testing.T) *Weights {
 
 func TestWeightsSumToMax(t *testing.T) {
 	w := weights(t)
-	if len(w.Dimensions) != 20 {
-		t.Fatalf("expected 20 dimensions, got %d", len(w.Dimensions))
+	if len(w.Dimensions) != 25 {
+		t.Fatalf("expected 25 dimensions (AQI 2.0), got %d", len(w.Dimensions))
 	}
 	sum := 0
 	for _, d := range w.Dimensions {
@@ -153,7 +153,7 @@ func TestWeakestAndLeverage(t *testing.T) {
 	}
 	top := TopLeverage(dims, 1)
 	if len(top) != 1 || top[0].Key != "category_clarity" {
-		t.Fatalf("expected category_clarity as top leverage (64 lost vs 28), got %+v", top)
+		t.Fatalf("expected category_clarity as top leverage (68 lost vs 24.5), got %+v", top)
 	}
 }
 

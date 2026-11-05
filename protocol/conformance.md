@@ -212,7 +212,7 @@ software lesson rhymes. **One implementation is a single data source.**
 | Rust binding | Same. `BroadcasterAnalysis::validate` contains a placeholder match arm that is very likely wrong. |
 | Multilingual input | No binding has been tested on non-English text. The field is a string; the analysis is English-tuned. |
 | Version negotiation | ODS 2.0.0 is the current version and 1.x documents are readable. `viral-engine migrate` upgrades the envelope and refuses to re-score, and that path is tested against a real 1.x document — but no third party has exercised it. |
-| Numeric tolerance | TS/Python compare totals within ±2, Go/Rust within ±0.5. This is a genuine inconsistency in the spec that should be resolved in 1.1.0. |
+| Numeric tolerance | TS and Python compare totals within ±2, Go and Rust within ±0.5, so a document that disagrees by 1.0 point passes two bindings and fails two. This is a genuine inconsistency and it is unresolved. A binding that is stricter than the spec's reference implementation is the more dangerous direction: it rejects documents the reference accepts, and the author of that document has no way to tell which implementation is wrong. |
 
 ---
 
