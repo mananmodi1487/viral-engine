@@ -166,8 +166,6 @@ jobs:
     name: rust binding
     runs-on: ubuntu-latest
     steps:
-      - name: probe annotation plumbing
-        run: echo "::error title=probe::annotation plumbing test"
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
         with:
@@ -197,7 +195,7 @@ jobs:
           # Publish each diagnostic as a check annotation too. An annotation is
           # visible from the pull request and from the API without downloading the
           # job log, which is the difference between a fixable failure and a red X.
-          node scripts/ci-annotate.mjs --title clippy --file /tmp/clippy.log
+          node "$GITHUB_WORKSPACE/scripts/ci-annotate.mjs" --title clippy --file /tmp/clippy.log
           exit 1
       - name: Test
         working-directory: packages/protocol/rust
@@ -215,7 +213,7 @@ jobs:
             tail -120 /tmp/cargo-test.log
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
-          node scripts/ci-annotate.mjs --title "cargo test" --file /tmp/cargo-test.log
+          node "$GITHUB_WORKSPACE/scripts/ci-annotate.mjs" --title "cargo test" --file /tmp/cargo-test.log
           exit 1
 
   conformance:
