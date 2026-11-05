@@ -20,7 +20,7 @@ export function homePage(): string {
 <section class="hero">
   <p class="small muted" style="margin:0 0 12px"><span class="pill ok">Free forever</span> <span class="pill">No account</span> <span class="pill">No telemetry</span> <span class="pill">Works offline</span></p>
   <h1>Your work did not spread because of the category, not the writing.</h1>
-  <p class="lede">Viral Engine Commons is a free, open protocol for finding out why something did not travel — and for fixing the one thing that would change that. It scores twenty dimensions, names the weakest, and writes the sentence a real person could paste.</p>
+  <p class="lede">Viral Engine Commons is a free, open protocol for finding out why something did not travel — and for fixing the one thing that would change that. It scores 25 dimensions, names the weakest, and writes the sentence a real person could paste.</p>
   <div class="cta">
     <a class="btn" href="/analyze">Diagnose something you published</a>
     <a class="btn ghost" href="/protocol">Read the protocol</a>
@@ -40,10 +40,10 @@ export function homePage(): string {
   3. Share Friction Reduction     37 pts of 65
 
   THE ONE-LINE FORWARD
-  The diagnostic that tells you which of twenty dimensions is losing your launch.
+  The diagnostic that tells you which of 25 dimensions is losing your launch.
 
   HONESTY  passed · 0 network call(s)</pre>
-  <p class="tiny muted" style="margin:10px 0 0">Every number carries a basis: <code>measured</code>, <code>structural</code>, <code>heuristic</code>, or <code>unavailable</code>. Pretending all twenty are equally rigorous is how scorecards start lying.</p>
+  <p class="tiny muted" style="margin:10px 0 0">Every number carries a basis: <code>measured</code>, <code>structural</code>, <code>heuristic</code>, or <code>unavailable</code>. Pretending all 25 are equally rigorous is how scorecards start lying.</p>
 </div>
 
 <h2>What it actually answers</h2>
@@ -80,8 +80,8 @@ export function homePage(): string {
 <h2>Why it is a protocol and not a product</h2>
 <p class="lede">A tool can be paywalled, captured, or shut down. A protocol cannot. Every score, schema, weight, and template here is published so that anyone can implement it, audit it, or fork it — including a version that competes with this one.</p>
 <div class="grid g3">
-  <div class="panel tight"><h3 style="margin-top:0">ODS 1.0</h3><p class="small">A machine-readable schema for describing an artifact and its diffusion state. JSON Schema, TypeScript, Python, Go, and Rust. <a href="/protocol">Read it</a></p></div>
-  <div class="panel tight"><h3 style="margin-top:0">The AQI</h3><p class="small">20 dimensions, weights published in one JSON file, summing to exactly ${AQI_MAX}. You can recompute any number we print. <a href="/scorecard">Check the maths</a></p></div>
+  <div class="panel tight"><h3 style="margin-top:0">ODS 2.0</h3><p class="small">A machine-readable schema for describing an artifact and its diffusion state. JSON Schema, TypeScript, Python, Go, and Rust. <a href="/protocol">Read it</a></p></div>
+  <div class="panel tight"><h3 style="margin-top:0">The AQI</h3><p class="small">25 dimensions, weights published in one JSON file, summing to exactly ${AQI_MAX}. You can recompute any number we print. <a href="/scorecard">Check the maths</a></p></div>
   <div class="panel tight"><h3 style="margin-top:0">Evidence Commons</h3><p class="small">Wins, failures, and postmortems, each labelled by evidence quality so ten anecdotes never become a statistic. <a href="/evidence">Browse</a></p></div>
 </div>
 
@@ -196,7 +196,7 @@ export function analyzePage(): string {
     <h3 style="margin-top:0">Eight things, in this order</h3>
     <ol class="small">
       <li><strong>Where the leverage is</strong> — ranked by points lost, not by score</li>
-      <li><strong>All twenty dimensions</strong> — with evidence, assumptions, missing data</li>
+      <li><strong>All 25 dimensions</strong> — with evidence, assumptions, missing data</li>
       <li><strong>Category</strong> — what you compete with, and a less crowded adjacent</li>
       <li><strong>The broadcaster</strong> — a role, where to find them, a message that asks for nothing</li>
       <li><strong>Share friction</strong> — why forwarding is expensive, with a fix per friction</li>
@@ -311,7 +311,7 @@ where sub_score_i is 0-100 and Σ weight_i = ${AQI_MAX}
 so the maximum attainable value is exactly ${AQI_MAX}</pre>
 <p class="small muted">Weights live in <code>protocol/aqi-weights.json</code>. TypeScript, Python, Go and Rust read that same file, so a third-party implementation cannot quietly disagree with ours.</p>
 
-<h2>All twenty dimensions</h2>
+<h2>All 25 dimensions</h2>
 <div class="panel tight">
 <table>
 <thead><tr><th class="num">#</th><th>Dimension</th><th class="num">Weight</th><th>The question it asks</th></tr></thead>
@@ -369,7 +369,7 @@ ${AQI_BANDS.map((b) => `<tr><td class="num">${b.min}–${b.max}</td><td><strong>
 
 <h2>Read the limitations before quoting a number</h2>
 <ul>
-<li><strong>Twenty dimensions is a design choice, not a discovery.</strong> A different twenty would produce different scores. Weights were chosen for usefulness; they are not derived from a study.</li>
+<li><strong>25 dimensions is a design choice, not a discovery.</strong> A different 25 would produce different scores. Weights were chosen for usefulness; they are not derived from a study.</li>
 <li><strong>Some dimensions are counted, some are judged.</strong> Every one is labelled. The judged ones are labelled <code>heuristic</code> and should be argued with.</li>
 <li><strong>The rubric has not been validated against outcomes.</strong> Nobody has shown that a higher AQI correlates with more reach, and we will not imply it. That validation is on the roadmap and may well fail to find an effect.</li>
 <li><strong>Scores are comparable only within one <code>aqiVersion</code>.</strong> Changing a weight changes every score; published comparisons must state the version.</li>
@@ -444,9 +444,9 @@ ${[
 </div>
 
 <h2 id="conformance">Conformance</h2>
-<p>An implementation is <strong>ODS 1.0 conformant</strong> if it:</p>
+<p>An implementation is <strong>ODS 2.0 conformant</strong> if it:</p>
 <ol>
-<li>emits a document validating against <code>ods-1.0.0.schema.json</code>;</li>
+<li>emits a document validating against <code>ods.schema.json</code>, reporting <code>ods_version 2.0.0</code>;</li>
 <li>uses <code>unavailable</code> rather than an invented value when it cannot determine something;</li>
 <li>includes at least one top-level <code>failure_condition</code>;</li>
 <li>sets <code>ethics_review.do_not_launch_yet</code> when its own honesty audit fails;</li>
@@ -482,7 +482,7 @@ ${[
 </div>
 
 <h2>Citing ODS</h2>
-<pre>Viral Engine Commons. (2026). Open Diffusion Spec 1.0.0.
+<pre>Viral Engine Commons. (2026). Open Diffusion Spec 2.0.0.
 https://github.com/mananmodi1487/viral-engine/blob/main/protocol/open-diffusion-spec.md</pre>
 <p class="small">The honest citation includes what ODS cannot do: it is a rubric protocol for describing an attempt at diffusion, not a predictive model of diffusion. Its scores are reproducible by design and have no demonstrated causal relationship with reach.</p>
 `;
@@ -700,6 +700,11 @@ ${[
   ['POST', '/api/honesty-audit', 'Unbacked claims and rewrites'],
   ['POST', '/api/report', 'Rendered report: markdown | html'],
   ['POST', '/api/outcomes', 'Validate an Evidence Commons submission'],
+  ['POST', '/api/share', 'Card SVG, alt text, badge, thread, and the one-line forward'],
+  ['POST', '/api/mode', 'roast · therapist · kill-my-darling · explain'],
+  ['GET', '/api/types', 'All 33 artifact types and what each must contain'],
+  ['GET', '/api/calibration', 'Does the score relate to outcomes? Includes the answer "not enough data"'],
+  ['GET', '/api/stress-test', 'The 100k-star stress test. Speculative, and says so in the payload'],
   ['GET', '/api/evidence', 'Index of published evidence records'],
   ['GET', '/api/protocol/schema', 'The ODS JSON Schema'],
   ['GET', '/api/protocol/weights', 'The AQI weights file'],
@@ -717,7 +722,8 @@ ${[
   "channel": "hackernews",       // optional, narrows the generated assets
   "language": "en",              // BCP-47
   "offline": true,               // true = zero network calls. Default true.
-  "saturationCount": 1200        // optional, if you measured it yourself
+  "saturationCount": 1200,       // optional, if you measured it yourself
+  "artifactType": "changelog"    // optional; see /api/types. A wrong type applies the wrong rubric
 }</pre>
 
 <h2>Example</h2>
@@ -725,10 +731,10 @@ ${[
   -H 'content-type: application/json' \\
   -d '{"text":"A productivity app for busy professionals. 10,000+ users love it."}'
 
-{"total":412,"max":1000,"band":"Fragile","aqi_version":"1.0.0",
+{"total":412,"max":1000,"band":"Fragile","aqi_version":"2.0.0",
  "do_not_launch_yet":true,
  "disclaimer":"The AQI is a weighted rubric for attempt quality…",
- "dimensions":[{"key":"category_clarity","score":18,"points":14,"weight":80,"basis":"structural","confidence":"medium"}, …]}</pre>
+ "dimensions":[{"key":"category_clarity","score":18,"points":14,"weight":85,"basis":"structural","confidence":"medium"}, …]}</pre>
 
 <h2>What the API refuses</h2>
 <div class="panel tight">
@@ -941,7 +947,7 @@ export function accessibilityPage(): string {
 <tr><td>Motion sensitivity</td><td>Animations are minimal by default and can be disabled; <code>prefers-reduced-motion</code> is honoured automatically.</td></tr>
 <tr><td>Low bandwidth</td><td>System fonts, no external requests, under 20KB of JavaScript, server-rendered HTML, offline PWA.</td></tr>
 <tr><td>Dyslexia</td><td>Short sentences, left-aligned text, no justified blocks, generous line height, plain-language rewrite suggestions from the accessibility guardian.</td></tr>
-<tr><td>Cognitive load</td><td>One decision per screen. The report leads with the single weakest dimension, not twenty numbers.</td></tr>
+<tr><td>Cognitive load</td><td>One decision per screen. The report leads with the single weakest dimension, not 25 numbers.</td></tr>
 <tr><td>Non-native speakers</td><td>Jargon density is scored and flagged; every acronym gets a definition; a plain-language rewrite is generated for the longest sentence.</td></tr>
 </tbody>
 </table>

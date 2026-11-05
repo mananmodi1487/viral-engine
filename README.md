@@ -265,12 +265,12 @@ Exit code 5, a refusal object, and an alternative. Not a warning you can click t
 <details>
 <summary><strong>7. The protocol is the product, and it is public domain</strong></summary>
 
-`ODS 1.0.0` — the Open Diffusion Spec — is a JSON Schema, a set of semantics, and a conformance
+`ODS 2.0.0` — the Open Diffusion Spec — is a JSON Schema, a set of semantics, and a conformance
 suite. Anyone can implement it. Four implementations ship here:
 
 | Language | Tests actually run | Status |
 |---|---|---|
-| TypeScript | 151 tests, every commit | **Reference** |
+| TypeScript | 199 tests, every commit | **Reference** |
 | Python | 19 tests, local + CI | **Tested** |
 | Go | `go test ./...` in CI | **CI-only** — never executed by the author, no toolchain available |
 | Rust | `cargo test` in CI | **CI-only** — same, and one function may be wrong |
@@ -280,7 +280,7 @@ That table is the honest state, and it is in the spec at
 implementation nobody has run is a claim, not an implementation.
 
 **The Python binding found two real bugs in the reference implementation within minutes of being
-written** — camelCase leaking into snake_case protocol fields, invisible to 92 passing
+written** — camelCase leaking into snake_case protocol fields, invisible to the passing
 TypeScript tests because the same language wrote and read both sides. The story is in
 [`protocol/conformance.md`](protocol/conformance.md) §6 and kept in
 [`evidence/wins/`](evidence/wins/2026-04-python-binding-found-two-bugs.md), because the process
@@ -441,7 +441,7 @@ The most valuable contribution is a disagreement with a claim, recorded in publi
 most valuable is a failure record.
 
 ```bash
-npm ci && npm run check     # weights · typecheck · 151 tests
+npm ci && npm run check     # weights · typecheck · 199 tests
 npm run bench               # evaluation harness; fails on a precision regression
 ```
 

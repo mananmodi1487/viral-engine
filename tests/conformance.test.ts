@@ -46,7 +46,7 @@ describe('ODS conformance rule 1: the document validates against the schema', ()
     for (const key of required) {
       expect(doc, `missing ${key}`).toHaveProperty(key);
     }
-    expect(doc.ods_version).toBe('1.0.0');
+    expect(doc.ods_version).toBe('2.0.0');
   });
 
   it('matches the published JSON Schema structure', async () => {

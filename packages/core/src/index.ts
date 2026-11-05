@@ -90,3 +90,25 @@ export type {
   ProviderCapability,
   Resolution,
 } from '../../providers/src/index.js';
+
+/* ---- v3: share payloads, artifact types, modes, and the stress test ---- */
+export { buildSharePayloads, failureCard, fromAqi } from './share/payloads.js';
+export type { ShareInput, SharePayloads } from './share/payloads.js';
+export {
+  ARTIFACT_TYPES,
+  artifactTypeSpec,
+  guessArtifactType,
+} from './ingest/artifact-types.js';
+export type { ArtifactType, ArtifactTypeSpec } from './ingest/artifact-types.js';
+export { roast, therapist, killYourDarling, explainLikeImFive } from './modes/index.js';
+export type { ModeInput, ModeOutput } from './modes/index.js';
+export { stressTest } from './research/stress-test.js';
+export type { StressTest, Hypothesis, FailureMode, IndicatorGroup, KillCriterion } from './research/stress-test.js';
+
+/* ---- v3: migration ---- */
+export { migrateDocument, CURRENT_ODS_VERSION as MIGRATION_TARGET_ODS, CURRENT_AQI_VERSION as MIGRATION_TARGET_AQI } from './migrate/index.js';
+export type { MigrationResult } from './migrate/index.js';
+
+/* ---- v3: calibration ---- */
+export { calibrate, spearman } from './evals/calibration.js';
+export type { CalibrationRecord, CalibrationReport } from './evals/calibration.js';

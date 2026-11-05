@@ -18,8 +18,21 @@ describe('AQI: the rubric must be internally consistent', () => {
     expect(AQI_DIMENSIONS.reduce((a, d) => a + d.weight, 0)).toBe(AQI_MAX);
   });
 
-  it('has exactly twenty dimensions', () => {
-    expect(AQI_DIMENSIONS).toHaveLength(20);
+  it('has exactly twenty-five dimensions', () => {
+    // 1.0.0 had twenty. 2.0.0 added five that are observable rather than argued,
+    // which is why the same assertion is now a different number: the test has to
+    // fail if a dimension is silently dropped.
+    expect(AQI_DIMENSIONS).toHaveLength(25);
+  });
+
+  it('declares a distinct job for every dimension added in 2.0.0', () => {
+    // The five new dimensions overlap conceptually with existing ones. If that
+    // overlap is not written down, the rubric quietly double-counts.
+    const withDistinct = AQI_DIMENSIONS.filter((d) => d.distinctFrom);
+    expect(withDistinct.length).toBeGreaterThanOrEqual(5);
+    for (const d of withDistinct) {
+      expect(d.distinctFrom!.length, d.key).toBeGreaterThan(40);
+    }
   });
 
   it('every dimension asks a question that ends in a question mark', () => {
@@ -99,8 +112,8 @@ describe('AQI: arithmetic is reproducible by hand', () => {
     const d = dimension('category_clarity', 50, {
       basis: 'structural', confidence: 'medium', evidence: ev, improvement: 'i', failureCondition: 'f',
     });
-    expect(d.weight).toBe(80);
-    expect(d.points).toBe(40);
+    expect(d.weight).toBe(85);
+    expect(d.points).toBe(43);
   });
 
   it('a perfect score on every dimension totals exactly the maximum', () => {
@@ -130,8 +143,8 @@ describe('AQI: arithmetic is reproducible by hand', () => {
       }),
     ];
     const result = computeAqi(partial);
-    expect(result.dimensions).toHaveLength(20);
-    expect(result.total).toBe(80);
+    expect(result.dimensions).toHaveLength(25);
+    expect(result.total).toBe(85);
     const rest = result.dimensions.filter((d) => d.key !== 'category_clarity');
     expect(rest.every((d) => d.basis === 'unavailable')).toBe(true);
   });

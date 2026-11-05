@@ -39,8 +39,8 @@ import {
 } from '../../../agents/src/index.js';
 import { AQI_DISCLAIMER, topLostPoints, weakestDimension, type AqiResult } from '../../../protocol/src/aqi.js';
 
-export const ODS_VERSION = '1.0.0';
-export const GENERATOR_VERSION = '2.0.0';
+export const ODS_VERSION = '2.0.0';
+export const GENERATOR_VERSION = '3.0.0';
 
 export interface OdsOptions {
   /** Injected measurement. Omit and the radar reports `unknown`. */
@@ -54,6 +54,14 @@ export interface OdsOptions {
   now?: () => Date;
   /** Run the speculative extras (time machine, antifragile). Default true. */
   includeSpeculative?: boolean;
+  /**
+   * Declared artifact type (`readme`, `changelog`, `grant-application`, …).
+   * The type changes what the readers of this document are trying to do, so it
+   * is recorded in the ODS and used to pick the right reader-job in the summary.
+   * Omit it and the type is inferred structurally; a wrong type applies the wrong
+   * rubric, which is why the inferred value is recorded rather than hidden.
+   */
+  artifactType?: string;
 }
 
 export interface FailureCondition {
@@ -310,7 +318,7 @@ export async function analyzeOds(
     artifact: {
       id: slugId(source.ref),
       name: source.title ?? source.ref,
-      type: artifactTypeFrom(source.kind, source.ref),
+      type: opts.artifactType ?? artifactTypeFrom(source.kind, source.ref),
       url: source.kind === 'url' || source.kind === 'github-repo' ? source.ref : undefined,
       language: opts.language ?? 'en',
       summary: source.description,

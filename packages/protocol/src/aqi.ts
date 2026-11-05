@@ -12,6 +12,13 @@
 import weightsFile from '../../../protocol/aqi-weights.json' with { type: 'json' };
 
 export interface AqiDimensionSpec {
+  /**
+   * Present on dimensions added after 1.0.0 that overlap conceptually with an
+   * existing one. It states what this dimension judges that the other does not,
+   * because two dimensions measuring the same thing is double-counting dressed
+   * as thoroughness.
+   */
+  distinctFrom?: string;
   key: string;
   label: string;
   weight: number;

@@ -66,7 +66,7 @@ Note, in your own words: what the thing is, who it says it is for, what job it c
 sentence you would repeat to a colleague. If you cannot produce that last sentence, the document
 has already told you its biggest problem — and it is usually Category Clarity.
 
-### 3. Score the twenty dimensions
+### 3. Score the 25 dimensions
 
 Use `protocol/aqi-weights.json` for weights. Score each 0-100, then `points = round(score ×
 weight ÷ 100)`.
