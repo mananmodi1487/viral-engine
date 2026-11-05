@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400" role="img" aria-label="Viral Engine cycling through three hooks and a positioning statement">
+  <defs>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1f6feb" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#3fb950" stop-opacity="0.10"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1f6feb"/>
+      <stop offset="0.5" stop-color="#d29922"/>
+      <stop offset="1" stop-color="#3fb950"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="400" rx="14" fill="#0b0f14"/>
+  <rect x="0.5" y="0.5" width="899" height="399" rx="14" fill="none" stroke="#30363d"/>
+  <rect x="0" y="0" width="900" height="140" rx="14" fill="url(#glow)"/>
+
+  <circle cx="30" cy="30" r="5" fill="#f85149"/>
+  <circle cx="48" cy="30" r="5" fill="#d29922"/>
+  <circle cx="66" cy="30" r="5" fill="#3fb950"/>
+  <text x="88" y="35" font-family="ui-monospace,Menlo,monospace" font-size="12" fill="#8b949e">viral-engine</text>
+  <text x="820" y="35" font-family="ui-monospace,Menlo,monospace" font-size="11" fill="#3fb950">&#9679; live</text>
+  <line x1="0" y1="52" x2="900" y2="52" stroke="#21262d"/>
+
+  <text x="34" y="86" font-family="ui-monospace,Menlo,monospace" font-size="11" letter-spacing="1.6" fill="#6e7681">INPUT</text>
+  <text x="34" y="112" font-family="ui-sans-serif,system-ui,sans-serif" font-size="15" fill="#c9d1d9">&#8220;a daily habit tracker app for busy professionals&#8221;</text>
+
+  <text x="34" y="150" font-family="ui-monospace,Menlo,monospace" font-size="11" letter-spacing="1.6" fill="#3fb950">OUTPUT</text>
+
+  <!-- panel 1 -->
+  <g opacity="1">
+    <animate attributeName="opacity" values="1;1;0;0;0;0;1" keyTimes="0;0.28;0.33;0.62;0.67;0.95;1" dur="12s" repeatCount="indefinite"/>
+    <rect x="34" y="168" width="832" height="104" rx="8" fill="#11161d" stroke="#238636"/>
+    <text x="58" y="205" font-family="ui-sans-serif,system-ui,sans-serif" font-size="21" font-weight="700" fill="#e6edf3">It&#8217;s not a habit tracker.</text>
+    <text x="58" y="238" font-family="ui-sans-serif,system-ui,sans-serif" font-size="21" font-weight="700" fill="#3fb950">It&#8217;s placement-risk management.</text>
+    <text x="58" y="260" font-family="ui-monospace,Menlo,monospace" font-size="11" fill="#6e7681">positioning &#183; the category changed, not the product</text>
+  </g>
+
+  <!-- panel 2 -->
+  <g opacity="0">
+    <animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0;0.28;0.33;0.62;0.67;0.95;1" dur="12s" repeatCount="indefinite"/>
+    <rect x="34" y="168" width="832" height="104" rx="8" fill="#11161d" stroke="#1f6feb"/>
+    <text x="58" y="203" font-family="ui-sans-serif,system-ui,sans-serif" font-size="19" font-weight="600" fill="#e6edf3">&#8220;You&#8217;re not afraid of AI taking your job.</text>
+    <text x="58" y="231" font-family="ui-sans-serif,system-ui,sans-serif" font-size="19" font-weight="600" fill="#e6edf3">You&#8217;re afraid of being the last person to notice.&#8221;</text>
+    <text x="58" y="258" font-family="ui-monospace,Menlo,monospace" font-size="11" fill="#58a6ff">reframe &#183; mid-career professionals</text>
+  </g>
+
+  <!-- panel 3 -->
+  <g opacity="0">
+    <animate attributeName="opacity" values="0;0;0;0;1;1;0" keyTimes="0;0.28;0.33;0.62;0.67;0.95;1" dur="12s" repeatCount="indefinite"/>
+    <rect x="34" y="168" width="832" height="104" rx="8" fill="#11161d" stroke="#d29922"/>
+    <text x="58" y="203" font-family="ui-sans-serif,system-ui,sans-serif" font-size="19" font-weight="600" fill="#e6edf3">&#8220;The app my professor doesn&#8217;t want you to use</text>
+    <text x="58" y="231" font-family="ui-sans-serif,system-ui,sans-serif" font-size="19" font-weight="600" fill="#e6edf3">(but your GPA depends on it).&#8221;</text>
+    <text x="58" y="258" font-family="ui-monospace,Menlo,monospace" font-size="11" fill="#d29922">forbidden insider &#183; students who suspect the game</text>
+  </g>
+
+  <!-- progress bar -->
+  <rect x="34" y="292" width="832" height="3" rx="1.5" fill="#21262d"/>
+  <rect x="34" y="292" height="3" rx="1.5" fill="url(#bar)">
+    <animate attributeName="width" values="0;832;832" dur="12s" repeatCount="indefinite"/>
+  </rect>
+
+  <text x="34" y="330" font-family="ui-monospace,Menlo,monospace" font-size="11.5" fill="#8b949e">3 hooks kept from 12 drafted &#183; each with a pattern, an audience, and its failure mode</text>
+  <text x="34" y="352" font-family="ui-monospace,Menlo,monospace" font-size="11.5" fill="#8b949e">+ 5 more sections: diagnosis &#183; structure &#183; distribution &#183; 48-hour plan &#183; scorecard</text>
+
+  <rect x="34" y="368" width="120" height="20" rx="5" fill="#238636"/>
+  <text x="52" y="382" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" font-weight="600" fill="#ffffff">/viral-engine</text>
+  <text x="168" y="382" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#6e7681">one file &#183; no install &#183; no API key</text>
+</svg>

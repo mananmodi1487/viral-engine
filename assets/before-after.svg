@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 440" width="880" height="440" role="img" aria-label="Before and after: a generic habit app repositioned as placement-risk management">
+  <defs>
+    <linearGradient id="cardBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#161b22"/>
+      <stop offset="1" stop-color="#0d1117"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f85149"/>
+      <stop offset="1" stop-color="#3fb950"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="880" height="440" fill="#0d1117" rx="12"/>
+  <rect x="0.5" y="0.5" width="879" height="439" fill="none" stroke="#30363d" rx="12"/>
+
+  <!-- title bar -->
+  <circle cx="26" cy="26" r="5" fill="#f85149"/>
+  <circle cx="44" cy="26" r="5" fill="#d29922"/>
+  <circle cx="62" cy="26" r="5" fill="#3fb950"/>
+  <text x="84" y="31" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="12" fill="#8b949e">viral-engine · run #1</text>
+  <line x1="0" y1="48" x2="880" y2="48" stroke="#21262d"/>
+
+  <!-- INPUT -->
+  <text x="36" y="82" font-family="ui-monospace,Menlo,monospace" font-size="11" letter-spacing="1.4" fill="#8b949e">IN</text>
+  <text x="78" y="82" font-family="ui-monospace,Menlo,monospace" font-size="13" fill="#8b949e">a daily habit tracker app for busy professionals</text>
+
+  <!-- score row, before -->
+  <text x="36" y="120" font-family="ui-sans-serif,system-ui,sans-serif" font-size="12" fill="#6e7681">surprise</text>
+  <rect x="108" y="110" width="120" height="8" rx="4" fill="#21262d"/>
+  <rect x="108" y="110" width="24" height="8" rx="4" fill="#f85149"/>
+  <text x="240" y="120" font-family="ui-sans-serif,system-ui,sans-serif" font-size="12" fill="#6e7681">identity</text>
+  <rect x="296" y="110" width="120" height="8" rx="4" fill="#21262d"/>
+  <rect x="296" y="110" width="24" height="8" rx="4" fill="#f85149"/>
+  <text x="428" y="120" font-family="ui-sans-serif,system-ui,sans-serif" font-size="12" fill="#6e7681">tribal fit</text>
+  <rect x="492" y="110" width="120" height="8" rx="4" fill="#21262d"/>
+  <rect x="492" y="110" width="24" height="8" rx="4" fill="#f85149"/>
+
+  <text x="640" y="120" font-family="ui-sans-serif,system-ui,sans-serif" font-size="12" fill="#f85149" font-weight="600">3 levers at 1/5</text>
+
+  <line x1="36" y1="148" x2="844" y2="148" stroke="#21262d" stroke-dasharray="3 4"/>
+
+  <!-- hinge -->
+  <text x="36" y="176" font-family="ui-monospace,Menlo,monospace" font-size="11" letter-spacing="1.4" fill="#d29922">BOTTLENECK</text>
+  <text x="128" y="176" font-family="ui-monospace,Menlo,monospace" font-size="12.5" fill="#d29922">surprise + identity · the product is fine, the category is dead</text>
+
+  <line x1="36" y1="200" x2="844" y2="200" stroke="#21262d" stroke-dasharray="3 4"/>
+
+  <!-- OUTPUT -->
+  <text x="36" y="234" font-family="ui-monospace,Menlo,monospace" font-size="11" letter-spacing="1.4" fill="#3fb950">OUT</text>
+
+  <rect x="36" y="250" width="808" height="76" rx="8" fill="url(#cardBg)" stroke="#238636"/>
+  <text x="56" y="280" font-family="ui-sans-serif,system-ui,sans-serif" font-size="17" font-weight="700" fill="#e6edf3">It&#8217;s not a habit tracker.</text>
+  <text x="56" y="306" font-family="ui-sans-serif,system-ui,sans-serif" font-size="17" font-weight="700" fill="#3fb950">It&#8217;s placement-risk management.</text>
+
+  <text x="36" y="352" font-family="ui-monospace,Menlo,monospace" font-size="12.5" fill="#c9d1d9">&#8220;47 browser tabs, 3 deadlines, 0 systems. This is for you.&#8221;</text>
+  <text x="444" y="352" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#6e7681">direct address · students in exam crunch</text>
+
+  <!-- score row, after -->
+  <text x="36" y="386" font-family="ui-sans-serif,system-ui,sans-serif" font-size="12" fill="#6e7681">surprise</text>
+  <rect x="108" y="376" width="120" height="8" rx="4" fill="#21262d"/>
+  <rect x="108" y="376" width="96" height="8" rx="4" fill="#3fb950"/>
+  <text x="240" y="386" font-family="ui-sans-serif,system-ui,sans-serif" font-size="12" fill="#6e7681">identity</text>
+  <rect x="296" y="376" width="120" height="8" rx="4" fill="#21262d"/>
+  <rect x="296" y="376" width="96" height="8" rx="4" fill="#3fb950"/>
+  <text x="428" y="386" font-family="ui-sans-serif,system-ui,sans-serif" font-size="12" fill="#6e7681">tribal fit</text>
+  <rect x="492" y="376" width="120" height="8" rx="4" fill="#21262d"/>
+  <rect x="492" y="376" width="96" height="8" rx="4" fill="#3fb950"/>
+  <text x="640" y="386" font-family="ui-sans-serif,system-ui,sans-serif" font-size="12" fill="#3fb950" font-weight="600">4/5 · product unchanged</text>
+
+  <rect x="36" y="410" width="808" height="2" rx="1" fill="url(#accent)" opacity="0.35"/>
+</svg>

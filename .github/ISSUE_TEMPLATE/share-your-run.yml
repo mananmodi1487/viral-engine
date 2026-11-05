@@ -1,0 +1,74 @@
+name: "🏆 Share your run"
+description: "Post what Viral Engine actually told you — especially the part you didn't like."
+title: "[RUN] "
+labels: ["showcase"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for running it. Two rules, and they're the whole point:
+
+        1. **The input has to be real.** Real product, real post, real launch.
+        2. **The output has to be what the skill actually said** — including the parts that stung.
+
+        Runs where the diagnosis said *"don't launch yet"* are the most useful posts in this repo.
+
+  - type: input
+    id: input
+    attributes:
+      label: What did you give it?
+      description: The exact input, in one line.
+      placeholder: "A daily habit tracker app for busy professionals"
+    validations:
+      required: true
+
+  - type: textarea
+    id: diagnosis
+    attributes:
+      label: The diagnosis
+      description: Which lever scored lowest, and what bottleneck did it name?
+      placeholder: |
+        surprise 1/5, identity 1/5, tribal fit 1/5
+        Bottleneck: no tension, no tribe
+    validations:
+      required: true
+
+  - type: textarea
+    id: output
+    attributes:
+      label: The output
+      description: The positioning line and/or the best hook. Paste it verbatim.
+      placeholder: |
+        "It's not a habit tracker. It's placement-risk management."
+        "47 browser tabs, 3 deadlines, 0 systems. This is for you."
+    validations:
+      required: true
+
+  - type: textarea
+    id: sting
+    attributes:
+      label: What did it get right that you didn't want to hear?
+      description: Optional, but the honest answers are why people read these.
+
+  - type: dropdown
+    id: verdict
+    attributes:
+      label: Did you act on it?
+      options:
+        - Yes — changed the positioning
+        - Yes — rewrote the hook
+        - Partially
+        - Not yet
+        - No — it was wrong, and here's why
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: honesty
+    attributes:
+      label: Honesty check
+      options:
+        - label: The input is a real project, not a hypothetical
+          required: true
+        - label: I haven't invented any numbers or results in this post
+          required: true
