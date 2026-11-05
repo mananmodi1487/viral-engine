@@ -108,3 +108,7 @@ export type { StressTest, Hypothesis, FailureMode, IndicatorGroup, KillCriterion
 /* ---- v3: migration ---- */
 export { migrateDocument, CURRENT_ODS_VERSION as MIGRATION_TARGET_ODS, CURRENT_AQI_VERSION as MIGRATION_TARGET_AQI } from './migrate/index.js';
 export type { MigrationResult } from './migrate/index.js';
+
+/* ---- v3: calibration ---- */
+export { calibrate, spearman } from './evals/calibration.js';
+export type { CalibrationRecord, CalibrationReport } from './evals/calibration.js';

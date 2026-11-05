@@ -388,3 +388,88 @@ describe('the limitations reference in the weights file resolves', () => {
     expect(weights.disclaimer.toLowerCase()).toContain('limitations.md');
   });
 });
+
+/* ---------- calibration ---------- */
+
+import { calibrate, spearman } from '../packages/core/src/index.js';
+
+function rec(i: number, over: Record<string, unknown> = {}) {
+  return {
+    aqi: 400 + i * 10,
+    aqiVersion: '2.0.0',
+    outcome: i * 3,
+    outcomeUnit: 'unique visitors in 14 days',
+    outcomeDefinedBy: 'protocol' as const,
+    label: 'self-reported' as const,
+    horizonDays: 14,
+    ...over,
+  };
+}
+
+describe('calibration', () => {
+  it('refuses to compute a correlation below the minimum sample', () => {
+    const r = calibrate(Array.from({ length: 8 }, (_, i) => rec(i)));
+    expect(r.n).toBe(8);
+    expect(r.rho).toBeNull();
+    expect(r.interval).toBeNull();
+    expect(r.conclusion).toContain('absence of a computed number is the finding');
+    expect(r.strata[0].note).toContain('below the minimum');
+  });
+
+  it('computes rho and an interval once n is large enough', () => {
+    const r = calibrate(Array.from({ length: 40 }, (_, i) => rec(i)));
+    expect(r.rho).not.toBeNull();
+    expect(r.interval).not.toBeNull();
+    expect(r.conclusion).toMatch(/rho = /);
+    expect(r.conclusion).toContain('interval');
+  });
+
+  it('says so when the interval includes zero', () => {
+    // Deterministic noise: outcomes uncorrelated with score.
+    const rows = Array.from({ length: 60 }, (_, i) => rec(i, { outcome: (i * 37) % 61 }));
+    const r = calibrate(rows);
+    if (r.interval && r.interval[0] <= 0 && r.interval[1] >= 0) {
+      expect(r.conclusion).toContain('includes zero');
+      expect(r.conclusion).toContain('Do not quote the point estimate');
+    }
+  });
+
+  it('reports a negative relationship rather than hiding it', () => {
+    const rows = Array.from({ length: 60 }, (_, i) => rec(i, { outcome: 300 - i * 3 }));
+    const r = calibrate(rows);
+    expect(r.rho).toBeLessThan(0);
+    expect(r.conclusion).toContain('negative');
+  });
+
+  it('flags mixed units and mixed versions instead of pooling them', () => {
+    const rows = [
+      ...Array.from({ length: 20 }, (_, i) => rec(i)),
+      ...Array.from({ length: 20 }, (_, i) => rec(i, { outcomeUnit: 'newsletter signups' })),
+      ...Array.from({ length: 5 }, (_, i) => rec(i, { aqiVersion: '1.0.0' })),
+    ];
+    const r = calibrate(rows);
+    expect(r.sampleProblems.join(' ')).toContain('different units');
+    expect(r.sampleProblems.join(' ')).toContain('rubric versions');
+    expect(r.strata.map((s) => s.name).join(' | ')).toContain('2.0.0');
+  });
+
+  it('keeps verified rows in their own stratum and says when it is empty', () => {
+    const r = calibrate(Array.from({ length: 40 }, (_, i) => rec(i)));
+    const strong = r.strata.find((s) => s.name.includes('verified'));
+    expect(strong?.n).toBe(0);
+    expect(strong?.rho).toBeNull();
+    expect(strong?.note).toContain('honest headline');
+  });
+
+  it('is deterministic, so a published interval can be checked', () => {
+    const rows = Array.from({ length: 50 }, (_, i) => rec(i, { outcome: (i * 13) % 29 }));
+    expect(calibrate(rows).interval).toEqual(calibrate(rows).interval);
+  });
+
+  it('handles ties and degenerate input without inventing a number', () => {
+    expect(spearman([1, 2, 3], [1, 1, 1])).toBeNull();
+    expect(spearman([1, 2], [1, 2])).toBeNull();
+    const flat = calibrate(Array.from({ length: 40 }, (_, i) => rec(i, { aqi: 500 })));
+    expect(flat.rho).toBeNull();
+  });
+});

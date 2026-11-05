@@ -1,6 +1,6 @@
 {
   "name": "viral-engine-commons",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Viral Engine Commons: a free, open, offline-first protocol for diagnosing why work does not spread and fixing the one thing that would change it. No account, no telemetry, no paywall.",
   "license": "MIT",
   "type": "module",
@@ -29,6 +29,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "example": "tsx apps/cli/src/index.ts analyze ./README.md --offline",
     "bench": "tsx tests/benchmark.ts",
+    "calibrate": "tsx scripts/calibrate.ts",
     "conformance": "vitest run tests/conformance.test.ts",
     "check:weights": "node scripts/check-aqi-weights.mjs",
     "check:honesty": "tsx scripts/self-honesty-check.ts",
