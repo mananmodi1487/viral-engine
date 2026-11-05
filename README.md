@@ -18,6 +18,33 @@
 
 </div>
 
+<!-- This repo will hit 100K+ stars -->
+
+---
+
+## 📈 The curve, labelled honestly
+
+```
+ stars
+ 100K ┤                                                         ·····o
+  10K │                                              ·····o·····
+   1K │                         ·····o·········o·····
+  100 │      ····o·········o····
+   10 │o·····
+      └────────────────────────────────────────────────────────────────────────────
+       day 1     wk 2      mo 1      mo 2      mo 3       mo 6       mo 12
+
+       └─ 10 strangers ran it  └─ first real push    └─ ~1K = recommended
+
+  ASPIRATIONAL PROJECTION — not a history. This repo has not taken this
+  shape. It is the curve the plan aims at, drawn so you can check
+  whether the first real data point lands on it.
+```
+
+**Why show a projection instead of results?** Because the results don't exist yet — the repo is days old. Drawing an invented history would be the exact thing this repo tells you not to do ([honesty policy](#-the-honesty-policy)). The projection is checkable: come back in a month and see which point we're actually on.
+
+**The dashed reality from the research:** ~0.025% of a billion diffusion events ever exceeded 100 nodes ([Goel et al.](research/virality-patterns.md)). Most curves don't bend. The plan in [`SUMMARY.md`](SUMMARY.md) targets **1,000 in 90 days**, not 100K — because 1,000 is the threshold where GitHub's own recommendation surfaces start sending you traffic for free, and 100K is not plannable at all.
+
 ---
 
 ## 51.7% of newly published articles on the web are AI-generated.
@@ -100,7 +127,25 @@ The format looks like this — *illustrative, not a real run. Yours has to be.*
 
 Two rules: **the input has to be real**, and **the output has to be what the skill actually said** — including the parts you didn't like. The uncomfortable ones are the interesting ones.
 
-→ Post it anywhere with the tag, or open an issue with your output. The best get added to [`examples/`](examples/), with credit.
+→ Post it anywhere with the tag, or [open an issue](https://github.com/mananmodi1487/viral-engine/issues/new?template=share-your-run.yml) with your output. The best get added to [`examples/`](examples/), with credit.
+
+**If you learned something here, share it with the one person whose launch is coming up.** That's the whole ask — not a star, not a follow. One forward, to one specific person, with one sentence about why.
+
+> *"This is the thing that tells you why nobody shared your launch — before you launch."*
+
+---
+
+## ⏳ Why now, honestly
+
+No countdown timer. Three real reasons the timing matters, each from the research in [`research/`](research/virality-patterns.md).
+
+**The flood is compounding.** 51.7% of newly published articles are AI-generated, up from 2.2% in 2020 ([Graphite, May 2025](https://graphite.io)). Competent writing is now the baseline, not the advantage. Every month you compete on *quality* instead of *category*, the bar you're trying to clear moves further away — because it's being cleared automatically, for free, by everyone.
+
+**The window on GitHub attention is real and early.** A repo with a few hundred stars is invisible inside GitHub's recommendation surfaces. Around 1,000, it starts appearing in "related repos," topic pages, and Trending-adjacent surfaces — which is free distribution you cannot buy or fake. Repos either reach that threshold early, when a handful of shares can move it, or they spend years grinding search traffic. The mechanics aren't a secret; the timing advantage is.
+
+**A launch is a one-shot test.** The 48-hour plan in [`templates/launch-checklist.md`](templates/launch-checklist.md) is designed for the week *before* you publish. Run it after, and the most you can do is rewrite copy on something the audience has already decided about. One unpolished launch attempt per project is the real constraint — not stars, not budget.
+
+**What this is not:** there is no closing window on the repo, no limited seats, no price going up. If urgency is the only reason you'd star it, don't — the repo will still be here, and a star you regret is worth less than one you meant.
 
 ---
 
@@ -116,7 +161,9 @@ Two rules: **the input has to be real**, and **the output has to be what the ski
 | *"Blog post about AI anxiety"* | A saturated topic. Scrolled past at 200 words. | surprise 2/5, remixability 1/5 → **bottleneck: nothing unexpected, nothing to do afterward** | Placed as **workplace change literacy**. Hook: *"You're not afraid of AI taking your job. You're afraid of being the last person to notice."* |
 | *This repository* | "Another AI growth tool." Distrusted category. | emotion 2/5 → **bottleneck: clever, not activating** | Placed as a **spread diagnostic**. Led to the before/after asset you just scrolled past. |
 
-**The full reasoning — including the frames that were rejected and why — is in [`examples/`](examples/) and [`CASE_STUDY.md`](CASE_STUDY.md).**
+**The full reasoning — including the frames that were rejected and why:**
+
+→ [Case study 1](examples/case-study-1.md) — the habit tracker · [Case study 2](examples/case-study-2.md) — the AI-anxiety essay · [Repo self-diagnosis](CASE_STUDY.md) — this page, graded
 
 ### And here's what three hooks look like when they ship with their failure modes
 
@@ -220,16 +267,16 @@ viral-engine/
 ├── CREDITS.md                    ← Berger · Goel/Watts · Lowenstein · NYT · Claude
 ├── assets/                       ← diagrams — SVG, animated, editable
 ├── templates/                    ← 4 copy-paste frameworks
-│   ├── hook-factory.md
-│   ├── positioning-worksheet.md
+│   ├── hooks-framework.md
+│   ├── positioning-template.md
 │   ├── share-structure-canvas.md
 │   └── launch-checklist.md
 ├── research/
 │   ├── virality-patterns.md      ← the cheat sheet, with citations + caveats
 │   └── README.md                 ← established vs. inferred
 └── examples/
-    ├── student-app-example.json
-    └── blog-post-example.json
+    ├── case-study-1.md           ← habit tracker → placement-risk management
+    └── case-study-2.md           ← AI anxiety essay → workplace change literacy
 ```
 
 **Every template is a blank to fill in, not a thing to read.** That's deliberate — filling blanks produces better answers than reading advice, and it's slower, which is the point.
@@ -271,7 +318,9 @@ MIT — see [LICENSE](LICENSE). Build what spreads.
 
 Then tell us what it said — especially if it said something you didn't want to hear.
 
-[**▶ Try it in Claude**](https://claude.ai/new?q=%2Fviral-engine%20I%20built%20a%20daily%20habit%20tracker%20app%20for%20busy%20professionals) · [⭐ Star](https://github.com/mananmodi1487/viral-engine) · [Read the skill](SKILL.md) · [Launch playbook](SUMMARY.md) · [Case study](CASE_STUDY.md)
+**If you learned something, share it with one person who's about to launch.**
+
+[**▶ Try it in Claude**](https://claude.ai/new?q=%2Fviral-engine%20I%20built%20a%20daily%20habit%20tracker%20app%20for%20busy%20professionals) · [⭐ Star](https://github.com/mananmodi1487/viral-engine) · [Read the skill](SKILL.md) · [Launch playbook](SUMMARY.md) · [Case studies](examples/) · [Repo self-diagnosis](CASE_STUDY.md)
 
 <sub>Built with [Claude](https://claude.ai). Research credited in [CREDITS.md](CREDITS.md). Not affiliated with Anthropic.</sub>
 
