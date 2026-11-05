@@ -36,6 +36,8 @@ import {
   toTerminal,
   checkInbound,
   extractSignals,
+  migrateDocument,
+  MIGRATION_TARGET_ODS as CURRENT_ODS_VERSION,
   buildSharePayloads,
   failureCard,
   ARTIFACT_TYPES,
@@ -807,31 +809,34 @@ function initProject(args: Args): number {
 function migrate(args: Args): number {
   const file = resolve(args.target!);
   const raw = JSON.parse(readFileSync(file, 'utf8')) as Record<string, unknown>;
-  const version = String(raw.ods_version ?? raw.schemaVersion ?? '0.0.0');
-  if (version === '1.0.0' && raw.ods_version) {
-    console.log(`already at ODS ${version} — nothing to do`);
+
+  let result;
+  try {
+    result = migrateDocument(raw);
+  } catch (err) {
+    console.error(`error: ${(err as Error).message}`);
+    return 2;
+  }
+
+  if (result.noop) {
+    console.log(`already at ODS ${result.fromVersion} — nothing to do`);
     return 0;
   }
-  console.log(`migrating a ${version} document to ODS 1.0.0`);
+
+  console.log(`migrating a ${result.fromVersion} document to ODS ${CURRENT_ODS_VERSION}`);
   console.log('');
-  console.log('A v1 DiagnosisReport contains a 7-lever scorecard that cannot be turned into a');
-  console.log('20-dimension AQI without re-reading the source artifact. Rather than invent');
-  console.log('thirteen dimensions, this command:');
-  console.log('  1. preserves the original document untouched under x_migrated_from_1');
-  console.log('  2. re-runs the analysis if the original text is embedded in the report');
-  console.log('  3. otherwise tells you to re-run analyze on the original target');
+  for (const c of result.changes) console.log(`  · ${c}`);
   console.log('');
-  const migrated = {
-    ods_version: '1.0.0',
-    migrated_at: new Date().toISOString(),
-    x_migrated_from_1: raw,
-    artifact: raw.source,
-    note: 'Dimension scores require the original artifact. Re-run: viral-engine analyze <original target>',
-  };
+  if (result.cannot.length) {
+    console.log('WHAT THIS MIGRATION CANNOT DO');
+    for (const c of result.cannot) console.log(`  · ${c}`);
+    console.log('');
+  }
+
   const out = args.out ? resolve(args.out) : file.replace(/\.json$/, '.ods.json');
-  writeFileSync(out, JSON.stringify(migrated, null, 2), 'utf8');
+  writeFileSync(out, JSON.stringify(result.document, null, 2), 'utf8');
   console.log(`wrote ${out}`);
-  console.log('Nothing was deleted. The v1 document is preserved in full under x_migrated_from_1.');
+  console.log('Nothing was deleted. The original is preserved in full under x_migrated_from.');
   return 0;
 }
 

@@ -297,3 +297,94 @@ describe('100k-star stress test', () => {
     expect(t.memo.ifItWorks.length).toBeGreaterThan(80);
   });
 });
+
+/* ---------- migration ---------- */
+
+import { migrateDocument } from '../packages/core/src/index.js';
+
+describe('ODS migration', () => {
+  const v1 = {
+    ods_version: '1.0.0',
+    artifact: { id: 'x', name: 'x', type: 'github-repo', language: 'en' },
+    current_positioning: { one_sentence_description: 'x' },
+    scorecard: {
+      aqi_version: '1.0.0',
+      max: 1000,
+      total: 649,
+      dimensions: [
+        { key: 'category_clarity', label: 'Category clarity', weight: 80, score: 50, basis: 'structural', confidence: 'medium', evidence: [], improvement: 'x', failure_condition: 'y' },
+      ],
+    },
+    honesty_audit: { passed: true },
+    failure_conditions: [{ statement: 's', observable: 'o', horizon: 'h' }],
+  };
+
+  it('upgrades the envelope but keeps the old total and old weights', () => {
+    const r = migrateDocument(v1);
+    const card = r.document.scorecard as Record<string, unknown>;
+    expect(r.document.ods_version).toBe('2.0.0');
+    expect(card.total).toBe(649);
+    expect(card.aqi_version).toBe('1.0.0');
+    expect((card.dimensions as Array<{ weight: number }>)[0].weight).toBe(80);
+  });
+
+  it('marks the scorecard historical and points at the command that fixes it', () => {
+    const card = migrateDocument(v1).document.scorecard as Record<string, unknown>;
+    expect(card.status).toBe('historical');
+    expect(card.rescore_required).toBe(true);
+    expect(String(card.rescore_command)).toContain('analyze');
+    expect(String(card.rescore_reason).toLowerCase()).toContain('must not be compared');
+  });
+
+  it('preserves the original in full', () => {
+    const r = migrateDocument(v1);
+    expect(r.document.x_migrated_from).toEqual(v1);
+    expect(r.changes.join(' ')).toContain('preserved the original');
+  });
+
+  it('is a no-op on a current document', () => {
+    const r = migrateDocument({ ...v1, ods_version: '2.0.0' });
+    expect(r.noop).toBe(true);
+    expect(r.changes).toHaveLength(0);
+  });
+
+  it('refuses an unknown version instead of guessing', () => {
+    expect(() => migrateDocument({ ...v1, ods_version: '9.9.9' })).toThrow(/unrecognised/);
+    expect(() => migrateDocument('nope')).toThrow(/JSON object/);
+  });
+
+  it('never invents a score for a pre-ODS report', () => {
+    const r = migrateDocument({ schemaVersion: '1.0.0', source: { name: 'old' } });
+    const card = r.document.scorecard as Record<string, unknown>;
+    expect(card.total).toBe(0);
+    expect(card.status).toBe('absent');
+    expect(r.cannot.join(' ')).toContain('cannot be expanded');
+  });
+
+  it('prints a migration note that says nothing was scored', () => {
+    const r = migrateDocument(v1);
+    expect(String(r.document.migration_note).toLowerCase()).toContain('no dimension was scored');
+  });
+});
+
+/* ---------- the reference the disclaimer makes ---------- */
+
+describe('the limitations reference in the weights file resolves', () => {
+  it('has a real limitations.md at the repository root', async () => {
+    const { readFileSync, existsSync } = await import('node:fs');
+    expect(existsSync('limitations.md')).toBe(true);
+    const md = readFileSync('limitations.md', 'utf8');
+    // The file must contain the claims, not merely exist. A stub would satisfy a
+    // link checker and fail a reader.
+    expect(md.toLowerCase()).toContain('not a prediction');
+    expect(md.toLowerCase()).toContain('not comparable across versions');
+    expect(md).toMatch(/25 dimensions/);
+    expect(md.split('\n').length).toBeGreaterThan(30);
+  });
+
+  it('is the file the published disclaimer points at', async () => {
+    const { readFileSync } = await import('node:fs');
+    const weights = JSON.parse(readFileSync('protocol/aqi-weights.json', 'utf8')) as { disclaimer: string };
+    expect(weights.disclaimer.toLowerCase()).toContain('limitations.md');
+  });
+});

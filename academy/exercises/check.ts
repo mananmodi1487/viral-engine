@@ -17,22 +17,31 @@ import { extractSignals } from '../../packages/core/src/signals.js';
 import { checkInbound } from '../../packages/core/src/honesty.js';
 import { analyzeOds } from '../../packages/core/src/analyze/ods.js';
 
-const MODULES: Record<string, { title: string; file: string }> = {
-  '01': { title: 'Why things spread', file: '01-broadcast-not-chain.md' },
-  '02': { title: 'The Attempt Quality Index', file: '02-read-a-scorecard.md' },
-  '03': { title: 'Finding your category', file: '03-name-your-category.md' },
-  '04': { title: 'The repositioning sentence', file: '04-write-the-sentence.md' },
-  '05': { title: 'Who carries it', file: '05-name-a-broadcaster.md' },
-  '06': { title: 'Consent and outreach', file: '06-write-a-no-ask-message.md' },
-  '07': { title: 'Honesty under pressure', file: '07-clean-your-claims.md' },
-  '08': { title: 'Failure conditions', file: '08-write-a-kill-criterion.md' },
-  '09': { title: 'Pre-launch experiments', file: '09-design-a-test.md' },
-  '10': { title: 'The friction audit', file: '10-forwardable-unit.md' },
-  '11': { title: 'Accessibility is reach', file: '11-fix-four-failures.md' },
-  '12': { title: 'Privacy without theatre', file: '12-prove-offline.md' },
-  '13': { title: 'Reading a postmortem', file: '13-extract-a-lesson.md' },
-  '14': { title: 'When not to launch', file: '14-decide-whether-to-launch.md' },
-  '15': { title: 'Teaching it to someone else', file: '15-run-a-pair-session.md' },
+/**
+ * Module metadata.
+ *
+ * `module` and `exercise` are separate because they are separate files: the
+ * lesson lives in `academy/modules/` and the thing you do lives in
+ * `academy/exercises/`. An earlier version of this map printed a module title
+ * next to an exercise filename that did not exist, which is a small lie in a
+ * product about not telling small lies.
+ */
+const MODULES: Record<string, { title: string; module: string; exercise?: string }> = {
+  '01': { title: 'Why things spread', module: '01-why-things-spread.md' },
+  '02': { title: 'The Attempt Quality Index', module: '02-the-attempt-quality-index.md' },
+  '03': { title: 'Finding your category', module: '03-finding-your-category.md' },
+  '04': { title: 'The repositioning sentence', module: '04-the-repositioning-sentence.md' },
+  '05': { title: 'Who carries it', module: '05-who-carries-it.md' },
+  '06': { title: 'Consent and the ethics of outreach', module: '06-consent-and-outreach.md' },
+  '07': { title: 'Honesty under pressure', module: '07-honesty-under-pressure.md' },
+  '08': { title: 'Failure conditions', module: '08-failure-conditions.md' },
+  '09': { title: 'Pre-launch experiments', module: '09-pre-launch-experiments.md' },
+  '10': { title: 'The friction audit', module: '10-the-friction-audit.md' },
+  '11': { title: 'Accessibility is reach', module: '11-accessibility-is-reach.md' },
+  '12': { title: 'Privacy without theatre', module: '12-privacy-without-theatre.md' },
+  '13': { title: 'Reading a postmortem', module: '13-reading-a-postmortem.md' },
+  '14': { title: 'When not to launch', module: '14-when-not-to-launch.md' },
+  '15': { title: 'Teach it to someone else', module: '15-teach-it-to-someone-else.md' },
 };
 
 interface Check {
@@ -465,13 +474,33 @@ async function main(): Promise<void> {
   }
 
   const bytes = readFileSync(target);
-  const ingested = await ingest(target, { bytes });
-  const text = ingested.source.text;
+  const ingested = await ingest(target, { text: bytes.toString('utf8') });
+
+  /*
+   * `SourceDocument` has no `text` field: the body is `body`, with `title` and
+   * `description` separate. This file used to read `ingested.source.text`, which
+   * is `undefined`, which made `extractSignals` return an empty signal object and
+   * made every check run against nothing. Because the checks are written as
+   * "did you do X", a checker running against nothing reports "you did not do X"
+   * — the most plausible possible wrong answer. It was invisible because a
+   * student failing an exercise blames their own document.
+   *
+   * The assembled text is what the student's artifact actually says, in reading
+   * order. An explicit failure is better than a silent empty string.
+   */
+  const text = [ingested.source.title, ingested.source.description, ingested.source.body]
+    .filter((x): x is string => typeof x === 'string' && x.trim().length > 0)
+    .join('\n\n');
+  if (!text || text.trim().length === 0) {
+    console.error(`error: read ${target} but extracted no text. The file may be empty or an unsupported format.`);
+    process.exit(2);
+  }
   const checks = checksFor(id, text);
 
   console.log('');
   console.log(`Module ${id} — ${meta.title}`);
-  console.log(`Exercise: academy/exercises/${meta.file}`);
+  console.log(`Module:   academy/modules/${meta.module}`);
+  console.log(`Exercise: academy/exercises/check.ts ${id} <your file>  (this command)`);
   console.log(`Artifact: ${target}`);
   console.log('');
 
@@ -482,24 +511,44 @@ async function main(): Promise<void> {
   }
 
   let failures = 0;
+  let defects = 0;
+
   for (const c of checks) {
     let pass = false;
     let detail = '';
+    let errored = false;
     try {
       const r = await Promise.resolve(c.run(text) as unknown as { pass: boolean; detail: string });
       pass = r.pass;
       detail = r.detail;
     } catch (e) {
-      pass = false;
-      detail = `check errored: ${(e as Error).message}`;
+      /*
+       * A crashing checker is a bug in this file, not a failure of the student's
+       * document. The first version printed "check errored: ..." inside a NOT YET
+       * block, which told the student to go and fix a document that was not the
+       * problem. It is reported as DEFECT and counted separately.
+       */
+      errored = true;
+      detail = `this checker crashed (${(e as Error).message}) — a defect in academy/exercises/check.ts, not in your document`;
     }
-    console.log(`${pass ? `${GREEN}PASS${OFF}` : `${RED}NOT YET${OFF}`}  ${c.name}`);
+    const label = errored ? `${RED}DEFECT${OFF}` : pass ? `${GREEN}PASS${OFF}` : `${RED}NOT YET${OFF}`;
+    console.log(`${label}  ${c.name}`);
     console.log(`        ${DIM}${detail}${OFF}`);
-    if (!pass) {
+    if (errored) {
+      defects++;
+      console.log(`        ${c.teach}`);
+    } else if (!pass) {
       failures++;
       console.log(`        ${c.teach}`);
     }
     console.log('');
+  }
+
+  if (defects > 0) {
+    console.log(`${defects} checker${defects === 1 ? '' : 's'} crashed. That is a bug in this file, not a verdict on`);
+    console.log('your document. Please open an issue with the module number and your input.');
+    console.log('Nothing below should be read as a pass.');
+    process.exit(2);
   }
 
   if (failures === 0) {
