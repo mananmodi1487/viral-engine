@@ -4,8 +4,8 @@ Copy-paste frameworks. No theory, no signup, no email gate. Open a file, fill th
 
 | Template | Use it when | Time |
 |---|---|---|
-| [**hook-factory.md**](hook-factory.md) | You have something to say and no first line | 20 min |
-| [**positioning-worksheet.md**](positioning-worksheet.md) | Nobody cares about your thing and you suspect it's the category | 30 min |
+| [**hooks-framework.md**](hooks-framework.md) | You have something to say and no first line | 20 min |
+| [**positioning-template.md**](positioning-template.md) | Nobody cares about your thing and you suspect it's the category | 30 min |
 | [**share-structure-canvas.md**](share-structure-canvas.md) | You're about to publish and want to check it's shareable | 15 min |
 | [**launch-checklist.md**](launch-checklist.md) | You're launching in 48 hours | 48 hrs |
 
